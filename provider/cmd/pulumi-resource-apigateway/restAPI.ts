@@ -15,19 +15,19 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
-export interface StaticPageArgs {
+export interface RestAPIArgs {
     /**
      * The HTML content for index.html.
      */
     indexContent: pulumi.Input<string>;
 }
 
-export class StaticPage extends pulumi.ComponentResource {
+export class RestAPI extends pulumi.ComponentResource {
     public readonly bucket: aws.s3.Bucket;
     public readonly websiteUrl: pulumi.Output<string>;
 
-    constructor(name: string, args: StaticPageArgs, opts?: pulumi.ComponentResourceOptions) {
-        super("apigateway:index:StaticPage", name, args, opts);
+    constructor(name: string, args: RestAPIArgs, opts?: pulumi.ComponentResourceOptions) {
+        super("apigateway:index:RestAPI", name, args, opts);
 
         // Create a bucket and expose a website index document.
         const bucket = new aws.s3.Bucket(name, {

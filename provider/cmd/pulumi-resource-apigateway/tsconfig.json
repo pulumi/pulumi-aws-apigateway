@@ -15,6 +15,6 @@
     "files": [
         "index.ts",
         "provider.ts",
-        "staticPage.ts"
+        "restAPI.ts"
     ]
 }

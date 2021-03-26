@@ -2,13 +2,13 @@
 
 This repo is a boilerplate showing how to create a Pulumi component provider written in TypeScript. You can search-replace `apigateway` with the name of your desired provider as a starting point for creating a component provider for your component resources.
 
-An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-apigateway/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in TypeScript.
+An example `RestAPI` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-apigateway/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `RestAPI` -- it is a typical component resource written in TypeScript.
 
-The component provider makes component resources available to other languages. The implementation is in `provider/cmd/pulumi-resource-apigateway/provider.ts`. Each component resource in the provider must have an implementation in the `construct` method to create an instance of the requested component resource and return its `URN` and state (outputs). There is an initial implementation that demonstrates an implementation of `construct` for the example `StaticPage` component.
+The component provider makes component resources available to other languages. The implementation is in `provider/cmd/pulumi-resource-apigateway/provider.ts`. Each component resource in the provider must have an implementation in the `construct` method to create an instance of the requested component resource and return its `URN` and state (outputs). There is an initial implementation that demonstrates an implementation of `construct` for the example `RestAPI` component.
 
 A code generator is available which generates SDKs in TypeScript, Python, Go and .NET which are also checked in to the `sdk` folder. The SDKs are generated from a schema in `schema.json`. This file should be kept aligned with the component resources supported by the component provider implementation.
 
-An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
+An example of using the `RestAPI` component in TypeScript is in `examples/simple`.
 
 Note that the provider plugin (`pulumi-resource-apigateway`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-apigateway` is a simple bash script which invokes `node` to run the provider (there is also a `pulumi-resource-apigateway.cmd` script that Pulumi will use on Windows). After running `make install`, `pulumi-resource-apigateway` (and `pulumi-resource-apigateway.cmd`) will be available in the `./bin` directory along with the JavaScript files and dependencies needed by the provider. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
 
@@ -61,15 +61,15 @@ TODO add make target to generate tarballs and explain custom server hosting in m
 
 ## Example component
 
-Let's look at the example `StaticPage` component resource in more detail.
+Let's look at the example `RestAPI` component resource in more detail.
 
 ### Schema
 
-The example `StaticPage` component resource is defined in `schema.json`:
+The example `RestAPI` component resource is defined in `schema.json`:
 
 ```json
 "resources": {
-    "apigateway:index:StaticPage": {
+    "apigateway:index:RestAPI": {
         "isComponent": true,
         "inputProperties": {
             "indexContent": {
@@ -98,7 +98,7 @@ The example `StaticPage` component resource is defined in `schema.json`:
 }
 ```
 
-The component resource's type token is `apigateway:index:StaticPage` in the format of `<package>:<module>:<type>`. In this case, it's in the `apigateway` package and `index` module. This is the same type token passed inside the implementation of `StaticPage` in `provider/cmd/pulumi-resource-apigateway/staticPage.ts`, and also the same token referenced in `construct` in `provider/cmd/pulumi-resource-apigateway/provider.ts`.
+The component resource's type token is `apigateway:index:RestAPI` in the format of `<package>:<module>:<type>`. In this case, it's in the `apigateway` package and `index` module. This is the same type token passed inside the implementation of `RestAPI` in `provider/cmd/pulumi-resource-apigateway/staticPage.ts`, and also the same token referenced in `construct` in `provider/cmd/pulumi-resource-apigateway/provider.ts`.
 
 This component has a required `indexContent` input property typed as `string`, and two required output properties: `bucket` and `websiteUrl`. Note that `bucket` is typed as the `aws:s3/bucket:Bucket` resource from the `aws` provider (in the schema the `/` is escaped as `%2F`).
 
@@ -136,31 +136,31 @@ For the Go SDK, dependencies are specified in the `sdk/go.mod` file.
 The implementation of this component is in `provider/cmd/pulumi-resource-apigateway/staticPage.ts` and the structure of the component's inputs and outputs aligns with what is defined in `schema.json`:
 
 ```typescript
-export interface StaticPageArgs {
+export interface RestAPIArgs {
     indexContent: pulumi.Input<string>;
 }
 
-export class StaticPage extends pulumi.ComponentResource {
+export class RestAPI extends pulumi.ComponentResource {
     public readonly bucket: aws.s3.Bucket;
     public readonly websiteUrl: pulumi.Output<string>;
 
-    constructor(name: string, args: StaticPageArgs, opts?: pulumi.ComponentResourceOptions) {
-        super("apigateway:index:StaticPage", name, args, opts);
+    constructor(name: string, args: RestAPIArgs, opts?: pulumi.ComponentResourceOptions) {
+        super("apigateway:index:RestAPI", name, args, opts);
 
         ...
     }
 }
 ```
 
-The provider makes this component resource available in the `construct` method in `provider/cmd/pulumi-resource-apigateway/provider.ts`. When `construct` is called and the `type` argument is `apigateway:index:StaticPage`, we create an instance of the `StaticPage` component resource and return its `URN` and outputs as its state.
+The provider makes this component resource available in the `construct` method in `provider/cmd/pulumi-resource-apigateway/provider.ts`. When `construct` is called and the `type` argument is `apigateway:index:RestAPI`, we create an instance of the `RestAPI` component resource and return its `URN` and outputs as its state.
 
 
 ```typescript
-async function constructStaticPage(name: string, inputs: pulumi.Inputs,
+async function constructRestAPI(name: string, inputs: pulumi.Inputs,
     options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
 
     // Create the component resource.
-    const staticPage = new StaticPage(name, inputs as StaticPageArgs, options);
+    const staticPage = new RestAPI(name, inputs as RestAPIArgs, options);
 
     // Return the component resource's URN and outputs as its state.
     return {

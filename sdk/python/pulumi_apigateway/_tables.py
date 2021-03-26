@@ -3,11 +3,7 @@
 # *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 SNAKE_TO_CAMEL_CASE_TABLE = {
-    "index_content": "indexContent",
-    "website_url": "websiteUrl",
 }
 
 CAMEL_TO_SNAKE_CASE_TABLE = {
-    "indexContent": "index_content",
-    "websiteUrl": "website_url",
 }

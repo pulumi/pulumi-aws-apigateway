@@ -12,7 +12,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
-type StaticPage struct {
+type RestAPI struct {
 	pulumi.ResourceState
 
 	// The bucket resource.
@@ -21,9 +21,9 @@ type StaticPage struct {
 	WebsiteUrl pulumi.StringOutput `pulumi:"websiteUrl"`
 }
 
-// NewStaticPage registers a new resource with the given unique name, arguments, and options.
-func NewStaticPage(ctx *pulumi.Context,
-	name string, args *StaticPageArgs, opts ...pulumi.ResourceOption) (*StaticPage, error) {
+// NewRestAPI registers a new resource with the given unique name, arguments, and options.
+func NewRestAPI(ctx *pulumi.Context,
+	name string, args *RestAPIArgs, opts ...pulumi.ResourceOption) (*RestAPI, error) {
 	if args == nil {
 		return nil, errors.New("missing one or more required arguments")
 	}
@@ -31,212 +31,212 @@ func NewStaticPage(ctx *pulumi.Context,
 	if args.IndexContent == nil {
 		return nil, errors.New("invalid value for required argument 'IndexContent'")
 	}
-	var resource StaticPage
-	err := ctx.RegisterRemoteComponentResource("apigateway:index:StaticPage", name, args, &resource, opts...)
+	var resource RestAPI
+	err := ctx.RegisterRemoteComponentResource("apigateway:index:RestAPI", name, args, &resource, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return &resource, nil
 }
 
-type staticPageArgs struct {
+type restAPIArgs struct {
 	// The HTML content for index.html.
 	IndexContent string `pulumi:"indexContent"`
 }
 
-// The set of arguments for constructing a StaticPage resource.
-type StaticPageArgs struct {
+// The set of arguments for constructing a RestAPI resource.
+type RestAPIArgs struct {
 	// The HTML content for index.html.
 	IndexContent pulumi.StringInput
 }
 
-func (StaticPageArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*staticPageArgs)(nil)).Elem()
+func (RestAPIArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*restAPIArgs)(nil)).Elem()
 }
 
-type StaticPageInput interface {
+type RestAPIInput interface {
 	pulumi.Input
 
-	ToStaticPageOutput() StaticPageOutput
-	ToStaticPageOutputWithContext(ctx context.Context) StaticPageOutput
+	ToRestAPIOutput() RestAPIOutput
+	ToRestAPIOutputWithContext(ctx context.Context) RestAPIOutput
 }
 
-func (*StaticPage) ElementType() reflect.Type {
-	return reflect.TypeOf((*StaticPage)(nil))
+func (*RestAPI) ElementType() reflect.Type {
+	return reflect.TypeOf((*RestAPI)(nil))
 }
 
-func (i *StaticPage) ToStaticPageOutput() StaticPageOutput {
-	return i.ToStaticPageOutputWithContext(context.Background())
+func (i *RestAPI) ToRestAPIOutput() RestAPIOutput {
+	return i.ToRestAPIOutputWithContext(context.Background())
 }
 
-func (i *StaticPage) ToStaticPageOutputWithContext(ctx context.Context) StaticPageOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(StaticPageOutput)
+func (i *RestAPI) ToRestAPIOutputWithContext(ctx context.Context) RestAPIOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RestAPIOutput)
 }
 
-func (i *StaticPage) ToStaticPagePtrOutput() StaticPagePtrOutput {
-	return i.ToStaticPagePtrOutputWithContext(context.Background())
+func (i *RestAPI) ToRestAPIPtrOutput() RestAPIPtrOutput {
+	return i.ToRestAPIPtrOutputWithContext(context.Background())
 }
 
-func (i *StaticPage) ToStaticPagePtrOutputWithContext(ctx context.Context) StaticPagePtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(StaticPagePtrOutput)
+func (i *RestAPI) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RestAPIPtrOutput)
 }
 
-type StaticPagePtrInput interface {
+type RestAPIPtrInput interface {
 	pulumi.Input
 
-	ToStaticPagePtrOutput() StaticPagePtrOutput
-	ToStaticPagePtrOutputWithContext(ctx context.Context) StaticPagePtrOutput
+	ToRestAPIPtrOutput() RestAPIPtrOutput
+	ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput
 }
 
-type staticPagePtrType StaticPageArgs
+type restAPIPtrType RestAPIArgs
 
-func (*staticPagePtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**StaticPage)(nil))
+func (*restAPIPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**RestAPI)(nil))
 }
 
-func (i *staticPagePtrType) ToStaticPagePtrOutput() StaticPagePtrOutput {
-	return i.ToStaticPagePtrOutputWithContext(context.Background())
+func (i *restAPIPtrType) ToRestAPIPtrOutput() RestAPIPtrOutput {
+	return i.ToRestAPIPtrOutputWithContext(context.Background())
 }
 
-func (i *staticPagePtrType) ToStaticPagePtrOutputWithContext(ctx context.Context) StaticPagePtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(StaticPagePtrOutput)
+func (i *restAPIPtrType) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RestAPIPtrOutput)
 }
 
-// StaticPageArrayInput is an input type that accepts StaticPageArray and StaticPageArrayOutput values.
-// You can construct a concrete instance of `StaticPageArrayInput` via:
+// RestAPIArrayInput is an input type that accepts RestAPIArray and RestAPIArrayOutput values.
+// You can construct a concrete instance of `RestAPIArrayInput` via:
 //
-//          StaticPageArray{ StaticPageArgs{...} }
-type StaticPageArrayInput interface {
+//          RestAPIArray{ RestAPIArgs{...} }
+type RestAPIArrayInput interface {
 	pulumi.Input
 
-	ToStaticPageArrayOutput() StaticPageArrayOutput
-	ToStaticPageArrayOutputWithContext(context.Context) StaticPageArrayOutput
+	ToRestAPIArrayOutput() RestAPIArrayOutput
+	ToRestAPIArrayOutputWithContext(context.Context) RestAPIArrayOutput
 }
 
-type StaticPageArray []StaticPageInput
+type RestAPIArray []RestAPIInput
 
-func (StaticPageArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*StaticPage)(nil))
+func (RestAPIArray) ElementType() reflect.Type {
+	return reflect.TypeOf(([]*RestAPI)(nil))
 }
 
-func (i StaticPageArray) ToStaticPageArrayOutput() StaticPageArrayOutput {
-	return i.ToStaticPageArrayOutputWithContext(context.Background())
+func (i RestAPIArray) ToRestAPIArrayOutput() RestAPIArrayOutput {
+	return i.ToRestAPIArrayOutputWithContext(context.Background())
 }
 
-func (i StaticPageArray) ToStaticPageArrayOutputWithContext(ctx context.Context) StaticPageArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(StaticPageArrayOutput)
+func (i RestAPIArray) ToRestAPIArrayOutputWithContext(ctx context.Context) RestAPIArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RestAPIArrayOutput)
 }
 
-// StaticPageMapInput is an input type that accepts StaticPageMap and StaticPageMapOutput values.
-// You can construct a concrete instance of `StaticPageMapInput` via:
+// RestAPIMapInput is an input type that accepts RestAPIMap and RestAPIMapOutput values.
+// You can construct a concrete instance of `RestAPIMapInput` via:
 //
-//          StaticPageMap{ "key": StaticPageArgs{...} }
-type StaticPageMapInput interface {
+//          RestAPIMap{ "key": RestAPIArgs{...} }
+type RestAPIMapInput interface {
 	pulumi.Input
 
-	ToStaticPageMapOutput() StaticPageMapOutput
-	ToStaticPageMapOutputWithContext(context.Context) StaticPageMapOutput
+	ToRestAPIMapOutput() RestAPIMapOutput
+	ToRestAPIMapOutputWithContext(context.Context) RestAPIMapOutput
 }
 
-type StaticPageMap map[string]StaticPageInput
+type RestAPIMap map[string]RestAPIInput
 
-func (StaticPageMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*StaticPage)(nil))
+func (RestAPIMap) ElementType() reflect.Type {
+	return reflect.TypeOf((map[string]*RestAPI)(nil))
 }
 
-func (i StaticPageMap) ToStaticPageMapOutput() StaticPageMapOutput {
-	return i.ToStaticPageMapOutputWithContext(context.Background())
+func (i RestAPIMap) ToRestAPIMapOutput() RestAPIMapOutput {
+	return i.ToRestAPIMapOutputWithContext(context.Background())
 }
 
-func (i StaticPageMap) ToStaticPageMapOutputWithContext(ctx context.Context) StaticPageMapOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(StaticPageMapOutput)
+func (i RestAPIMap) ToRestAPIMapOutputWithContext(ctx context.Context) RestAPIMapOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RestAPIMapOutput)
 }
 
-type StaticPageOutput struct {
+type RestAPIOutput struct {
 	*pulumi.OutputState
 }
 
-func (StaticPageOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*StaticPage)(nil))
+func (RestAPIOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RestAPI)(nil))
 }
 
-func (o StaticPageOutput) ToStaticPageOutput() StaticPageOutput {
+func (o RestAPIOutput) ToRestAPIOutput() RestAPIOutput {
 	return o
 }
 
-func (o StaticPageOutput) ToStaticPageOutputWithContext(ctx context.Context) StaticPageOutput {
+func (o RestAPIOutput) ToRestAPIOutputWithContext(ctx context.Context) RestAPIOutput {
 	return o
 }
 
-func (o StaticPageOutput) ToStaticPagePtrOutput() StaticPagePtrOutput {
-	return o.ToStaticPagePtrOutputWithContext(context.Background())
+func (o RestAPIOutput) ToRestAPIPtrOutput() RestAPIPtrOutput {
+	return o.ToRestAPIPtrOutputWithContext(context.Background())
 }
 
-func (o StaticPageOutput) ToStaticPagePtrOutputWithContext(ctx context.Context) StaticPagePtrOutput {
-	return o.ApplyT(func(v StaticPage) *StaticPage {
+func (o RestAPIOutput) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
+	return o.ApplyT(func(v RestAPI) *RestAPI {
 		return &v
-	}).(StaticPagePtrOutput)
+	}).(RestAPIPtrOutput)
 }
 
-type StaticPagePtrOutput struct {
+type RestAPIPtrOutput struct {
 	*pulumi.OutputState
 }
 
-func (StaticPagePtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**StaticPage)(nil))
+func (RestAPIPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**RestAPI)(nil))
 }
 
-func (o StaticPagePtrOutput) ToStaticPagePtrOutput() StaticPagePtrOutput {
+func (o RestAPIPtrOutput) ToRestAPIPtrOutput() RestAPIPtrOutput {
 	return o
 }
 
-func (o StaticPagePtrOutput) ToStaticPagePtrOutputWithContext(ctx context.Context) StaticPagePtrOutput {
+func (o RestAPIPtrOutput) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
 	return o
 }
 
-type StaticPageArrayOutput struct{ *pulumi.OutputState }
+type RestAPIArrayOutput struct{ *pulumi.OutputState }
 
-func (StaticPageArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]StaticPage)(nil))
+func (RestAPIArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RestAPI)(nil))
 }
 
-func (o StaticPageArrayOutput) ToStaticPageArrayOutput() StaticPageArrayOutput {
+func (o RestAPIArrayOutput) ToRestAPIArrayOutput() RestAPIArrayOutput {
 	return o
 }
 
-func (o StaticPageArrayOutput) ToStaticPageArrayOutputWithContext(ctx context.Context) StaticPageArrayOutput {
+func (o RestAPIArrayOutput) ToRestAPIArrayOutputWithContext(ctx context.Context) RestAPIArrayOutput {
 	return o
 }
 
-func (o StaticPageArrayOutput) Index(i pulumi.IntInput) StaticPageOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) StaticPage {
-		return vs[0].([]StaticPage)[vs[1].(int)]
-	}).(StaticPageOutput)
+func (o RestAPIArrayOutput) Index(i pulumi.IntInput) RestAPIOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RestAPI {
+		return vs[0].([]RestAPI)[vs[1].(int)]
+	}).(RestAPIOutput)
 }
 
-type StaticPageMapOutput struct{ *pulumi.OutputState }
+type RestAPIMapOutput struct{ *pulumi.OutputState }
 
-func (StaticPageMapOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*map[string]StaticPage)(nil))
+func (RestAPIMapOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]RestAPI)(nil))
 }
 
-func (o StaticPageMapOutput) ToStaticPageMapOutput() StaticPageMapOutput {
+func (o RestAPIMapOutput) ToRestAPIMapOutput() RestAPIMapOutput {
 	return o
 }
 
-func (o StaticPageMapOutput) ToStaticPageMapOutputWithContext(ctx context.Context) StaticPageMapOutput {
+func (o RestAPIMapOutput) ToRestAPIMapOutputWithContext(ctx context.Context) RestAPIMapOutput {
 	return o
 }
 
-func (o StaticPageMapOutput) MapIndex(k pulumi.StringInput) StaticPageOutput {
-	return pulumi.All(o, k).ApplyT(func(vs []interface{}) StaticPage {
-		return vs[0].(map[string]StaticPage)[vs[1].(string)]
-	}).(StaticPageOutput)
+func (o RestAPIMapOutput) MapIndex(k pulumi.StringInput) RestAPIOutput {
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) RestAPI {
+		return vs[0].(map[string]RestAPI)[vs[1].(string)]
+	}).(RestAPIOutput)
 }
 
 func init() {
-	pulumi.RegisterOutputType(StaticPageOutput{})
-	pulumi.RegisterOutputType(StaticPagePtrOutput{})
-	pulumi.RegisterOutputType(StaticPageArrayOutput{})
-	pulumi.RegisterOutputType(StaticPageMapOutput{})
+	pulumi.RegisterOutputType(RestAPIOutput{})
+	pulumi.RegisterOutputType(RestAPIPtrOutput{})
+	pulumi.RegisterOutputType(RestAPIArrayOutput{})
+	pulumi.RegisterOutputType(RestAPIMapOutput{})
 }

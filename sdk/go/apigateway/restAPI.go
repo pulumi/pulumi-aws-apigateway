@@ -8,17 +8,15 @@ import (
 	"reflect"
 
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi-aws/sdk/v3/go/aws/s3"
+	"github.com/pulumi/pulumi-aws/sdk/v3/go/aws/apigateway"
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
 type RestAPI struct {
 	pulumi.ResourceState
 
-	// The bucket resource.
-	Bucket s3.BucketOutput `pulumi:"bucket"`
-	// The website URL.
-	WebsiteUrl pulumi.StringOutput `pulumi:"websiteUrl"`
+	Api apigateway.RestApiOutput `pulumi:"api"`
+	Url pulumi.StringOutput      `pulumi:"url"`
 }
 
 // NewRestAPI registers a new resource with the given unique name, arguments, and options.
@@ -28,8 +26,8 @@ func NewRestAPI(ctx *pulumi.Context,
 		return nil, errors.New("missing one or more required arguments")
 	}
 
-	if args.IndexContent == nil {
-		return nil, errors.New("invalid value for required argument 'IndexContent'")
+	if args.Routes == nil {
+		return nil, errors.New("invalid value for required argument 'Routes'")
 	}
 	var resource RestAPI
 	err := ctx.RegisterRemoteComponentResource("apigateway:index:RestAPI", name, args, &resource, opts...)
@@ -40,14 +38,12 @@ func NewRestAPI(ctx *pulumi.Context,
 }
 
 type restAPIArgs struct {
-	// The HTML content for index.html.
-	IndexContent string `pulumi:"indexContent"`
+	Routes []EventHandlerRoute `pulumi:"routes"`
 }
 
 // The set of arguments for constructing a RestAPI resource.
 type RestAPIArgs struct {
-	// The HTML content for index.html.
-	IndexContent pulumi.StringInput
+	Routes EventHandlerRouteArrayInput
 }
 
 func (RestAPIArgs) ElementType() reflect.Type {

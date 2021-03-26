@@ -20,8 +20,8 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
-	case "apigateway:index:StaticPage":
-		r, err = NewStaticPage(ctx, name, nil, pulumi.URN_(urn))
+	case "apigateway:index:RestAPI":
+		r, err = NewRestAPI(ctx, name, nil, pulumi.URN_(urn))
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
 	}

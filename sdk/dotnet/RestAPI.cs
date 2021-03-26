@@ -9,31 +9,25 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Apigateway
 {
-    [ApigatewayResourceType("apigateway:index:StaticPage")]
-    public partial class StaticPage : Pulumi.ComponentResource
+    [ApigatewayResourceType("apigateway:index:RestAPI")]
+    public partial class RestAPI : Pulumi.ComponentResource
     {
-        /// <summary>
-        /// The bucket resource.
-        /// </summary>
-        [Output("bucket")]
-        public Output<Pulumi.Aws.S3.Bucket> Bucket { get; private set; } = null!;
+        [Output("api")]
+        public Output<Pulumi.Aws.ApiGateway.RestApi> Api { get; private set; } = null!;
 
-        /// <summary>
-        /// The website URL.
-        /// </summary>
-        [Output("websiteUrl")]
-        public Output<string> WebsiteUrl { get; private set; } = null!;
+        [Output("url")]
+        public Output<string> Url { get; private set; } = null!;
 
 
         /// <summary>
-        /// Create a StaticPage resource with the given unique name, arguments, and options.
+        /// Create a RestAPI resource with the given unique name, arguments, and options.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public StaticPage(string name, StaticPageArgs args, ComponentResourceOptions? options = null)
-            : base("apigateway:index:StaticPage", name, args ?? new StaticPageArgs(), MakeResourceOptions(options, ""), remote: true)
+        public RestAPI(string name, RestAPIArgs args, ComponentResourceOptions? options = null)
+            : base("apigateway:index:RestAPI", name, args ?? new RestAPIArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
 
@@ -50,15 +44,17 @@ namespace Pulumi.Apigateway
         }
     }
 
-    public sealed class StaticPageArgs : Pulumi.ResourceArgs
+    public sealed class RestAPIArgs : Pulumi.ResourceArgs
     {
-        /// <summary>
-        /// The HTML content for index.html.
-        /// </summary>
-        [Input("indexContent", required: true)]
-        public Input<string> IndexContent { get; set; } = null!;
+        [Input("routes", required: true)]
+        private InputList<Inputs.EventHandlerRouteArgs>? _routes;
+        public InputList<Inputs.EventHandlerRouteArgs> Routes
+        {
+            get => _routes ?? (_routes = new InputList<Inputs.EventHandlerRouteArgs>());
+            set => _routes = value;
+        }
 
-        public StaticPageArgs()
+        public RestAPIArgs()
         {
         }
     }

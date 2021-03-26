@@ -1,30 +1,46 @@
 {
     "name": "apigateway",
+    "types": {
+        "apigateway:index:EventHandlerRoute": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "function": {
+                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+                }
+            }
+        }
+    },
     "resources": {
-        "apigateway:index:StaticPage": {
+        "apigateway:index:RestAPI": {
             "isComponent": true,
             "inputProperties": {
-                "indexContent": {
-                    "type": "string",
-                    "description": "The HTML content for index.html."
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/apigateway:index:EventHandlerRoute"
+                    }
                 }
             },
             "requiredInputs": [
-                "indexContent"
+                "routes"
             ],
             "properties": {
-                "bucket": {
-                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
-                    "description": "The bucket resource."
+                "url": {
+                    "type": "string"
                 },
-                "websiteUrl": {
-                    "type": "string",
-                    "description": "The website URL."
+                "api": {
+                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2FrestApi:RestApi"
                 }
             },
             "required": [
-                "bucket",
-                "websiteUrl"
+                "url",
+                "api"
             ]
         }
     },
