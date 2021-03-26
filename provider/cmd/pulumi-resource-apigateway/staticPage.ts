@@ -27,7 +27,7 @@ export class StaticPage extends pulumi.ComponentResource {
     public readonly websiteUrl: pulumi.Output<string>;
 
     constructor(name: string, args: StaticPageArgs, opts?: pulumi.ComponentResourceOptions) {
-        super("xyz:index:StaticPage", name, args, opts);
+        super("apigateway:index:StaticPage", name, args, opts);
 
         // Create a bucket and expose a website index document.
         const bucket = new aws.s3.Bucket(name, {

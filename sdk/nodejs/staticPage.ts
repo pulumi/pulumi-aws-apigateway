@@ -8,7 +8,7 @@ import * as aws from "@pulumi/aws";
 
 export class StaticPage extends pulumi.ComponentResource {
     /** @internal */
-    public static readonly __pulumiType = 'xyz:index:StaticPage';
+    public static readonly __pulumiType = 'apigateway:index:StaticPage';
 
     /**
      * Returns true if the given object is an instance of StaticPage.  This is designed to work even

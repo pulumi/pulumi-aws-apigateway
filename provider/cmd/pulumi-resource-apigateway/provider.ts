@@ -25,7 +25,7 @@ export class Provider implements provider.Provider {
 
         // TODO: Add support for additional component resources here.
         switch (type) {
-            case "xyz:index:StaticPage":
+            case "apigateway:index:StaticPage":
                 return await constructStaticPage(name, inputs, options);
             default:
                 throw new Error(`unknown resource type ${type}`);

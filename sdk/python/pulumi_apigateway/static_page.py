@@ -51,7 +51,7 @@ class StaticPage(pulumi.ComponentResource):
             __props__['bucket'] = None
             __props__['website_url'] = None
         super(StaticPage, __self__).__init__(
-            'xyz:index:StaticPage',
+            'apigateway:index:StaticPage',
             resource_name,
             __props__,
             opts,
