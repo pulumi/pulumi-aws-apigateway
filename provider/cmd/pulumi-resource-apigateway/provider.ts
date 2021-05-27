@@ -43,8 +43,7 @@ async function constructRestAPI(name: string, inputs: pulumi.Inputs,
     return {
         urn: restAPI.urn,
         state: {
-            bucket: restAPI.bucket,
-            websiteUrl: restAPI.websiteUrl,
+            url: restAPI.url,
         },
     };
 }

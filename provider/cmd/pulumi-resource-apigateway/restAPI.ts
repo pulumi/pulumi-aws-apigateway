@@ -14,66 +14,43 @@
 
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
+import * as awsx from "@pulumi/awsx";
+
+export interface RestAPIRoute {
+    function: aws.lambda.Function;
+    method: pulumi.Input<string>;
+    path: pulumi.Input<string>;
+}
 
 export interface RestAPIArgs {
-    /**
-     * The HTML content for index.html.
-     */
-    indexContent: pulumi.Input<string>;
+    routes: pulumi.Input<pulumi.Input<RestAPIRoute>[]>;
 }
 
 export class RestAPI extends pulumi.ComponentResource {
-    public readonly bucket: aws.s3.Bucket;
-    public readonly websiteUrl: pulumi.Output<string>;
+    public readonly url: pulumi.Output<string>;
 
     constructor(name: string, args: RestAPIArgs, opts?: pulumi.ComponentResourceOptions) {
         super("apigateway:index:RestAPI", name, args, opts);
+        
+        // TODO[pulumi/pulumi#7150]: Config doesn't work inside multi-lang components so we have to hardcode :-(
+        aws.config.region = "ap-southeast-2";
 
-        // Create a bucket and expose a website index document.
-        const bucket = new aws.s3.Bucket(name, {
-            website: {
-                indexDocument: "index.html",
-            },
-        }, {
-            parent: this,
+        const api = pulumi.output(args.routes).apply(routes => {
+            return new awsx.apigateway.API(name, {
+                routes: routes.map(route => {
+                    return {
+                        path: route.path,
+                        method: route.method as awsx.apigateway.Method,
+                        eventHandler: route.function,
+                    }
+                }),
+            }, { parent: this });
         });
 
-        // Create a bucket object for the index document.
-        new aws.s3.BucketObject(name, {
-            bucket: bucket,
-            key: "index.html",
-            content: args.indexContent,
-            contentType: "text/html",
-        }, {
-            parent: bucket
-        });
-
-        // Set the access policy for the bucket so all objects are readable.
-        new aws.s3.BucketPolicy("bucketPolicy", {
-            bucket: bucket.bucket,
-            policy: bucket.bucket.apply(name => JSON.stringify({
-                Version: "2012-10-17",
-                Statement: [
-                    {
-                        Effect: "Allow",
-                        Principal: "*",
-                        Action: ["s3:GetObject"],
-                        Resource: [
-                            `arn:aws:s3:::${name}/*`, // policy refers to bucket name explicitly
-                        ],
-                    },
-                ],
-            })),
-        }, {
-            parent: bucket,
-        });
-
-        this.bucket = bucket;
-        this.websiteUrl = bucket.websiteEndpoint;
+        this.url = api.url;
 
         this.registerOutputs({
-            bucket,
-            websiteUrl: bucket.websiteEndpoint,
+            url: api.url,
         });
     }
 }
