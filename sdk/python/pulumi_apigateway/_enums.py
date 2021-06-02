@@ -6,6 +6,9 @@ from enum import Enum
 
 __all__ = [
     'APIKeySource',
+    'IntegrationConnectionType',
+    'IntegrationPassthroughBehavior',
+    'IntegrationType',
     'Method',
     'RequestValidator',
 ]
@@ -14,6 +17,25 @@ __all__ = [
 class APIKeySource(str, Enum):
     HEADER = "HEADER"
     AUTHORIZER = "AUTHORIZER"
+
+
+class IntegrationConnectionType(str, Enum):
+    INTERNET = "INTERNET"
+    VP_C_LINK = "VPC_LINK"
+
+
+class IntegrationPassthroughBehavior(str, Enum):
+    WHEN_NO_MATCH = "when_no_match"
+    WHEN_NO_TEMPLATES = "when_no_templates"
+    NEVER = "never"
+
+
+class IntegrationType(str, Enum):
+    AWS = "aws"
+    AWS_PROXY = "aws_proxy"
+    HTTP = "http"
+    HTTP_PROXY = "http_proxy"
+    MOCK = "mock"
 
 
 class Method(str, Enum):

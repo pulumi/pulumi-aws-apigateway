@@ -30,8 +30,11 @@ namespace Pulumi.Apigateway.Inputs
         [Input("method")]
         public Input<Pulumi.Apigateway.Method>? Method { get; set; }
 
-        [Input("path")]
-        public Input<string>? Path { get; set; }
+        [Input("path", required: true)]
+        public Input<string> Path { get; set; } = null!;
+
+        [Input("target")]
+        public Input<Inputs.TargetArgs>? Target { get; set; }
 
         public RouteArgs()
         {

@@ -13,11 +13,21 @@ export interface Route {
     index?: pulumi.Input<string | boolean>;
     localPath?: pulumi.Input<string>;
     method?: pulumi.Input<enums.Method>;
-    path?: pulumi.Input<string>;
+    path: pulumi.Input<string>;
+    target?: pulumi.Input<inputs.Target>;
 }
 
 export interface SwaggerGatewayResponse {
     responseParameters?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     responseTemplates?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     statusCode?: pulumi.Input<number>;
+}
+
+export interface Target {
+    connectionId?: pulumi.Input<string>;
+    connectionType?: pulumi.Input<enums.IntegrationConnectionType>;
+    httpMethod?: pulumi.Input<"ANY">;
+    passthroughBehaviour?: pulumi.Input<enums.IntegrationPassthroughBehavior>;
+    type: pulumi.Input<enums.IntegrationType>;
+    uri: pulumi.Input<string>;
 }

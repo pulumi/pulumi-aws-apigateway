@@ -31,8 +31,42 @@
                 },
                 "data": {
                     "$ref": "pulumi.json#/Any"
+                },
+                "target": {
+                    "$ref": "#/types/apigateway:index:Target"
                 }
-            }
+            },
+            "required": [
+                "path"
+            ]
+        },
+        "apigateway:index:Target": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/types/apigateway:index:IntegrationType"
+                },
+                "httpMethod": {
+                    "type": "string",
+                    "const": "ANY"
+                },
+                "uri": {
+                    "type": "string"
+                },
+                "connectionType": {
+                    "$ref": "#/types/apigateway:index:IntegrationConnectionType"
+                },
+                "connectionId": {
+                    "type": "string"
+                },
+                "passthroughBehaviour": {
+                    "$ref": "#/types/apigateway:index:IntegrationPassthroughBehavior"
+                }
+            },
+            "required": [
+                "type",
+                "uri"
+            ]
         },
         "apigateway:index:Method": {
             "type": "string",
@@ -85,6 +119,51 @@
                 },
                 {
                     "value": "AUTHORIZER"
+                }
+            ]
+        },
+        "apigateway:index:IntegrationConnectionType": {
+            "type": "string",
+            "enum": [
+                {
+                    "value": "INTERNET"
+                },
+                {
+                    "value": "VPC_LINK"
+                }
+            ]
+        },
+        "apigateway:index:IntegrationType": {
+            "type": "string",
+            "enum": [
+                {
+                    "value": "aws"
+                },
+                {
+                    "value": "aws_proxy"
+                },
+                {
+                    "value": "http"
+                },
+                {
+                    "value": "http_proxy"
+                },
+                {
+                    "value": "mock"
+                } 
+            ]
+        },
+        "apigateway:index:IntegrationPassthroughBehavior": {
+            "type": "string",
+            "enum": [
+                {
+                    "value": "when_no_match"
+                },
+                {
+                    "value": "when_no_templates"
+                },
+                {
+                    "value": "never"
                 }
             ]
         },

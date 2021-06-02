@@ -13,18 +13,21 @@ import pulumi_aws
 __all__ = [
     'RouteArgs',
     'SwaggerGatewayResponseArgs',
+    'TargetArgs',
 ]
 
 @pulumi.input_type
 class RouteArgs:
     def __init__(__self__, *,
+                 path: pulumi.Input[str],
                  content_type: Optional[pulumi.Input[str]] = None,
                  data: Optional[Any] = None,
                  event_handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
                  index: Optional[pulumi.Input[Union[str, bool]]] = None,
                  local_path: Optional[pulumi.Input[str]] = None,
                  method: Optional[pulumi.Input['Method']] = None,
-                 path: Optional[pulumi.Input[str]] = None):
+                 target: Optional[pulumi.Input['TargetArgs']] = None):
+        pulumi.set(__self__, "path", path)
         if content_type is not None:
             pulumi.set(__self__, "content_type", content_type)
         if data is not None:
@@ -37,8 +40,17 @@ class RouteArgs:
             pulumi.set(__self__, "local_path", local_path)
         if method is not None:
             pulumi.set(__self__, "method", method)
-        if path is not None:
-            pulumi.set(__self__, "path", path)
+        if target is not None:
+            pulumi.set(__self__, "target", target)
+
+    @property
+    @pulumi.getter
+    def path(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "path")
+
+    @path.setter
+    def path(self, value: pulumi.Input[str]):
+        pulumi.set(self, "path", value)
 
     @property
     @pulumi.getter(name="contentType")
@@ -96,12 +108,12 @@ class RouteArgs:
 
     @property
     @pulumi.getter
-    def path(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "path")
+    def target(self) -> Optional[pulumi.Input['TargetArgs']]:
+        return pulumi.get(self, "target")
 
-    @path.setter
-    def path(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "path", value)
+    @target.setter
+    def target(self, value: Optional[pulumi.Input['TargetArgs']]):
+        pulumi.set(self, "target", value)
 
 
 @pulumi.input_type
@@ -143,5 +155,80 @@ class SwaggerGatewayResponseArgs:
     @status_code.setter
     def status_code(self, value: Optional[pulumi.Input[float]]):
         pulumi.set(self, "status_code", value)
+
+
+@pulumi.input_type
+class TargetArgs:
+    def __init__(__self__, *,
+                 type: pulumi.Input['IntegrationType'],
+                 uri: pulumi.Input[str],
+                 connection_id: Optional[pulumi.Input[str]] = None,
+                 connection_type: Optional[pulumi.Input['IntegrationConnectionType']] = None,
+                 http_method: Optional[pulumi.Input[str]] = None,
+                 passthrough_behaviour: Optional[pulumi.Input['IntegrationPassthroughBehavior']] = None):
+        pulumi.set(__self__, "type", type)
+        pulumi.set(__self__, "uri", uri)
+        if connection_id is not None:
+            pulumi.set(__self__, "connection_id", connection_id)
+        if connection_type is not None:
+            pulumi.set(__self__, "connection_type", connection_type)
+        if http_method is not None:
+            pulumi.set(__self__, "http_method", 'ANY')
+        if passthrough_behaviour is not None:
+            pulumi.set(__self__, "passthrough_behaviour", passthrough_behaviour)
+
+    @property
+    @pulumi.getter
+    def type(self) -> pulumi.Input['IntegrationType']:
+        return pulumi.get(self, "type")
+
+    @type.setter
+    def type(self, value: pulumi.Input['IntegrationType']):
+        pulumi.set(self, "type", value)
+
+    @property
+    @pulumi.getter
+    def uri(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "uri")
+
+    @uri.setter
+    def uri(self, value: pulumi.Input[str]):
+        pulumi.set(self, "uri", value)
+
+    @property
+    @pulumi.getter(name="connectionId")
+    def connection_id(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "connection_id")
+
+    @connection_id.setter
+    def connection_id(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "connection_id", value)
+
+    @property
+    @pulumi.getter(name="connectionType")
+    def connection_type(self) -> Optional[pulumi.Input['IntegrationConnectionType']]:
+        return pulumi.get(self, "connection_type")
+
+    @connection_type.setter
+    def connection_type(self, value: Optional[pulumi.Input['IntegrationConnectionType']]):
+        pulumi.set(self, "connection_type", value)
+
+    @property
+    @pulumi.getter(name="httpMethod")
+    def http_method(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "http_method")
+
+    @http_method.setter
+    def http_method(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "http_method", value)
+
+    @property
+    @pulumi.getter(name="passthroughBehaviour")
+    def passthrough_behaviour(self) -> Optional[pulumi.Input['IntegrationPassthroughBehavior']]:
+        return pulumi.get(self, "passthrough_behaviour")
+
+    @passthrough_behaviour.setter
+    def passthrough_behaviour(self, value: Optional[pulumi.Input['IntegrationPassthroughBehavior']]):
+        pulumi.set(self, "passthrough_behaviour", value)
 
 

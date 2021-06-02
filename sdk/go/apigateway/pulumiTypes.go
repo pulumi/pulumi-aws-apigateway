@@ -18,7 +18,8 @@ type Route struct {
 	Index        interface{}      `pulumi:"index"`
 	LocalPath    *string          `pulumi:"localPath"`
 	Method       *string          `pulumi:"method"`
-	Path         *string          `pulumi:"path"`
+	Path         string           `pulumi:"path"`
+	Target       *Target          `pulumi:"target"`
 }
 
 // RouteInput is an input type that accepts RouteArgs and RouteOutput values.
@@ -39,7 +40,8 @@ type RouteArgs struct {
 	Index        pulumi.Input          `pulumi:"index"`
 	LocalPath    pulumi.StringPtrInput `pulumi:"localPath"`
 	Method       *Method               `pulumi:"method"`
-	Path         pulumi.StringPtrInput `pulumi:"path"`
+	Path         pulumi.StringInput    `pulumi:"path"`
+	Target       TargetPtrInput        `pulumi:"target"`
 }
 
 func (RouteArgs) ElementType() reflect.Type {
@@ -117,8 +119,12 @@ func (o RouteOutput) Method() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Route) *string { return v.Method }).(pulumi.StringPtrOutput)
 }
 
-func (o RouteOutput) Path() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v Route) *string { return v.Path }).(pulumi.StringPtrOutput)
+func (o RouteOutput) Path() pulumi.StringOutput {
+	return o.ApplyT(func(v Route) string { return v.Path }).(pulumi.StringOutput)
+}
+
+func (o RouteOutput) Target() TargetPtrOutput {
+	return o.ApplyT(func(v Route) *Target { return v.Target }).(TargetPtrOutput)
 }
 
 type RouteArrayOutput struct{ *pulumi.OutputState }
@@ -247,9 +253,212 @@ func (o SwaggerGatewayResponseMapOutput) MapIndex(k pulumi.StringInput) SwaggerG
 	}).(SwaggerGatewayResponseOutput)
 }
 
+type Target struct {
+	ConnectionId         *string `pulumi:"connectionId"`
+	ConnectionType       *string `pulumi:"connectionType"`
+	HttpMethod           *string `pulumi:"httpMethod"`
+	PassthroughBehaviour *string `pulumi:"passthroughBehaviour"`
+	Type                 string  `pulumi:"type"`
+	Uri                  string  `pulumi:"uri"`
+}
+
+// TargetInput is an input type that accepts TargetArgs and TargetOutput values.
+// You can construct a concrete instance of `TargetInput` via:
+//
+//          TargetArgs{...}
+type TargetInput interface {
+	pulumi.Input
+
+	ToTargetOutput() TargetOutput
+	ToTargetOutputWithContext(context.Context) TargetOutput
+}
+
+type TargetArgs struct {
+	ConnectionId         pulumi.StringPtrInput           `pulumi:"connectionId"`
+	ConnectionType       *IntegrationConnectionType      `pulumi:"connectionType"`
+	HttpMethod           pulumi.StringPtrInput           `pulumi:"httpMethod"`
+	PassthroughBehaviour *IntegrationPassthroughBehavior `pulumi:"passthroughBehaviour"`
+	Type                 IntegrationType                 `pulumi:"type"`
+	Uri                  pulumi.StringInput              `pulumi:"uri"`
+}
+
+func (TargetArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Target)(nil)).Elem()
+}
+
+func (i TargetArgs) ToTargetOutput() TargetOutput {
+	return i.ToTargetOutputWithContext(context.Background())
+}
+
+func (i TargetArgs) ToTargetOutputWithContext(ctx context.Context) TargetOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(TargetOutput)
+}
+
+func (i TargetArgs) ToTargetPtrOutput() TargetPtrOutput {
+	return i.ToTargetPtrOutputWithContext(context.Background())
+}
+
+func (i TargetArgs) ToTargetPtrOutputWithContext(ctx context.Context) TargetPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(TargetOutput).ToTargetPtrOutputWithContext(ctx)
+}
+
+// TargetPtrInput is an input type that accepts TargetArgs, TargetPtr and TargetPtrOutput values.
+// You can construct a concrete instance of `TargetPtrInput` via:
+//
+//          TargetArgs{...}
+//
+//  or:
+//
+//          nil
+type TargetPtrInput interface {
+	pulumi.Input
+
+	ToTargetPtrOutput() TargetPtrOutput
+	ToTargetPtrOutputWithContext(context.Context) TargetPtrOutput
+}
+
+type targetPtrType TargetArgs
+
+func TargetPtr(v *TargetArgs) TargetPtrInput {
+	return (*targetPtrType)(v)
+}
+
+func (*targetPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**Target)(nil)).Elem()
+}
+
+func (i *targetPtrType) ToTargetPtrOutput() TargetPtrOutput {
+	return i.ToTargetPtrOutputWithContext(context.Background())
+}
+
+func (i *targetPtrType) ToTargetPtrOutputWithContext(ctx context.Context) TargetPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(TargetPtrOutput)
+}
+
+type TargetOutput struct{ *pulumi.OutputState }
+
+func (TargetOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Target)(nil)).Elem()
+}
+
+func (o TargetOutput) ToTargetOutput() TargetOutput {
+	return o
+}
+
+func (o TargetOutput) ToTargetOutputWithContext(ctx context.Context) TargetOutput {
+	return o
+}
+
+func (o TargetOutput) ToTargetPtrOutput() TargetPtrOutput {
+	return o.ToTargetPtrOutputWithContext(context.Background())
+}
+
+func (o TargetOutput) ToTargetPtrOutputWithContext(ctx context.Context) TargetPtrOutput {
+	return o.ApplyT(func(v Target) *Target {
+		return &v
+	}).(TargetPtrOutput)
+}
+func (o TargetOutput) ConnectionId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Target) *string { return v.ConnectionId }).(pulumi.StringPtrOutput)
+}
+
+func (o TargetOutput) ConnectionType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Target) *string { return v.ConnectionType }).(pulumi.StringPtrOutput)
+}
+
+func (o TargetOutput) HttpMethod() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Target) *string { return v.HttpMethod }).(pulumi.StringPtrOutput)
+}
+
+func (o TargetOutput) PassthroughBehaviour() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Target) *string { return v.PassthroughBehaviour }).(pulumi.StringPtrOutput)
+}
+
+func (o TargetOutput) Type() pulumi.StringOutput {
+	return o.ApplyT(func(v Target) string { return v.Type }).(pulumi.StringOutput)
+}
+
+func (o TargetOutput) Uri() pulumi.StringOutput {
+	return o.ApplyT(func(v Target) string { return v.Uri }).(pulumi.StringOutput)
+}
+
+type TargetPtrOutput struct{ *pulumi.OutputState }
+
+func (TargetPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**Target)(nil)).Elem()
+}
+
+func (o TargetPtrOutput) ToTargetPtrOutput() TargetPtrOutput {
+	return o
+}
+
+func (o TargetPtrOutput) ToTargetPtrOutputWithContext(ctx context.Context) TargetPtrOutput {
+	return o
+}
+
+func (o TargetPtrOutput) Elem() TargetOutput {
+	return o.ApplyT(func(v *Target) Target { return *v }).(TargetOutput)
+}
+
+func (o TargetPtrOutput) ConnectionId() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Target) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ConnectionId
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o TargetPtrOutput) ConnectionType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Target) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ConnectionType
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o TargetPtrOutput) HttpMethod() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Target) *string {
+		if v == nil {
+			return nil
+		}
+		return v.HttpMethod
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o TargetPtrOutput) PassthroughBehaviour() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Target) *string {
+		if v == nil {
+			return nil
+		}
+		return v.PassthroughBehaviour
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o TargetPtrOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Target) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Type
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o TargetPtrOutput) Uri() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Target) *string {
+		if v == nil {
+			return nil
+		}
+		return &v.Uri
+	}).(pulumi.StringPtrOutput)
+}
+
 func init() {
 	pulumi.RegisterOutputType(RouteOutput{})
 	pulumi.RegisterOutputType(RouteArrayOutput{})
 	pulumi.RegisterOutputType(SwaggerGatewayResponseOutput{})
 	pulumi.RegisterOutputType(SwaggerGatewayResponseMapOutput{})
+	pulumi.RegisterOutputType(TargetOutput{})
+	pulumi.RegisterOutputType(TargetPtrOutput{})
 }

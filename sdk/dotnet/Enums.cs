@@ -36,6 +36,94 @@ namespace Pulumi.Apigateway
     }
 
     [EnumType]
+    public readonly struct IntegrationConnectionType : IEquatable<IntegrationConnectionType>
+    {
+        private readonly string _value;
+
+        private IntegrationConnectionType(string value)
+        {
+            _value = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        public static IntegrationConnectionType INTERNET { get; } = new IntegrationConnectionType("INTERNET");
+        public static IntegrationConnectionType VPC_LINK { get; } = new IntegrationConnectionType("VPC_LINK");
+
+        public static bool operator ==(IntegrationConnectionType left, IntegrationConnectionType right) => left.Equals(right);
+        public static bool operator !=(IntegrationConnectionType left, IntegrationConnectionType right) => !left.Equals(right);
+
+        public static explicit operator string(IntegrationConnectionType value) => value._value;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override bool Equals(object? obj) => obj is IntegrationConnectionType other && Equals(other);
+        public bool Equals(IntegrationConnectionType other) => string.Equals(_value, other._value, StringComparison.Ordinal);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+
+        public override string ToString() => _value;
+    }
+
+    [EnumType]
+    public readonly struct IntegrationPassthroughBehavior : IEquatable<IntegrationPassthroughBehavior>
+    {
+        private readonly string _value;
+
+        private IntegrationPassthroughBehavior(string value)
+        {
+            _value = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        public static IntegrationPassthroughBehavior When_no_match { get; } = new IntegrationPassthroughBehavior("when_no_match");
+        public static IntegrationPassthroughBehavior When_no_templates { get; } = new IntegrationPassthroughBehavior("when_no_templates");
+        public static IntegrationPassthroughBehavior Never { get; } = new IntegrationPassthroughBehavior("never");
+
+        public static bool operator ==(IntegrationPassthroughBehavior left, IntegrationPassthroughBehavior right) => left.Equals(right);
+        public static bool operator !=(IntegrationPassthroughBehavior left, IntegrationPassthroughBehavior right) => !left.Equals(right);
+
+        public static explicit operator string(IntegrationPassthroughBehavior value) => value._value;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override bool Equals(object? obj) => obj is IntegrationPassthroughBehavior other && Equals(other);
+        public bool Equals(IntegrationPassthroughBehavior other) => string.Equals(_value, other._value, StringComparison.Ordinal);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+
+        public override string ToString() => _value;
+    }
+
+    [EnumType]
+    public readonly struct IntegrationType : IEquatable<IntegrationType>
+    {
+        private readonly string _value;
+
+        private IntegrationType(string value)
+        {
+            _value = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        public static IntegrationType Aws { get; } = new IntegrationType("aws");
+        public static IntegrationType Aws_proxy { get; } = new IntegrationType("aws_proxy");
+        public static IntegrationType Http { get; } = new IntegrationType("http");
+        public static IntegrationType Http_proxy { get; } = new IntegrationType("http_proxy");
+        public static IntegrationType Mock { get; } = new IntegrationType("mock");
+
+        public static bool operator ==(IntegrationType left, IntegrationType right) => left.Equals(right);
+        public static bool operator !=(IntegrationType left, IntegrationType right) => !left.Equals(right);
+
+        public static explicit operator string(IntegrationType value) => value._value;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override bool Equals(object? obj) => obj is IntegrationType other && Equals(other);
+        public bool Equals(IntegrationType other) => string.Equals(_value, other._value, StringComparison.Ordinal);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+
+        public override string ToString() => _value;
+    }
+
+    [EnumType]
     public readonly struct Method : IEquatable<Method>
     {
         private readonly string _value;

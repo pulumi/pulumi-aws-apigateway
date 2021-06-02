@@ -32,8 +32,7 @@ export interface RestAPIRoute /* extends BaseRoute */ {
 
     data: any;
 
-    // TODO: Integration Routes 
-    // target: pulumi.Input<IntegrationTarget>;
+    target: pulumi.Input<IntegrationTarget>;
 
     // TODO: BaseRoute properties
     // requiredParameters?: reqvalidation.Parameter[];
@@ -42,6 +41,15 @@ export interface RestAPIRoute /* extends BaseRoute */ {
     // authorizers?: Authorizer[] | Authorizer;
     // iamAuthEnabled?: boolean;
 
+}
+
+export interface IntegrationTarget {
+    type: pulumi.Input<IntegrationType>;
+    httpMethod?: "ANY";
+    uri: pulumi.Input<string>;
+    connectionType?: pulumi.Input<IntegrationConnectionType>;
+    connectionId?: pulumi.Input<string>;
+    passthroughBehavior?: pulumi.Input<IntegrationPassthroughBehavior>;
 }
 
 export interface SwaggerGatewayResponse {
@@ -53,6 +61,10 @@ export interface SwaggerGatewayResponse {
 export declare type Method = "ANY" | "GET" | "PUT" | "POST" | "DELETE" | "PATCH" | "OPTIONS";
 export declare type RequestValidator = "ALL" | "PARAMS_ONLY" | "BODY_ONLY";
 export declare type APIKeySource = "HEADER" | "AUTHORIZER";
+export declare type IntegrationConnectionType = "INTERNET" | "VPC_LINK";
+export declare type IntegrationType = "aws" | "aws_proxy" | "http" | "http_proxy" | "mock";
+export declare type IntegrationPassthroughBehavior = "when_no_match" | "when_no_templates" | "never";
+
 
 export interface RestAPIArgs {
     routes: pulumi.Input<pulumi.Input<RestAPIRoute>[]>;
