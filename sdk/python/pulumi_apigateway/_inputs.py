@@ -7,41 +7,91 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union
 from . import _utilities, _tables
+from ._enums import *
 import pulumi_aws
 
 __all__ = [
-    'EventHandlerRouteArgs',
+    'RouteArgs',
+    'SwaggerGatewayResponseArgs',
 ]
 
 @pulumi.input_type
-class EventHandlerRouteArgs:
+class RouteArgs:
     def __init__(__self__, *,
-                 function: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
-                 method: Optional[pulumi.Input[str]] = None,
+                 content_type: Optional[pulumi.Input[str]] = None,
+                 data: Optional[Any] = None,
+                 event_handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
+                 index: Optional[pulumi.Input[Union[str, bool]]] = None,
+                 local_path: Optional[pulumi.Input[str]] = None,
+                 method: Optional[pulumi.Input['Method']] = None,
                  path: Optional[pulumi.Input[str]] = None):
-        if function is not None:
-            pulumi.set(__self__, "function", function)
+        if content_type is not None:
+            pulumi.set(__self__, "content_type", content_type)
+        if data is not None:
+            pulumi.set(__self__, "data", data)
+        if event_handler is not None:
+            pulumi.set(__self__, "event_handler", event_handler)
+        if index is not None:
+            pulumi.set(__self__, "index", index)
+        if local_path is not None:
+            pulumi.set(__self__, "local_path", local_path)
         if method is not None:
             pulumi.set(__self__, "method", method)
         if path is not None:
             pulumi.set(__self__, "path", path)
 
     @property
-    @pulumi.getter
-    def function(self) -> Optional[pulumi.Input['pulumi_aws.lambda_.Function']]:
-        return pulumi.get(self, "function")
+    @pulumi.getter(name="contentType")
+    def content_type(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "content_type")
 
-    @function.setter
-    def function(self, value: Optional[pulumi.Input['pulumi_aws.lambda_.Function']]):
-        pulumi.set(self, "function", value)
+    @content_type.setter
+    def content_type(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "content_type", value)
 
     @property
     @pulumi.getter
-    def method(self) -> Optional[pulumi.Input[str]]:
+    def data(self) -> Optional[Any]:
+        return pulumi.get(self, "data")
+
+    @data.setter
+    def data(self, value: Optional[Any]):
+        pulumi.set(self, "data", value)
+
+    @property
+    @pulumi.getter(name="eventHandler")
+    def event_handler(self) -> Optional[pulumi.Input['pulumi_aws.lambda_.Function']]:
+        return pulumi.get(self, "event_handler")
+
+    @event_handler.setter
+    def event_handler(self, value: Optional[pulumi.Input['pulumi_aws.lambda_.Function']]):
+        pulumi.set(self, "event_handler", value)
+
+    @property
+    @pulumi.getter
+    def index(self) -> Optional[pulumi.Input[Union[str, bool]]]:
+        return pulumi.get(self, "index")
+
+    @index.setter
+    def index(self, value: Optional[pulumi.Input[Union[str, bool]]]):
+        pulumi.set(self, "index", value)
+
+    @property
+    @pulumi.getter(name="localPath")
+    def local_path(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "local_path")
+
+    @local_path.setter
+    def local_path(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "local_path", value)
+
+    @property
+    @pulumi.getter
+    def method(self) -> Optional[pulumi.Input['Method']]:
         return pulumi.get(self, "method")
 
     @method.setter
-    def method(self, value: Optional[pulumi.Input[str]]):
+    def method(self, value: Optional[pulumi.Input['Method']]):
         pulumi.set(self, "method", value)
 
     @property
@@ -52,5 +102,46 @@ class EventHandlerRouteArgs:
     @path.setter
     def path(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "path", value)
+
+
+@pulumi.input_type
+class SwaggerGatewayResponseArgs:
+    def __init__(__self__, *,
+                 response_parameters: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 response_templates: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 status_code: Optional[pulumi.Input[float]] = None):
+        if response_parameters is not None:
+            pulumi.set(__self__, "response_parameters", response_parameters)
+        if response_templates is not None:
+            pulumi.set(__self__, "response_templates", response_templates)
+        if status_code is not None:
+            pulumi.set(__self__, "status_code", status_code)
+
+    @property
+    @pulumi.getter(name="responseParameters")
+    def response_parameters(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        return pulumi.get(self, "response_parameters")
+
+    @response_parameters.setter
+    def response_parameters(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "response_parameters", value)
+
+    @property
+    @pulumi.getter(name="responseTemplates")
+    def response_templates(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        return pulumi.get(self, "response_templates")
+
+    @response_templates.setter
+    def response_templates(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "response_templates", value)
+
+    @property
+    @pulumi.getter(name="statusCode")
+    def status_code(self) -> Optional[pulumi.Input[float]]:
+        return pulumi.get(self, "status_code")
+
+    @status_code.setter
+    def status_code(self, value: Optional[pulumi.Input[float]]):
+        pulumi.set(self, "status_code", value)
 
 

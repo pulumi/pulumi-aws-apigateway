@@ -7,28 +7,28 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v3/go/aws/apigateway"
+	"github.com/pulumi/pulumi-aws/sdk/v3/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
 type RestAPI struct {
 	pulumi.ResourceState
 
-	Api apigateway.RestApiOutput `pulumi:"api"`
-	Url pulumi.StringOutput      `pulumi:"url"`
+	Api        apigateway.RestApiOutput       `pulumi:"api"`
+	ApiPolicy  apigateway.RestApiPolicyOutput `pulumi:"apiPolicy"`
+	Deployment apigateway.DeploymentOutput    `pulumi:"deployment"`
+	Stage      apigateway.StageOutput         `pulumi:"stage"`
+	Url        pulumi.StringOutput            `pulumi:"url"`
 }
 
 // NewRestAPI registers a new resource with the given unique name, arguments, and options.
 func NewRestAPI(ctx *pulumi.Context,
 	name string, args *RestAPIArgs, opts ...pulumi.ResourceOption) (*RestAPI, error) {
 	if args == nil {
-		return nil, errors.New("missing one or more required arguments")
+		args = &RestAPIArgs{}
 	}
 
-	if args.Routes == nil {
-		return nil, errors.New("invalid value for required argument 'Routes'")
-	}
 	var resource RestAPI
 	err := ctx.RegisterRemoteComponentResource("apigateway:index:RestAPI", name, args, &resource, opts...)
 	if err != nil {
@@ -38,12 +38,24 @@ func NewRestAPI(ctx *pulumi.Context,
 }
 
 type restAPIArgs struct {
-	Routes []EventHandlerRoute `pulumi:"routes"`
+	ApiKeySource       *string                           `pulumi:"apiKeySource"`
+	GatewayResponses   map[string]SwaggerGatewayResponse `pulumi:"gatewayResponses"`
+	RequestValidator   *string                           `pulumi:"requestValidator"`
+	Routes             []Route                           `pulumi:"routes"`
+	StageName          *string                           `pulumi:"stageName"`
+	StaticRoutesBucket *s3.Bucket                        `pulumi:"staticRoutesBucket"`
+	SwaggerString      *string                           `pulumi:"swaggerString"`
 }
 
 // The set of arguments for constructing a RestAPI resource.
 type RestAPIArgs struct {
-	Routes EventHandlerRouteArrayInput
+	ApiKeySource       *APIKeySource
+	GatewayResponses   SwaggerGatewayResponseMapInput
+	RequestValidator   *RequestValidator
+	Routes             RouteArrayInput
+	StageName          pulumi.StringPtrInput
+	StaticRoutesBucket s3.BucketInput
+	SwaggerString      pulumi.StringPtrInput
 }
 
 func (RestAPIArgs) ElementType() reflect.Type {

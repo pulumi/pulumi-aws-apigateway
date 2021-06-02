@@ -37,7 +37,8 @@ f = aws.lambda_.Function("mylambda",
 )
 
 api = apigateway.RestAPI('api', routes=[
-    apigateway.EventHandlerRouteArgs(method="GET", path="/", function=f),
+    apigateway.RouteArgs(method="GET", path="/", event_handler=f),
+    apigateway.RouteArgs(method="GET", path="/www", local_path="www", index=False)
 ])
 
 pulumi.export('url', api.url)

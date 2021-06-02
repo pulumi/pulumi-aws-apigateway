@@ -7,6 +7,7 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union
 from . import _utilities, _tables
+from ._enums import *
 from ._inputs import *
 import pulumi_aws
 
@@ -17,7 +18,13 @@ class RestAPI(pulumi.ComponentResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 routes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['EventHandlerRouteArgs']]]]] = None,
+                 api_key_source: Optional[pulumi.Input['APIKeySource']] = None,
+                 gateway_responses: Optional[pulumi.Input[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]]] = None,
+                 request_validator: Optional[pulumi.Input['RequestValidator']] = None,
+                 routes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RouteArgs']]]]] = None,
+                 stage_name: Optional[pulumi.Input[str]] = None,
+                 static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
+                 swagger_string: Optional[pulumi.Input[str]] = None,
                  __props__=None,
                  __name__=None,
                  __opts__=None):
@@ -45,10 +52,17 @@ class RestAPI(pulumi.ComponentResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = dict()
 
-            if routes is None and not opts.urn:
-                raise TypeError("Missing required property 'routes'")
+            __props__['api_key_source'] = api_key_source
+            __props__['gateway_responses'] = gateway_responses
+            __props__['request_validator'] = request_validator
             __props__['routes'] = routes
+            __props__['stage_name'] = stage_name
+            __props__['static_routes_bucket'] = static_routes_bucket
+            __props__['swagger_string'] = swagger_string
             __props__['api'] = None
+            __props__['api_policy'] = None
+            __props__['deployment'] = None
+            __props__['stage'] = None
             __props__['url'] = None
         super(RestAPI, __self__).__init__(
             'apigateway:index:RestAPI',
@@ -61,6 +75,21 @@ class RestAPI(pulumi.ComponentResource):
     @pulumi.getter
     def api(self) -> pulumi.Output['pulumi_aws.apigateway.RestApi']:
         return pulumi.get(self, "api")
+
+    @property
+    @pulumi.getter(name="apiPolicy")
+    def api_policy(self) -> pulumi.Output[Optional['pulumi_aws.apigateway.RestApiPolicy']]:
+        return pulumi.get(self, "api_policy")
+
+    @property
+    @pulumi.getter
+    def deployment(self) -> pulumi.Output['pulumi_aws.apigateway.Deployment']:
+        return pulumi.get(self, "deployment")
+
+    @property
+    @pulumi.getter
+    def stage(self) -> pulumi.Output['pulumi_aws.apigateway.Stage']:
+        return pulumi.get(self, "stage")
 
     @property
     @pulumi.getter

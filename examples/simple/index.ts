@@ -15,7 +15,7 @@ const api = new apigateway.RestAPI("api", {
     routes: [{
         path: "/",
         method: "GET",
-        function: f,
+        eventHandler: f,
     }],
 });
 

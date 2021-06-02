@@ -1,7 +1,7 @@
 VERSION         := 0.0.1
 
 PACK            := apigateway
-PROJECT         := github.com/pulumi/pulumi-${PACK}
+PROJECT         := github.com/lukehoban/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
 CODEGEN         := pulumi-gen-${PACK}

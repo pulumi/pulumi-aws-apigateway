@@ -3,7 +3,33 @@
 # *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 SNAKE_TO_CAMEL_CASE_TABLE = {
+    "api_key_source": "apiKeySource",
+    "api_policy": "apiPolicy",
+    "content_type": "contentType",
+    "event_handler": "eventHandler",
+    "gateway_responses": "gatewayResponses",
+    "local_path": "localPath",
+    "request_validator": "requestValidator",
+    "response_parameters": "responseParameters",
+    "response_templates": "responseTemplates",
+    "stage_name": "stageName",
+    "static_routes_bucket": "staticRoutesBucket",
+    "status_code": "statusCode",
+    "swagger_string": "swaggerString",
 }
 
 CAMEL_TO_SNAKE_CASE_TABLE = {
+    "apiKeySource": "api_key_source",
+    "apiPolicy": "api_policy",
+    "contentType": "content_type",
+    "eventHandler": "event_handler",
+    "gatewayResponses": "gateway_responses",
+    "localPath": "local_path",
+    "requestValidator": "request_validator",
+    "responseParameters": "response_parameters",
+    "responseTemplates": "response_templates",
+    "stageName": "stage_name",
+    "staticRoutesBucket": "static_routes_bucket",
+    "statusCode": "status_code",
+    "swaggerString": "swagger_string",
 }

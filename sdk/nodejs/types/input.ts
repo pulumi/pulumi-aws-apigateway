@@ -2,12 +2,22 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import { input as inputs, output as outputs } from "../types";
+import { input as inputs, output as outputs, enums } from "../types";
 
 import * as aws from "@pulumi/aws";
 
-export interface EventHandlerRoute {
-    function?: pulumi.Input<aws.lambda.Function>;
-    method?: pulumi.Input<string>;
+export interface Route {
+    contentType?: pulumi.Input<string>;
+    data?: any;
+    eventHandler?: pulumi.Input<aws.lambda.Function>;
+    index?: pulumi.Input<string | boolean>;
+    localPath?: pulumi.Input<string>;
+    method?: pulumi.Input<enums.Method>;
     path?: pulumi.Input<string>;
+}
+
+export interface SwaggerGatewayResponse {
+    responseParameters?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    responseTemplates?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    statusCode?: pulumi.Input<number>;
 }

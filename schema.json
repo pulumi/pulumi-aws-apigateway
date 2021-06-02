@@ -1,17 +1,110 @@
 {
     "name": "apigateway",
     "types": {
-        "apigateway:index:EventHandlerRoute": {
+        "apigateway:index:Route": {
             "type": "object",
             "properties": {
                 "path": {
                     "type": "string"
                 },
                 "method": {
+                    "$ref": "#/types/apigateway:index:Method"
+                },
+                "eventHandler": {
+                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+                },
+                "localPath": {
                     "type": "string"
                 },
-                "function": {
-                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+                "contentType": {
+                    "type": "string"
+                },
+                "index": {
+                    "oneOf": [
+                        { 
+                            "type": "string"
+                        }, 
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "data": {
+                    "$ref": "pulumi.json#/Any"
+                }
+            }
+        },
+        "apigateway:index:Method": {
+            "type": "string",
+            "enum": [
+                {
+                    "value": "ANY"
+                },
+                {
+                    "value": "GET"
+                },
+                {
+                    "value": "PUT"
+                },
+                {
+                    "value": "POST"
+                },
+                {
+                    "value": "DELETE"
+                },
+                {
+                    "value": "PATCH"
+                },
+                {
+                    "value": "OPTIONS"
+                },
+                {
+                    "value": "HEAD"
+                }
+            ]
+        },
+        "apigateway:index:RequestValidator": {
+            "type": "string",
+            "enum": [
+                {
+                    "value": "ALL"
+                },
+                {
+                    "value": "PARAMS_ONLY"
+                },
+                {
+                    "value": "BODY_ONLY"
+                }
+            ]
+        },
+        "apigateway:index:APIKeySource": {
+            "type": "string",
+            "enum": [
+                {
+                    "value": "HEADER"
+                },
+                {
+                    "value": "AUTHORIZER"
+                }
+            ]
+        },
+        "apigateway:index:SwaggerGatewayResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "responseTemplates": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "responseParameters": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 }
             }
         }
@@ -23,12 +116,35 @@
                 "routes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/types/apigateway:index:EventHandlerRoute"
+                        "$ref": "#/types/apigateway:index:Route"
+                    }
+                },
+                "swaggerString": {
+                    "type": "string"
+                },
+                "stageName": {
+                    "type": "string"
+                },
+                "requestValidator": {
+                    "$ref": "#/types/apigateway:index:RequestValidator"
+                },
+                "apiKeySource": {
+                    "$ref": "#/types/apigateway:index:APIKeySource"
+                },
+                "staticRoutesBucket": {
+                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket"
+                },
+                "gatewayResponses": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/types/apigateway:index:SwaggerGatewayResponse"
                     }
                 }
             },
-            "requiredInputs": [
-                "routes"
+            "plainInputs": [ 
+                "requestValidator",
+                "apiKeySource",
+                "gatewayResponses"
             ],
             "properties": {
                 "url": {
@@ -36,11 +152,22 @@
                 },
                 "api": {
                     "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2FrestApi:RestApi"
+                },
+                "deployment": {
+                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment"
+                },
+                "stage": {
+                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2Fstage:Stage"
+                },
+                "apiPolicy": {
+                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy"
                 }
             },
             "required": [
                 "url",
-                "api"
+                "api",
+                "deployment",
+                "stage"
             ]
         }
     },
@@ -53,7 +180,7 @@
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-apigateway/sdk/go/apigateway"
+            "importBasePath": "github.com/lukehoban/pulumi-apigateway/sdk/go/apigateway"
         },
         "nodejs": {
             "dependencies": {

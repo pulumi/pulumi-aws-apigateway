@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-apigateway
+module github.com/lukehoban/pulumi-apigateway
 
 go 1.15
 

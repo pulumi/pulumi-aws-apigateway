@@ -8,6 +8,9 @@ import * as utilities from "./utilities";
 export * from "./provider";
 export * from "./restAPI";
 
+// Export enums:
+export * from "./types/enums";
+
 // Export sub-modules:
 import * as types from "./types";
 

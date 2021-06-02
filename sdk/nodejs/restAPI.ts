@@ -2,7 +2,7 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import { input as inputs, output as outputs } from "./types";
+import { input as inputs, output as outputs, enums } from "./types";
 import * as utilities from "./utilities";
 
 import * as aws from "@pulumi/aws";
@@ -23,6 +23,9 @@ export class RestAPI extends pulumi.ComponentResource {
     }
 
     public /*out*/ readonly api!: pulumi.Output<aws.apigateway.RestApi>;
+    public /*out*/ readonly apiPolicy!: pulumi.Output<aws.apigateway.RestApiPolicy | undefined>;
+    public /*out*/ readonly deployment!: pulumi.Output<aws.apigateway.Deployment>;
+    public /*out*/ readonly stage!: pulumi.Output<aws.apigateway.Stage>;
     public /*out*/ readonly url!: pulumi.Output<string>;
 
     /**
@@ -32,18 +35,27 @@ export class RestAPI extends pulumi.ComponentResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: RestAPIArgs, opts?: pulumi.ComponentResourceOptions) {
+    constructor(name: string, args?: RestAPIArgs, opts?: pulumi.ComponentResourceOptions) {
         let inputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            if ((!args || args.routes === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'routes'");
-            }
+            inputs["apiKeySource"] = args ? args.apiKeySource : undefined;
+            inputs["gatewayResponses"] = args ? args.gatewayResponses : undefined;
+            inputs["requestValidator"] = args ? args.requestValidator : undefined;
             inputs["routes"] = args ? args.routes : undefined;
+            inputs["stageName"] = args ? args.stageName : undefined;
+            inputs["staticRoutesBucket"] = args ? args.staticRoutesBucket : undefined;
+            inputs["swaggerString"] = args ? args.swaggerString : undefined;
             inputs["api"] = undefined /*out*/;
+            inputs["apiPolicy"] = undefined /*out*/;
+            inputs["deployment"] = undefined /*out*/;
+            inputs["stage"] = undefined /*out*/;
             inputs["url"] = undefined /*out*/;
         } else {
             inputs["api"] = undefined /*out*/;
+            inputs["apiPolicy"] = undefined /*out*/;
+            inputs["deployment"] = undefined /*out*/;
+            inputs["stage"] = undefined /*out*/;
             inputs["url"] = undefined /*out*/;
         }
         if (!opts.version) {
@@ -57,5 +69,11 @@ export class RestAPI extends pulumi.ComponentResource {
  * The set of arguments for constructing a RestAPI resource.
  */
 export interface RestAPIArgs {
-    readonly routes: pulumi.Input<pulumi.Input<inputs.EventHandlerRoute>[]>;
+    readonly apiKeySource?: pulumi.Input<enums.APIKeySource>;
+    readonly gatewayResponses?: pulumi.Input<{[key: string]: pulumi.Input<inputs.SwaggerGatewayResponse>}>;
+    readonly requestValidator?: pulumi.Input<enums.RequestValidator>;
+    readonly routes?: pulumi.Input<pulumi.Input<inputs.Route>[]>;
+    readonly stageName?: pulumi.Input<string>;
+    readonly staticRoutesBucket?: pulumi.Input<aws.s3.Bucket>;
+    readonly swaggerString?: pulumi.Input<string>;
 }

@@ -15,6 +15,15 @@ namespace Pulumi.Apigateway
         [Output("api")]
         public Output<Pulumi.Aws.ApiGateway.RestApi> Api { get; private set; } = null!;
 
+        [Output("apiPolicy")]
+        public Output<Pulumi.Aws.ApiGateway.RestApiPolicy?> ApiPolicy { get; private set; } = null!;
+
+        [Output("deployment")]
+        public Output<Pulumi.Aws.ApiGateway.Deployment> Deployment { get; private set; } = null!;
+
+        [Output("stage")]
+        public Output<Pulumi.Aws.ApiGateway.Stage> Stage { get; private set; } = null!;
+
         [Output("url")]
         public Output<string> Url { get; private set; } = null!;
 
@@ -26,7 +35,7 @@ namespace Pulumi.Apigateway
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public RestAPI(string name, RestAPIArgs args, ComponentResourceOptions? options = null)
+        public RestAPI(string name, RestAPIArgs? args = null, ComponentResourceOptions? options = null)
             : base("apigateway:index:RestAPI", name, args ?? new RestAPIArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
@@ -46,13 +55,36 @@ namespace Pulumi.Apigateway
 
     public sealed class RestAPIArgs : Pulumi.ResourceArgs
     {
-        [Input("routes", required: true)]
-        private InputList<Inputs.EventHandlerRouteArgs>? _routes;
-        public InputList<Inputs.EventHandlerRouteArgs> Routes
+        [Input("apiKeySource")]
+        public Input<Pulumi.Apigateway.APIKeySource>? ApiKeySource { get; set; }
+
+        [Input("gatewayResponses")]
+        private InputMap<Inputs.SwaggerGatewayResponseArgs>? _gatewayResponses;
+        public InputMap<Inputs.SwaggerGatewayResponseArgs> GatewayResponses
         {
-            get => _routes ?? (_routes = new InputList<Inputs.EventHandlerRouteArgs>());
+            get => _gatewayResponses ?? (_gatewayResponses = new InputMap<Inputs.SwaggerGatewayResponseArgs>());
+            set => _gatewayResponses = value;
+        }
+
+        [Input("requestValidator")]
+        public Input<Pulumi.Apigateway.RequestValidator>? RequestValidator { get; set; }
+
+        [Input("routes")]
+        private InputList<Inputs.RouteArgs>? _routes;
+        public InputList<Inputs.RouteArgs> Routes
+        {
+            get => _routes ?? (_routes = new InputList<Inputs.RouteArgs>());
             set => _routes = value;
         }
+
+        [Input("stageName")]
+        public Input<string>? StageName { get; set; }
+
+        [Input("staticRoutesBucket")]
+        public Input<Pulumi.Aws.S3.Bucket>? StaticRoutesBucket { get; set; }
+
+        [Input("swaggerString")]
+        public Input<string>? SwaggerString { get; set; }
 
         public RestAPIArgs()
         {

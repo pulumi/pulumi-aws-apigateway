@@ -11,113 +11,245 @@ import (
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
-type EventHandlerRoute struct {
-	Function *lambda.Function `pulumi:"function"`
-	Method   *string          `pulumi:"method"`
-	Path     *string          `pulumi:"path"`
+type Route struct {
+	ContentType  *string          `pulumi:"contentType"`
+	Data         interface{}      `pulumi:"data"`
+	EventHandler *lambda.Function `pulumi:"eventHandler"`
+	Index        interface{}      `pulumi:"index"`
+	LocalPath    *string          `pulumi:"localPath"`
+	Method       *string          `pulumi:"method"`
+	Path         *string          `pulumi:"path"`
 }
 
-// EventHandlerRouteInput is an input type that accepts EventHandlerRouteArgs and EventHandlerRouteOutput values.
-// You can construct a concrete instance of `EventHandlerRouteInput` via:
+// RouteInput is an input type that accepts RouteArgs and RouteOutput values.
+// You can construct a concrete instance of `RouteInput` via:
 //
-//          EventHandlerRouteArgs{...}
-type EventHandlerRouteInput interface {
+//          RouteArgs{...}
+type RouteInput interface {
 	pulumi.Input
 
-	ToEventHandlerRouteOutput() EventHandlerRouteOutput
-	ToEventHandlerRouteOutputWithContext(context.Context) EventHandlerRouteOutput
+	ToRouteOutput() RouteOutput
+	ToRouteOutputWithContext(context.Context) RouteOutput
 }
 
-type EventHandlerRouteArgs struct {
-	Function lambda.FunctionInput  `pulumi:"function"`
-	Method   pulumi.StringPtrInput `pulumi:"method"`
-	Path     pulumi.StringPtrInput `pulumi:"path"`
+type RouteArgs struct {
+	ContentType  pulumi.StringPtrInput `pulumi:"contentType"`
+	Data         pulumi.Input          `pulumi:"data"`
+	EventHandler lambda.FunctionInput  `pulumi:"eventHandler"`
+	Index        pulumi.Input          `pulumi:"index"`
+	LocalPath    pulumi.StringPtrInput `pulumi:"localPath"`
+	Method       *Method               `pulumi:"method"`
+	Path         pulumi.StringPtrInput `pulumi:"path"`
 }
 
-func (EventHandlerRouteArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*EventHandlerRoute)(nil)).Elem()
+func (RouteArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Route)(nil)).Elem()
 }
 
-func (i EventHandlerRouteArgs) ToEventHandlerRouteOutput() EventHandlerRouteOutput {
-	return i.ToEventHandlerRouteOutputWithContext(context.Background())
+func (i RouteArgs) ToRouteOutput() RouteOutput {
+	return i.ToRouteOutputWithContext(context.Background())
 }
 
-func (i EventHandlerRouteArgs) ToEventHandlerRouteOutputWithContext(ctx context.Context) EventHandlerRouteOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(EventHandlerRouteOutput)
+func (i RouteArgs) ToRouteOutputWithContext(ctx context.Context) RouteOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RouteOutput)
 }
 
-// EventHandlerRouteArrayInput is an input type that accepts EventHandlerRouteArray and EventHandlerRouteArrayOutput values.
-// You can construct a concrete instance of `EventHandlerRouteArrayInput` via:
+// RouteArrayInput is an input type that accepts RouteArray and RouteArrayOutput values.
+// You can construct a concrete instance of `RouteArrayInput` via:
 //
-//          EventHandlerRouteArray{ EventHandlerRouteArgs{...} }
-type EventHandlerRouteArrayInput interface {
+//          RouteArray{ RouteArgs{...} }
+type RouteArrayInput interface {
 	pulumi.Input
 
-	ToEventHandlerRouteArrayOutput() EventHandlerRouteArrayOutput
-	ToEventHandlerRouteArrayOutputWithContext(context.Context) EventHandlerRouteArrayOutput
+	ToRouteArrayOutput() RouteArrayOutput
+	ToRouteArrayOutputWithContext(context.Context) RouteArrayOutput
 }
 
-type EventHandlerRouteArray []EventHandlerRouteInput
+type RouteArray []RouteInput
 
-func (EventHandlerRouteArray) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]EventHandlerRoute)(nil)).Elem()
+func (RouteArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]Route)(nil)).Elem()
 }
 
-func (i EventHandlerRouteArray) ToEventHandlerRouteArrayOutput() EventHandlerRouteArrayOutput {
-	return i.ToEventHandlerRouteArrayOutputWithContext(context.Background())
+func (i RouteArray) ToRouteArrayOutput() RouteArrayOutput {
+	return i.ToRouteArrayOutputWithContext(context.Background())
 }
 
-func (i EventHandlerRouteArray) ToEventHandlerRouteArrayOutputWithContext(ctx context.Context) EventHandlerRouteArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(EventHandlerRouteArrayOutput)
+func (i RouteArray) ToRouteArrayOutputWithContext(ctx context.Context) RouteArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RouteArrayOutput)
 }
 
-type EventHandlerRouteOutput struct{ *pulumi.OutputState }
+type RouteOutput struct{ *pulumi.OutputState }
 
-func (EventHandlerRouteOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*EventHandlerRoute)(nil)).Elem()
+func (RouteOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Route)(nil)).Elem()
 }
 
-func (o EventHandlerRouteOutput) ToEventHandlerRouteOutput() EventHandlerRouteOutput {
+func (o RouteOutput) ToRouteOutput() RouteOutput {
 	return o
 }
 
-func (o EventHandlerRouteOutput) ToEventHandlerRouteOutputWithContext(ctx context.Context) EventHandlerRouteOutput {
+func (o RouteOutput) ToRouteOutputWithContext(ctx context.Context) RouteOutput {
 	return o
 }
 
-func (o EventHandlerRouteOutput) Function() lambda.FunctionOutput {
-	return o.ApplyT(func(v EventHandlerRoute) *lambda.Function { return v.Function }).(lambda.FunctionOutput)
+func (o RouteOutput) ContentType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Route) *string { return v.ContentType }).(pulumi.StringPtrOutput)
 }
 
-func (o EventHandlerRouteOutput) Method() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v EventHandlerRoute) *string { return v.Method }).(pulumi.StringPtrOutput)
+func (o RouteOutput) Data() pulumi.AnyOutput {
+	return o.ApplyT(func(v Route) interface{} { return v.Data }).(pulumi.AnyOutput)
 }
 
-func (o EventHandlerRouteOutput) Path() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v EventHandlerRoute) *string { return v.Path }).(pulumi.StringPtrOutput)
+func (o RouteOutput) EventHandler() lambda.FunctionOutput {
+	return o.ApplyT(func(v Route) *lambda.Function { return v.EventHandler }).(lambda.FunctionOutput)
 }
 
-type EventHandlerRouteArrayOutput struct{ *pulumi.OutputState }
-
-func (EventHandlerRouteArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]EventHandlerRoute)(nil)).Elem()
+func (o RouteOutput) Index() pulumi.AnyOutput {
+	return o.ApplyT(func(v Route) interface{} { return v.Index }).(pulumi.AnyOutput)
 }
 
-func (o EventHandlerRouteArrayOutput) ToEventHandlerRouteArrayOutput() EventHandlerRouteArrayOutput {
+func (o RouteOutput) LocalPath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Route) *string { return v.LocalPath }).(pulumi.StringPtrOutput)
+}
+
+func (o RouteOutput) Method() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Route) *string { return v.Method }).(pulumi.StringPtrOutput)
+}
+
+func (o RouteOutput) Path() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Route) *string { return v.Path }).(pulumi.StringPtrOutput)
+}
+
+type RouteArrayOutput struct{ *pulumi.OutputState }
+
+func (RouteArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]Route)(nil)).Elem()
+}
+
+func (o RouteArrayOutput) ToRouteArrayOutput() RouteArrayOutput {
 	return o
 }
 
-func (o EventHandlerRouteArrayOutput) ToEventHandlerRouteArrayOutputWithContext(ctx context.Context) EventHandlerRouteArrayOutput {
+func (o RouteArrayOutput) ToRouteArrayOutputWithContext(ctx context.Context) RouteArrayOutput {
 	return o
 }
 
-func (o EventHandlerRouteArrayOutput) Index(i pulumi.IntInput) EventHandlerRouteOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) EventHandlerRoute {
-		return vs[0].([]EventHandlerRoute)[vs[1].(int)]
-	}).(EventHandlerRouteOutput)
+func (o RouteArrayOutput) Index(i pulumi.IntInput) RouteOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Route {
+		return vs[0].([]Route)[vs[1].(int)]
+	}).(RouteOutput)
+}
+
+type SwaggerGatewayResponse struct {
+	ResponseParameters map[string]string `pulumi:"responseParameters"`
+	ResponseTemplates  map[string]string `pulumi:"responseTemplates"`
+	StatusCode         *float64          `pulumi:"statusCode"`
+}
+
+// SwaggerGatewayResponseInput is an input type that accepts SwaggerGatewayResponseArgs and SwaggerGatewayResponseOutput values.
+// You can construct a concrete instance of `SwaggerGatewayResponseInput` via:
+//
+//          SwaggerGatewayResponseArgs{...}
+type SwaggerGatewayResponseInput interface {
+	pulumi.Input
+
+	ToSwaggerGatewayResponseOutput() SwaggerGatewayResponseOutput
+	ToSwaggerGatewayResponseOutputWithContext(context.Context) SwaggerGatewayResponseOutput
+}
+
+type SwaggerGatewayResponseArgs struct {
+	ResponseParameters pulumi.StringMapInput  `pulumi:"responseParameters"`
+	ResponseTemplates  pulumi.StringMapInput  `pulumi:"responseTemplates"`
+	StatusCode         pulumi.Float64PtrInput `pulumi:"statusCode"`
+}
+
+func (SwaggerGatewayResponseArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*SwaggerGatewayResponse)(nil)).Elem()
+}
+
+func (i SwaggerGatewayResponseArgs) ToSwaggerGatewayResponseOutput() SwaggerGatewayResponseOutput {
+	return i.ToSwaggerGatewayResponseOutputWithContext(context.Background())
+}
+
+func (i SwaggerGatewayResponseArgs) ToSwaggerGatewayResponseOutputWithContext(ctx context.Context) SwaggerGatewayResponseOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SwaggerGatewayResponseOutput)
+}
+
+// SwaggerGatewayResponseMapInput is an input type that accepts SwaggerGatewayResponseMap and SwaggerGatewayResponseMapOutput values.
+// You can construct a concrete instance of `SwaggerGatewayResponseMapInput` via:
+//
+//          SwaggerGatewayResponseMap{ "key": SwaggerGatewayResponseArgs{...} }
+type SwaggerGatewayResponseMapInput interface {
+	pulumi.Input
+
+	ToSwaggerGatewayResponseMapOutput() SwaggerGatewayResponseMapOutput
+	ToSwaggerGatewayResponseMapOutputWithContext(context.Context) SwaggerGatewayResponseMapOutput
+}
+
+type SwaggerGatewayResponseMap map[string]SwaggerGatewayResponseInput
+
+func (SwaggerGatewayResponseMap) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]SwaggerGatewayResponse)(nil)).Elem()
+}
+
+func (i SwaggerGatewayResponseMap) ToSwaggerGatewayResponseMapOutput() SwaggerGatewayResponseMapOutput {
+	return i.ToSwaggerGatewayResponseMapOutputWithContext(context.Background())
+}
+
+func (i SwaggerGatewayResponseMap) ToSwaggerGatewayResponseMapOutputWithContext(ctx context.Context) SwaggerGatewayResponseMapOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SwaggerGatewayResponseMapOutput)
+}
+
+type SwaggerGatewayResponseOutput struct{ *pulumi.OutputState }
+
+func (SwaggerGatewayResponseOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*SwaggerGatewayResponse)(nil)).Elem()
+}
+
+func (o SwaggerGatewayResponseOutput) ToSwaggerGatewayResponseOutput() SwaggerGatewayResponseOutput {
+	return o
+}
+
+func (o SwaggerGatewayResponseOutput) ToSwaggerGatewayResponseOutputWithContext(ctx context.Context) SwaggerGatewayResponseOutput {
+	return o
+}
+
+func (o SwaggerGatewayResponseOutput) ResponseParameters() pulumi.StringMapOutput {
+	return o.ApplyT(func(v SwaggerGatewayResponse) map[string]string { return v.ResponseParameters }).(pulumi.StringMapOutput)
+}
+
+func (o SwaggerGatewayResponseOutput) ResponseTemplates() pulumi.StringMapOutput {
+	return o.ApplyT(func(v SwaggerGatewayResponse) map[string]string { return v.ResponseTemplates }).(pulumi.StringMapOutput)
+}
+
+func (o SwaggerGatewayResponseOutput) StatusCode() pulumi.Float64PtrOutput {
+	return o.ApplyT(func(v SwaggerGatewayResponse) *float64 { return v.StatusCode }).(pulumi.Float64PtrOutput)
+}
+
+type SwaggerGatewayResponseMapOutput struct{ *pulumi.OutputState }
+
+func (SwaggerGatewayResponseMapOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]SwaggerGatewayResponse)(nil)).Elem()
+}
+
+func (o SwaggerGatewayResponseMapOutput) ToSwaggerGatewayResponseMapOutput() SwaggerGatewayResponseMapOutput {
+	return o
+}
+
+func (o SwaggerGatewayResponseMapOutput) ToSwaggerGatewayResponseMapOutputWithContext(ctx context.Context) SwaggerGatewayResponseMapOutput {
+	return o
+}
+
+func (o SwaggerGatewayResponseMapOutput) MapIndex(k pulumi.StringInput) SwaggerGatewayResponseOutput {
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) SwaggerGatewayResponse {
+		return vs[0].(map[string]SwaggerGatewayResponse)[vs[1].(string)]
+	}).(SwaggerGatewayResponseOutput)
 }
 
 func init() {
-	pulumi.RegisterOutputType(EventHandlerRouteOutput{})
-	pulumi.RegisterOutputType(EventHandlerRouteArrayOutput{})
+	pulumi.RegisterOutputType(RouteOutput{})
+	pulumi.RegisterOutputType(RouteArrayOutput{})
+	pulumi.RegisterOutputType(SwaggerGatewayResponseOutput{})
+	pulumi.RegisterOutputType(SwaggerGatewayResponseMapOutput{})
 }
