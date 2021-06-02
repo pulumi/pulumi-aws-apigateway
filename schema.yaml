@@ -276,7 +276,7 @@ language:
       Pulumi.Aws: 4.*
   go:
     generateResourceContainerTypes: true
-    importBasePath: github.com/lukehoban/pulumi-apigateway/sdk/go/apigateway
+    importBasePath: github.com/lukehoban/pulumi-package-aws-apigateway/sdk/go/apigateway
   nodejs:
     dependencies:
       "@pulumi/aws": "^4.5.1"
