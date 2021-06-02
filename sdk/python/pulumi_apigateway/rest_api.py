@@ -32,6 +32,24 @@ class RestAPI(pulumi.ComponentResource):
         Create a RestAPI resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input['APIKeySource'] api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
+               set to true on a route, and this is not defined the value will default to HEADER.
+        :param pulumi.Input[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
+               CORS for Lambda Authorizers.
+        :param pulumi.Input['RequestValidator'] request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
+               override this.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RouteArgs']]]] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+               specification for the API.
+               
+               Either `swaggerString` or `routes` must be specified.
+        :param pulumi.Input[str] stage_name: The stage name for your API. This will get added as a base path to your API url.
+        :param pulumi.Input['pulumi_aws.s3.Bucket'] static_routes_bucket: Bucket to use for placing resources for static resources.  If not provided a default one will
+               be created on your behalf if any `StaticRoute`s are provided.
+        :param pulumi.Input[str] swagger_string: A Swagger specification already in string form to use to initialize the APIGateway.  Note
+               that you must manually provide permission for any route targets to be invoked by API Gateway
+               when using `swaggerString`.
+               
+               Either `swaggerString` or `routes` must be specified.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -74,26 +92,41 @@ class RestAPI(pulumi.ComponentResource):
     @property
     @pulumi.getter
     def api(self) -> pulumi.Output['pulumi_aws.apigateway.RestApi']:
+        """
+        The underlying RestAPI resource.
+        """
         return pulumi.get(self, "api")
 
     @property
     @pulumi.getter(name="apiPolicy")
     def api_policy(self) -> pulumi.Output[Optional['pulumi_aws.apigateway.RestApiPolicy']]:
+        """
+        The underlying RestAPIPolicy resource.
+        """
         return pulumi.get(self, "api_policy")
 
     @property
     @pulumi.getter
     def deployment(self) -> pulumi.Output['pulumi_aws.apigateway.Deployment']:
+        """
+        The underlying Deployment resource.
+        """
         return pulumi.get(self, "deployment")
 
     @property
     @pulumi.getter
     def stage(self) -> pulumi.Output['pulumi_aws.apigateway.Stage']:
+        """
+        The underlying Stage resource.
+        """
         return pulumi.get(self, "stage")
 
     @property
     @pulumi.getter
     def url(self) -> pulumi.Output[str]:
+        """
+        The URL where the Rest API is exposed.
+        """
         return pulumi.get(self, "url")
 
     def translate_output_property(self, prop):

@@ -15,11 +15,16 @@ import (
 type RestAPI struct {
 	pulumi.ResourceState
 
-	Api        apigateway.RestApiOutput       `pulumi:"api"`
-	ApiPolicy  apigateway.RestApiPolicyOutput `pulumi:"apiPolicy"`
-	Deployment apigateway.DeploymentOutput    `pulumi:"deployment"`
-	Stage      apigateway.StageOutput         `pulumi:"stage"`
-	Url        pulumi.StringOutput            `pulumi:"url"`
+	// The underlying RestAPI resource.
+	Api apigateway.RestApiOutput `pulumi:"api"`
+	// The underlying RestAPIPolicy resource.
+	ApiPolicy apigateway.RestApiPolicyOutput `pulumi:"apiPolicy"`
+	// The underlying Deployment resource.
+	Deployment apigateway.DeploymentOutput `pulumi:"deployment"`
+	// The underlying Stage resource.
+	Stage apigateway.StageOutput `pulumi:"stage"`
+	// The URL where the Rest API is exposed.
+	Url pulumi.StringOutput `pulumi:"url"`
 }
 
 // NewRestAPI registers a new resource with the given unique name, arguments, and options.
@@ -38,24 +43,60 @@ func NewRestAPI(ctx *pulumi.Context,
 }
 
 type restAPIArgs struct {
-	ApiKeySource       *string                           `pulumi:"apiKeySource"`
-	GatewayResponses   map[string]SwaggerGatewayResponse `pulumi:"gatewayResponses"`
-	RequestValidator   *string                           `pulumi:"requestValidator"`
-	Routes             []Route                           `pulumi:"routes"`
-	StageName          *string                           `pulumi:"stageName"`
-	StaticRoutesBucket *s3.Bucket                        `pulumi:"staticRoutesBucket"`
-	SwaggerString      *string                           `pulumi:"swaggerString"`
+	// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
+	// set to true on a route, and this is not defined the value will default to HEADER.
+	ApiKeySource *string `pulumi:"apiKeySource"`
+	// Define custom gateway responses for the API. This can be used to properly enable
+	// CORS for Lambda Authorizers.
+	GatewayResponses map[string]SwaggerGatewayResponse `pulumi:"gatewayResponses"`
+	// Request Validator specifies the validator to use at the API level. Note method level validators
+	// override this.
+	RequestValidator *string `pulumi:"requestValidator"`
+	// Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+	// specification for the API.
+	//
+	// Either `swaggerString` or `routes` must be specified.
+	Routes []Route `pulumi:"routes"`
+	// The stage name for your API. This will get added as a base path to your API url.
+	StageName *string `pulumi:"stageName"`
+	// Bucket to use for placing resources for static resources.  If not provided a default one will
+	// be created on your behalf if any `StaticRoute`s are provided.
+	StaticRoutesBucket *s3.Bucket `pulumi:"staticRoutesBucket"`
+	// A Swagger specification already in string form to use to initialize the APIGateway.  Note
+	// that you must manually provide permission for any route targets to be invoked by API Gateway
+	// when using `swaggerString`.
+	//
+	// Either `swaggerString` or `routes` must be specified.
+	SwaggerString *string `pulumi:"swaggerString"`
 }
 
 // The set of arguments for constructing a RestAPI resource.
 type RestAPIArgs struct {
-	ApiKeySource       *APIKeySource
-	GatewayResponses   SwaggerGatewayResponseMapInput
-	RequestValidator   *RequestValidator
-	Routes             RouteArrayInput
-	StageName          pulumi.StringPtrInput
+	// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
+	// set to true on a route, and this is not defined the value will default to HEADER.
+	ApiKeySource *APIKeySource
+	// Define custom gateway responses for the API. This can be used to properly enable
+	// CORS for Lambda Authorizers.
+	GatewayResponses SwaggerGatewayResponseMapInput
+	// Request Validator specifies the validator to use at the API level. Note method level validators
+	// override this.
+	RequestValidator *RequestValidator
+	// Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+	// specification for the API.
+	//
+	// Either `swaggerString` or `routes` must be specified.
+	Routes RouteArrayInput
+	// The stage name for your API. This will get added as a base path to your API url.
+	StageName pulumi.StringPtrInput
+	// Bucket to use for placing resources for static resources.  If not provided a default one will
+	// be created on your behalf if any `StaticRoute`s are provided.
 	StaticRoutesBucket s3.BucketInput
-	SwaggerString      pulumi.StringPtrInput
+	// A Swagger specification already in string form to use to initialize the APIGateway.  Note
+	// that you must manually provide permission for any route targets to be invoked by API Gateway
+	// when using `swaggerString`.
+	//
+	// Either `swaggerString` or `routes` must be specified.
+	SwaggerString pulumi.StringPtrInput
 }
 
 func (RestAPIArgs) ElementType() reflect.Type {

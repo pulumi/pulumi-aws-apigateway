@@ -12,18 +12,33 @@ namespace Pulumi.Apigateway
     [ApigatewayResourceType("apigateway:index:RestAPI")]
     public partial class RestAPI : Pulumi.ComponentResource
     {
+        /// <summary>
+        /// The underlying RestAPI resource.
+        /// </summary>
         [Output("api")]
         public Output<Pulumi.Aws.ApiGateway.RestApi> Api { get; private set; } = null!;
 
+        /// <summary>
+        /// The underlying RestAPIPolicy resource.
+        /// </summary>
         [Output("apiPolicy")]
         public Output<Pulumi.Aws.ApiGateway.RestApiPolicy?> ApiPolicy { get; private set; } = null!;
 
+        /// <summary>
+        /// The underlying Deployment resource.
+        /// </summary>
         [Output("deployment")]
         public Output<Pulumi.Aws.ApiGateway.Deployment> Deployment { get; private set; } = null!;
 
+        /// <summary>
+        /// The underlying Stage resource.
+        /// </summary>
         [Output("stage")]
         public Output<Pulumi.Aws.ApiGateway.Stage> Stage { get; private set; } = null!;
 
+        /// <summary>
+        /// The URL where the Rest API is exposed.
+        /// </summary>
         [Output("url")]
         public Output<string> Url { get; private set; } = null!;
 
@@ -55,34 +70,68 @@ namespace Pulumi.Apigateway
 
     public sealed class RestAPIArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
+        /// set to true on a route, and this is not defined the value will default to HEADER.
+        /// </summary>
         [Input("apiKeySource")]
         public Input<Pulumi.Apigateway.APIKeySource>? ApiKeySource { get; set; }
 
         [Input("gatewayResponses")]
         private InputMap<Inputs.SwaggerGatewayResponseArgs>? _gatewayResponses;
+
+        /// <summary>
+        /// Define custom gateway responses for the API. This can be used to properly enable
+        /// CORS for Lambda Authorizers.
+        /// </summary>
         public InputMap<Inputs.SwaggerGatewayResponseArgs> GatewayResponses
         {
             get => _gatewayResponses ?? (_gatewayResponses = new InputMap<Inputs.SwaggerGatewayResponseArgs>());
             set => _gatewayResponses = value;
         }
 
+        /// <summary>
+        /// Request Validator specifies the validator to use at the API level. Note method level validators
+        /// override this.
+        /// </summary>
         [Input("requestValidator")]
         public Input<Pulumi.Apigateway.RequestValidator>? RequestValidator { get; set; }
 
         [Input("routes")]
         private InputList<Inputs.RouteArgs>? _routes;
+
+        /// <summary>
+        /// Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+        /// specification for the API.
+        /// 
+        /// Either `swaggerString` or `routes` must be specified.
+        /// </summary>
         public InputList<Inputs.RouteArgs> Routes
         {
             get => _routes ?? (_routes = new InputList<Inputs.RouteArgs>());
             set => _routes = value;
         }
 
+        /// <summary>
+        /// The stage name for your API. This will get added as a base path to your API url.
+        /// </summary>
         [Input("stageName")]
         public Input<string>? StageName { get; set; }
 
+        /// <summary>
+        /// Bucket to use for placing resources for static resources.  If not provided a default one will
+        /// be created on your behalf if any `StaticRoute`s are provided.
+        /// </summary>
         [Input("staticRoutesBucket")]
         public Input<Pulumi.Aws.S3.Bucket>? StaticRoutesBucket { get; set; }
 
+        /// <summary>
+        /// A Swagger specification already in string form to use to initialize the APIGateway.  Note
+        /// that you must manually provide permission for any route targets to be invoked by API Gateway
+        /// when using `swaggerString`.
+        /// 
+        /// Either `swaggerString` or `routes` must be specified.
+        /// </summary>
         [Input("swaggerString")]
         public Input<string>? SwaggerString { get; set; }
 
