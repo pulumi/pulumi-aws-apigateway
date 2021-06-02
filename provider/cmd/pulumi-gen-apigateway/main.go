@@ -20,7 +20,9 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
+	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
 	dotnetgen "github.com/pulumi/pulumi/pkg/v2/codegen/dotnet"
 	gogen "github.com/pulumi/pulumi/pkg/v2/codegen/go"
@@ -84,6 +86,13 @@ func readSchema(schemaPath string) (*schema.Package, error) {
 	schemaBytes, err := ioutil.ReadFile(schemaPath)
 	if err != nil {
 		return nil, errors.Wrap(err, "reading schema")
+	}
+
+	if strings.HasSuffix(schemaPath, ".yaml") {
+		schemaBytes, err = yaml.YAMLToJSON(schemaBytes)
+		if err != nil {
+			return nil, errors.Wrap(err, "reading YAML schema")
+		}
 	}
 
 	var spec schema.PackageSpec

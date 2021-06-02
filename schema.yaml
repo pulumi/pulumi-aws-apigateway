@@ -1,0 +1,158 @@
+---
+name: apigateway
+types:
+  apigateway:index:Route:
+    type: object
+    properties:
+      path:
+        type: string
+      method:
+        "$ref": "#/types/apigateway:index:Method"
+      eventHandler:
+        "$ref": "/aws/v3.30.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+      localPath:
+        type: string
+      contentType:
+        type: string
+      index:
+        oneOf:
+        - type: string
+        - type: boolean
+      data:
+        "$ref": pulumi.json#/Any
+      target:
+        "$ref": "#/types/apigateway:index:Target"
+    required:
+    - path
+  apigateway:index:Target:
+    type: object
+    properties:
+      type:
+        "$ref": "#/types/apigateway:index:IntegrationType"
+      httpMethod:
+        type: string
+        const: ANY
+      uri:
+        type: string
+      connectionType:
+        "$ref": "#/types/apigateway:index:IntegrationConnectionType"
+      connectionId:
+        type: string
+      passthroughBehaviour:
+        "$ref": "#/types/apigateway:index:IntegrationPassthroughBehavior"
+    required:
+    - type
+    - uri
+  apigateway:index:Method:
+    type: string
+    enum:
+    - value: ANY
+    - value: GET
+    - value: PUT
+    - value: POST
+    - value: DELETE
+    - value: PATCH
+    - value: OPTIONS
+    - value: HEAD
+  apigateway:index:RequestValidator:
+    type: string
+    enum:
+    - value: ALL
+    - value: PARAMS_ONLY
+    - value: BODY_ONLY
+  apigateway:index:APIKeySource:
+    type: string
+    enum:
+    - value: HEADER
+    - value: AUTHORIZER
+  apigateway:index:IntegrationConnectionType:
+    type: string
+    enum:
+    - value: INTERNET
+    - value: VPC_LINK
+  apigateway:index:IntegrationType:
+    type: string
+    enum:
+    - value: aws
+    - value: aws_proxy
+    - value: http
+    - value: http_proxy
+    - value: mock
+  apigateway:index:IntegrationPassthroughBehavior:
+    type: string
+    enum:
+    - value: when_no_match
+    - value: when_no_templates
+    - value: never
+  apigateway:index:SwaggerGatewayResponse:
+    type: object
+    properties:
+      statusCode:
+        type: number
+      responseTemplates:
+        type: object
+        additionalProperties:
+          type: string
+      responseParameters:
+        type: object
+        additionalProperties:
+          type: string
+resources:
+  apigateway:index:RestAPI:
+    isComponent: true
+    inputProperties:
+      routes:
+        type: array
+        items:
+          "$ref": "#/types/apigateway:index:Route"
+      swaggerString:
+        type: string
+      stageName:
+        type: string
+      requestValidator:
+        "$ref": "#/types/apigateway:index:RequestValidator"
+      apiKeySource:
+        "$ref": "#/types/apigateway:index:APIKeySource"
+      staticRoutesBucket:
+        "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket"
+      gatewayResponses:
+        type: object
+        additionalProperties:
+          "$ref": "#/types/apigateway:index:SwaggerGatewayResponse"
+    plainInputs:
+    - requestValidator
+    - apiKeySource
+    - gatewayResponses
+    properties:
+      url:
+        type: string
+      api:
+        "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2FrestApi:RestApi"
+      deployment:
+        "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment"
+      stage:
+        "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2Fstage:Stage"
+      apiPolicy:
+        "$ref": "/aws/v3.30.0/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy"
+    required:
+    - url
+    - api
+    - deployment
+    - stage
+language:
+  csharp:
+    packageReferences:
+      Pulumi: 3.*
+      Pulumi.Aws: 4.*
+  go:
+    generateResourceContainerTypes: true
+    importBasePath: github.com/lukehoban/pulumi-apigateway/sdk/go/apigateway
+  nodejs:
+    dependencies:
+      "@pulumi/aws": "^4.5.1"
+    devDependencies:
+      typescript: "^3.7.0"
+  python:
+    requires:
+      pulumi: ">=3.0.0,<4.0.0"
+      pulumi-aws: ">=4.0.0,<5.0.0"
