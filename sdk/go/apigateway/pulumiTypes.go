@@ -7,8 +7,8 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-aws/sdk/v3/go/aws/lambda"
-	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/lambda"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 // A route that that APIGateway should accept and forward to some type of destination. All routes

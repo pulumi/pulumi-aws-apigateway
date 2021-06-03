@@ -5,14 +5,14 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union
-from . import _utilities, _tables
+from typing import Any, Mapping, Optional, Sequence, Union, overload
+from . import _utilities
 from ._enums import *
 import pulumi_aws
 
 __all__ = [
     'RouteArgs',
-    'SwaggerGatewayResponseArgs',
+    'SwaggerGatewayResponse',
     'TargetArgs',
 ]
 
@@ -163,11 +163,11 @@ class RouteArgs:
 
 
 @pulumi.input_type
-class SwaggerGatewayResponseArgs:
+class SwaggerGatewayResponse:
     def __init__(__self__, *,
-                 response_parameters: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
-                 response_templates: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
-                 status_code: Optional[pulumi.Input[float]] = None):
+                 response_parameters: Optional[Mapping[str, str]] = None,
+                 response_templates: Optional[Mapping[str, str]] = None,
+                 status_code: Optional[float] = None):
         if response_parameters is not None:
             pulumi.set(__self__, "response_parameters", response_parameters)
         if response_templates is not None:
@@ -177,29 +177,29 @@ class SwaggerGatewayResponseArgs:
 
     @property
     @pulumi.getter(name="responseParameters")
-    def response_parameters(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+    def response_parameters(self) -> Optional[Mapping[str, str]]:
         return pulumi.get(self, "response_parameters")
 
     @response_parameters.setter
-    def response_parameters(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+    def response_parameters(self, value: Optional[Mapping[str, str]]):
         pulumi.set(self, "response_parameters", value)
 
     @property
     @pulumi.getter(name="responseTemplates")
-    def response_templates(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+    def response_templates(self) -> Optional[Mapping[str, str]]:
         return pulumi.get(self, "response_templates")
 
     @response_templates.setter
-    def response_templates(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+    def response_templates(self, value: Optional[Mapping[str, str]]):
         pulumi.set(self, "response_templates", value)
 
     @property
     @pulumi.getter(name="statusCode")
-    def status_code(self) -> Optional[pulumi.Input[float]]:
+    def status_code(self) -> Optional[float]:
         return pulumi.get(self, "status_code")
 
     @status_code.setter
-    def status_code(self, value: Optional[pulumi.Input[float]]):
+    def status_code(self, value: Optional[float]):
         pulumi.set(self, "status_code", value)
 
 

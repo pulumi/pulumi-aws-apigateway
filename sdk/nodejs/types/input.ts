@@ -11,7 +11,7 @@ import * as aws from "@pulumi/aws";
  * have an incoming path that they match against.  However, destinations are determined by the kind
  * of the route.
  */
-export interface Route {
+export interface RouteArgs {
     /**
      * The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
      * `localPath` points to a directory, the content types for all files will be inferred.
@@ -47,16 +47,16 @@ export interface Route {
     /**
      * The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
      */
-    target?: pulumi.Input<inputs.Target>;
+    target?: pulumi.Input<inputs.TargetArgs>;
 }
 
 export interface SwaggerGatewayResponse {
-    responseParameters?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    responseTemplates?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    statusCode?: pulumi.Input<number>;
+    responseParameters?: {[key: string]: string};
+    responseTemplates?: {[key: string]: string};
+    statusCode?: number;
 }
 
-export interface Target {
+export interface TargetArgs {
     /**
      * The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
      * otherwise.

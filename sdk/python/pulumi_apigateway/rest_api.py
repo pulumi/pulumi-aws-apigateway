@@ -5,38 +5,178 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union
-from . import _utilities, _tables
+from typing import Any, Mapping, Optional, Sequence, Union, overload
+from . import _utilities
 from ._enums import *
 from ._inputs import *
 import pulumi_aws
 
-__all__ = ['RestAPI']
+__all__ = ['RestAPIArgs', 'RestAPI']
+
+@pulumi.input_type
+class RestAPIArgs:
+    def __init__(__self__, *,
+                 api_key_source: Optional['APIKeySource'] = None,
+                 gateway_responses: Optional[Mapping[str, 'SwaggerGatewayResponse']] = None,
+                 request_validator: Optional['RequestValidator'] = None,
+                 routes: Optional[pulumi.Input[Sequence[pulumi.Input['RouteArgs']]]] = None,
+                 stage_name: Optional[pulumi.Input[str]] = None,
+                 static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
+                 swagger_string: Optional[pulumi.Input[str]] = None):
+        """
+        The set of arguments for constructing a RestAPI resource.
+        :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
+               set to true on a route, and this is not defined the value will default to HEADER.
+        :param Mapping[str, 'SwaggerGatewayResponse'] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
+               CORS for Lambda Authorizers.
+        :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
+               override this.
+        :param pulumi.Input[Sequence[pulumi.Input['RouteArgs']]] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+               specification for the API.
+               
+               Either `swaggerString` or `routes` must be specified.
+        :param pulumi.Input[str] stage_name: The stage name for your API. This will get added as a base path to your API url.
+        :param pulumi.Input['pulumi_aws.s3.Bucket'] static_routes_bucket: Bucket to use for placing resources for static resources.  If not provided a default one will
+               be created on your behalf if any `StaticRoute`s are provided.
+        :param pulumi.Input[str] swagger_string: A Swagger specification already in string form to use to initialize the APIGateway.  Note
+               that you must manually provide permission for any route targets to be invoked by API Gateway
+               when using `swaggerString`.
+               
+               Either `swaggerString` or `routes` must be specified.
+        """
+        if api_key_source is not None:
+            pulumi.set(__self__, "api_key_source", api_key_source)
+        if gateway_responses is not None:
+            pulumi.set(__self__, "gateway_responses", gateway_responses)
+        if request_validator is not None:
+            pulumi.set(__self__, "request_validator", request_validator)
+        if routes is not None:
+            pulumi.set(__self__, "routes", routes)
+        if stage_name is not None:
+            pulumi.set(__self__, "stage_name", stage_name)
+        if static_routes_bucket is not None:
+            pulumi.set(__self__, "static_routes_bucket", static_routes_bucket)
+        if swagger_string is not None:
+            pulumi.set(__self__, "swagger_string", swagger_string)
+
+    @property
+    @pulumi.getter(name="apiKeySource")
+    def api_key_source(self) -> Optional['APIKeySource']:
+        """
+        The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
+        set to true on a route, and this is not defined the value will default to HEADER.
+        """
+        return pulumi.get(self, "api_key_source")
+
+    @api_key_source.setter
+    def api_key_source(self, value: Optional['APIKeySource']):
+        pulumi.set(self, "api_key_source", value)
+
+    @property
+    @pulumi.getter(name="gatewayResponses")
+    def gateway_responses(self) -> Optional[Mapping[str, 'SwaggerGatewayResponse']]:
+        """
+        Define custom gateway responses for the API. This can be used to properly enable
+        CORS for Lambda Authorizers.
+        """
+        return pulumi.get(self, "gateway_responses")
+
+    @gateway_responses.setter
+    def gateway_responses(self, value: Optional[Mapping[str, 'SwaggerGatewayResponse']]):
+        pulumi.set(self, "gateway_responses", value)
+
+    @property
+    @pulumi.getter(name="requestValidator")
+    def request_validator(self) -> Optional['RequestValidator']:
+        """
+        Request Validator specifies the validator to use at the API level. Note method level validators
+        override this.
+        """
+        return pulumi.get(self, "request_validator")
+
+    @request_validator.setter
+    def request_validator(self, value: Optional['RequestValidator']):
+        pulumi.set(self, "request_validator", value)
+
+    @property
+    @pulumi.getter
+    def routes(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['RouteArgs']]]]:
+        """
+        Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+        specification for the API.
+
+        Either `swaggerString` or `routes` must be specified.
+        """
+        return pulumi.get(self, "routes")
+
+    @routes.setter
+    def routes(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['RouteArgs']]]]):
+        pulumi.set(self, "routes", value)
+
+    @property
+    @pulumi.getter(name="stageName")
+    def stage_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The stage name for your API. This will get added as a base path to your API url.
+        """
+        return pulumi.get(self, "stage_name")
+
+    @stage_name.setter
+    def stage_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "stage_name", value)
+
+    @property
+    @pulumi.getter(name="staticRoutesBucket")
+    def static_routes_bucket(self) -> Optional[pulumi.Input['pulumi_aws.s3.Bucket']]:
+        """
+        Bucket to use for placing resources for static resources.  If not provided a default one will
+        be created on your behalf if any `StaticRoute`s are provided.
+        """
+        return pulumi.get(self, "static_routes_bucket")
+
+    @static_routes_bucket.setter
+    def static_routes_bucket(self, value: Optional[pulumi.Input['pulumi_aws.s3.Bucket']]):
+        pulumi.set(self, "static_routes_bucket", value)
+
+    @property
+    @pulumi.getter(name="swaggerString")
+    def swagger_string(self) -> Optional[pulumi.Input[str]]:
+        """
+        A Swagger specification already in string form to use to initialize the APIGateway.  Note
+        that you must manually provide permission for any route targets to be invoked by API Gateway
+        when using `swaggerString`.
+
+        Either `swaggerString` or `routes` must be specified.
+        """
+        return pulumi.get(self, "swagger_string")
+
+    @swagger_string.setter
+    def swagger_string(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "swagger_string", value)
 
 
 class RestAPI(pulumi.ComponentResource):
+    @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 api_key_source: Optional[pulumi.Input['APIKeySource']] = None,
-                 gateway_responses: Optional[pulumi.Input[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]]] = None,
-                 request_validator: Optional[pulumi.Input['RequestValidator']] = None,
+                 api_key_source: Optional['APIKeySource'] = None,
+                 gateway_responses: Optional[Mapping[str, pulumi.InputType['SwaggerGatewayResponse']]] = None,
+                 request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RouteArgs']]]]] = None,
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
                  swagger_string: Optional[pulumi.Input[str]] = None,
-                 __props__=None,
-                 __name__=None,
-                 __opts__=None):
+                 __props__=None):
         """
         Create a RestAPI resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input['APIKeySource'] api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
+        :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
                set to true on a route, and this is not defined the value will default to HEADER.
-        :param pulumi.Input[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
+        :param Mapping[str, pulumi.InputType['SwaggerGatewayResponse']] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
                CORS for Lambda Authorizers.
-        :param pulumi.Input['RequestValidator'] request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
+        :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
                override this.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RouteArgs']]]] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
                specification for the API.
@@ -51,12 +191,37 @@ class RestAPI(pulumi.ComponentResource):
                
                Either `swaggerString` or `routes` must be specified.
         """
-        if __name__ is not None:
-            warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
-            resource_name = __name__
-        if __opts__ is not None:
-            warnings.warn("explicit use of __opts__ is deprecated, use 'opts' instead", DeprecationWarning)
-            opts = __opts__
+        ...
+    @overload
+    def __init__(__self__,
+                 resource_name: str,
+                 args: Optional[RestAPIArgs] = None,
+                 opts: Optional[pulumi.ResourceOptions] = None):
+        """
+        Create a RestAPI resource with the given unique name, props, and options.
+        :param str resource_name: The name of the resource.
+        :param RestAPIArgs args: The arguments to use to populate this resource's properties.
+        :param pulumi.ResourceOptions opts: Options for the resource.
+        """
+        ...
+    def __init__(__self__, resource_name: str, *args, **kwargs):
+        resource_args, opts = _utilities.get_resource_args_opts(RestAPIArgs, pulumi.ResourceOptions, *args, **kwargs)
+        if resource_args is not None:
+            __self__._internal_init(resource_name, opts, **resource_args.__dict__)
+        else:
+            __self__._internal_init(resource_name, *args, **kwargs)
+
+    def _internal_init(__self__,
+                 resource_name: str,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 api_key_source: Optional['APIKeySource'] = None,
+                 gateway_responses: Optional[Mapping[str, pulumi.InputType['SwaggerGatewayResponse']]] = None,
+                 request_validator: Optional['RequestValidator'] = None,
+                 routes: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['RouteArgs']]]]] = None,
+                 stage_name: Optional[pulumi.Input[str]] = None,
+                 static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
+                 swagger_string: Optional[pulumi.Input[str]] = None,
+                 __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -68,20 +233,20 @@ class RestAPI(pulumi.ComponentResource):
         else:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = dict()
+            __props__ = RestAPIArgs.__new__(RestAPIArgs)
 
-            __props__['api_key_source'] = api_key_source
-            __props__['gateway_responses'] = gateway_responses
-            __props__['request_validator'] = request_validator
-            __props__['routes'] = routes
-            __props__['stage_name'] = stage_name
-            __props__['static_routes_bucket'] = static_routes_bucket
-            __props__['swagger_string'] = swagger_string
-            __props__['api'] = None
-            __props__['api_policy'] = None
-            __props__['deployment'] = None
-            __props__['stage'] = None
-            __props__['url'] = None
+            __props__.__dict__["api_key_source"] = api_key_source
+            __props__.__dict__["gateway_responses"] = gateway_responses
+            __props__.__dict__["request_validator"] = request_validator
+            __props__.__dict__["routes"] = routes
+            __props__.__dict__["stage_name"] = stage_name
+            __props__.__dict__["static_routes_bucket"] = static_routes_bucket
+            __props__.__dict__["swagger_string"] = swagger_string
+            __props__.__dict__["api"] = None
+            __props__.__dict__["api_policy"] = None
+            __props__.__dict__["deployment"] = None
+            __props__.__dict__["stage"] = None
+            __props__.__dict__["url"] = None
         super(RestAPI, __self__).__init__(
             'apigateway:index:RestAPI',
             resource_name,
@@ -128,10 +293,4 @@ class RestAPI(pulumi.ComponentResource):
         The URL where the Rest API is exposed.
         """
         return pulumi.get(self, "url")
-
-    def translate_output_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
-    def translate_input_property(self, prop):
-        return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
 

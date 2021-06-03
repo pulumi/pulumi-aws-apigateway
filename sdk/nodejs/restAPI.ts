@@ -88,33 +88,33 @@ export interface RestAPIArgs {
      * The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
      * set to true on a route, and this is not defined the value will default to HEADER.
      */
-    readonly apiKeySource?: pulumi.Input<enums.APIKeySource>;
+    apiKeySource?: enums.APIKeySource;
     /**
      * Define custom gateway responses for the API. This can be used to properly enable
      * CORS for Lambda Authorizers.
      */
-    readonly gatewayResponses?: pulumi.Input<{[key: string]: pulumi.Input<inputs.SwaggerGatewayResponse>}>;
+    gatewayResponses?: {[key: string]: inputs.SwaggerGatewayResponse};
     /**
      * Request Validator specifies the validator to use at the API level. Note method level validators
      * override this.
      */
-    readonly requestValidator?: pulumi.Input<enums.RequestValidator>;
+    requestValidator?: enums.RequestValidator;
     /**
      * Routes to use to initialize the APIGateway.  These will be used to create the Swagger
      * specification for the API.
      *
      * Either `swaggerString` or `routes` must be specified.
      */
-    readonly routes?: pulumi.Input<pulumi.Input<inputs.Route>[]>;
+    routes?: pulumi.Input<pulumi.Input<inputs.RouteArgs>[]>;
     /**
      * The stage name for your API. This will get added as a base path to your API url.
      */
-    readonly stageName?: pulumi.Input<string>;
+    stageName?: pulumi.Input<string>;
     /**
      * Bucket to use for placing resources for static resources.  If not provided a default one will
      * be created on your behalf if any `StaticRoute`s are provided.
      */
-    readonly staticRoutesBucket?: pulumi.Input<aws.s3.Bucket>;
+    staticRoutesBucket?: pulumi.Input<aws.s3.Bucket>;
     /**
      * A Swagger specification already in string form to use to initialize the APIGateway.  Note
      * that you must manually provide permission for any route targets to be invoked by API Gateway
@@ -122,5 +122,5 @@ export interface RestAPIArgs {
      *
      * Either `swaggerString` or `routes` must be specified.
      */
-    readonly swaggerString?: pulumi.Input<string>;
+    swaggerString?: pulumi.Input<string>;
 }

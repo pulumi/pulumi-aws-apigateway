@@ -7,9 +7,9 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-aws/sdk/v3/go/aws/apigateway"
-	"github.com/pulumi/pulumi-aws/sdk/v3/go/aws/s3"
-	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
+	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/apigateway"
+	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/s3"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 type RestAPI struct {
@@ -74,13 +74,13 @@ type restAPIArgs struct {
 type RestAPIArgs struct {
 	// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
 	// set to true on a route, and this is not defined the value will default to HEADER.
-	ApiKeySource *APIKeySource
+	ApiKeySource *string
 	// Define custom gateway responses for the API. This can be used to properly enable
 	// CORS for Lambda Authorizers.
-	GatewayResponses SwaggerGatewayResponseMapInput
+	GatewayResponses map[string]SwaggerGatewayResponse
 	// Request Validator specifies the validator to use at the API level. Note method level validators
 	// override this.
-	RequestValidator *RequestValidator
+	RequestValidator *string
 	// Routes to use to initialize the APIGateway.  These will be used to create the Swagger
 	// specification for the API.
 	//

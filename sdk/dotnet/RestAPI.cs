@@ -75,18 +75,18 @@ namespace Pulumi.Apigateway
         /// set to true on a route, and this is not defined the value will default to HEADER.
         /// </summary>
         [Input("apiKeySource")]
-        public Input<Pulumi.Apigateway.APIKeySource>? ApiKeySource { get; set; }
+        public Pulumi.Apigateway.APIKeySource? ApiKeySource { get; set; }
 
         [Input("gatewayResponses")]
-        private InputMap<Inputs.SwaggerGatewayResponseArgs>? _gatewayResponses;
+        private ImmutableDictionary<string, Inputs.SwaggerGatewayResponseArgs>? _gatewayResponses;
 
         /// <summary>
         /// Define custom gateway responses for the API. This can be used to properly enable
         /// CORS for Lambda Authorizers.
         /// </summary>
-        public InputMap<Inputs.SwaggerGatewayResponseArgs> GatewayResponses
+        public ImmutableDictionary<string, Inputs.SwaggerGatewayResponseArgs> GatewayResponses
         {
-            get => _gatewayResponses ?? (_gatewayResponses = new InputMap<Inputs.SwaggerGatewayResponseArgs>());
+            get => _gatewayResponses ?? (_gatewayResponses = new ImmutableDictionary<string, Inputs.SwaggerGatewayResponseArgs>());
             set => _gatewayResponses = value;
         }
 
@@ -95,7 +95,7 @@ namespace Pulumi.Apigateway
         /// override this.
         /// </summary>
         [Input("requestValidator")]
-        public Input<Pulumi.Apigateway.RequestValidator>? RequestValidator { get; set; }
+        public Pulumi.Apigateway.RequestValidator? RequestValidator { get; set; }
 
         [Input("routes")]
         private InputList<Inputs.RouteArgs>? _routes;
