@@ -5,7 +5,6 @@ package apigateway
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/blang/semver"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -50,10 +49,7 @@ func (p *pkg) ConstructProvider(ctx *pulumi.Context, name, typ, urn string) (pul
 }
 
 func init() {
-	version, err := PkgVersion()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	}
+	version := PkgVersion()
 	pulumi.RegisterResourceModule(
 		"apigateway",
 		"index",
