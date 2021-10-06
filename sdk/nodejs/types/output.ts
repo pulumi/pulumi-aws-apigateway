@@ -4,5 +4,5 @@
 import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../types";
 
-import * as aws from "@pulumi/aws";
+import * as pulumiAws from "@pulumi/aws";
 

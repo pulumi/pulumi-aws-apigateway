@@ -1,6 +1,6 @@
 # Pulumi AWS API Gateway Component
 
-Easily create AWS API Gateway Rest APIs using Pulumi.  This component exposes the Crosswalk for AWS functionality documented at https://www.pulumi.com/docs/guides/crosswalk/aws/api-gateway/ as a multi-language Pulumi Package availble in all Pulumi languages.
+Easily create AWS API Gateway Rest APIs using Pulumi.  This component exposes the Crosswalk for AWS functionality documented at https://www.pulumi.com/docs/guides/crosswalk/aws/api-gateway/ as a multi-language Pulumi Package available in all Pulumi languages.
 
 > Note: This package is not yet published to package managers, so SDKs must be bulilt and installed locally.
 

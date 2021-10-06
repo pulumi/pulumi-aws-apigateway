@@ -4,7 +4,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "../types";
 
-import * as aws from "@pulumi/aws";
+import * as pulumiAws from "@pulumi/aws";
 
 /**
  * A route that that APIGateway should accept and forward to some type of destination. All routes
@@ -16,7 +16,7 @@ export interface RouteArgs {
      * The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
      * `localPath` points to a directory, the content types for all files will be inferred.
      */
-    contentType?: pulumi.Input<string>;
+    contentType?: string;
     /**
      * A raw Swagger object to include verbatim in the integration for this path.
      */
@@ -24,36 +24,36 @@ export interface RouteArgs {
     /**
      * A Lambda function which will handle the route for the given path and method.
      */
-    eventHandler?: pulumi.Input<aws.lambda.Function>;
+    eventHandler?: pulumi.Input<pulumiAws.lambda.Function>;
     /**
      * By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
      * To disable this pass `false` or supply a new index document name.
      */
-    index?: pulumi.Input<string | boolean>;
+    index?: string | boolean;
     /**
      * The local path on disk to create static S3 resources for.  Files will be uploaded into S3
      * objects, and directories will be recursively walked into.
      */
-    localPath?: pulumi.Input<string>;
+    localPath?: string;
     /**
      * The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
      */
-    method?: pulumi.Input<enums.Method>;
+    method?: enums.Method;
     /**
      * The path on the API that will serve this route.  If not prefixed with `/`,
      * then a `/` will be added automatically to the beginning.
      */
-    path: pulumi.Input<string>;
+    path: string;
     /**
      * The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
      */
     target?: pulumi.Input<inputs.TargetArgs>;
 }
 
-export interface SwaggerGatewayResponse {
-    responseParameters?: {[key: string]: string};
-    responseTemplates?: {[key: string]: string};
-    statusCode?: number;
+export interface SwaggerGatewayResponseArgs {
+    responseParameters?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    responseTemplates?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    statusCode?: pulumi.Input<number>;
 }
 
 export interface TargetArgs {

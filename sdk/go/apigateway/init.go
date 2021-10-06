@@ -49,7 +49,10 @@ func (p *pkg) ConstructProvider(ctx *pulumi.Context, name, typ, urn string) (pul
 }
 
 func init() {
-	version := PkgVersion()
+	version, err := PkgVersion()
+	if err != nil {
+		fmt.Printf("failed to determine package version. defaulting to v1: %v\n", err)
+	}
 	pulumi.RegisterResourceModule(
 		"apigateway",
 		"index",

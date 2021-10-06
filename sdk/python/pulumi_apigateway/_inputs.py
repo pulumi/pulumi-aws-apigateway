@@ -12,37 +12,37 @@ import pulumi_aws
 
 __all__ = [
     'RouteArgs',
-    'SwaggerGatewayResponse',
+    'SwaggerGatewayResponseArgs',
     'TargetArgs',
 ]
 
 @pulumi.input_type
 class RouteArgs:
     def __init__(__self__, *,
-                 path: pulumi.Input[str],
-                 content_type: Optional[pulumi.Input[str]] = None,
+                 path: str,
+                 content_type: Optional[str] = None,
                  data: Optional[Any] = None,
                  event_handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
-                 index: Optional[pulumi.Input[Union[str, bool]]] = None,
-                 local_path: Optional[pulumi.Input[str]] = None,
-                 method: Optional[pulumi.Input['Method']] = None,
+                 index: Optional[Union[str, bool]] = None,
+                 local_path: Optional[str] = None,
+                 method: Optional['Method'] = None,
                  target: Optional[pulumi.Input['TargetArgs']] = None):
         """
         A route that that APIGateway should accept and forward to some type of destination. All routes
         have an incoming path that they match against.  However, destinations are determined by the kind
         of the route.
 
-        :param pulumi.Input[str] path: The path on the API that will serve this route.  If not prefixed with `/`,
+        :param str path: The path on the API that will serve this route.  If not prefixed with `/`,
                then a `/` will be added automatically to the beginning.
-        :param pulumi.Input[str] content_type: The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
+        :param str content_type: The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
                `localPath` points to a directory, the content types for all files will be inferred.
         :param Any data: A raw Swagger object to include verbatim in the integration for this path.
         :param pulumi.Input['pulumi_aws.lambda_.Function'] event_handler: A Lambda function which will handle the route for the given path and method.
-        :param pulumi.Input[Union[str, bool]] index: By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
+        :param Union[str, bool] index: By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
                To disable this pass `false` or supply a new index document name.
-        :param pulumi.Input[str] local_path: The local path on disk to create static S3 resources for.  Files will be uploaded into S3
+        :param str local_path: The local path on disk to create static S3 resources for.  Files will be uploaded into S3
                objects, and directories will be recursively walked into.
-        :param pulumi.Input['Method'] method: The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
+        :param 'Method' method: The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
         :param pulumi.Input['TargetArgs'] target: The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
         """
         pulumi.set(__self__, "path", path)
@@ -63,7 +63,7 @@ class RouteArgs:
 
     @property
     @pulumi.getter
-    def path(self) -> pulumi.Input[str]:
+    def path(self) -> str:
         """
         The path on the API that will serve this route.  If not prefixed with `/`,
         then a `/` will be added automatically to the beginning.
@@ -71,12 +71,12 @@ class RouteArgs:
         return pulumi.get(self, "path")
 
     @path.setter
-    def path(self, value: pulumi.Input[str]):
+    def path(self, value: str):
         pulumi.set(self, "path", value)
 
     @property
     @pulumi.getter(name="contentType")
-    def content_type(self) -> Optional[pulumi.Input[str]]:
+    def content_type(self) -> Optional[str]:
         """
         The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
         `localPath` points to a directory, the content types for all files will be inferred.
@@ -84,7 +84,7 @@ class RouteArgs:
         return pulumi.get(self, "content_type")
 
     @content_type.setter
-    def content_type(self, value: Optional[pulumi.Input[str]]):
+    def content_type(self, value: Optional[str]):
         pulumi.set(self, "content_type", value)
 
     @property
@@ -113,7 +113,7 @@ class RouteArgs:
 
     @property
     @pulumi.getter
-    def index(self) -> Optional[pulumi.Input[Union[str, bool]]]:
+    def index(self) -> Optional[Union[str, bool]]:
         """
         By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
         To disable this pass `false` or supply a new index document name.
@@ -121,12 +121,12 @@ class RouteArgs:
         return pulumi.get(self, "index")
 
     @index.setter
-    def index(self, value: Optional[pulumi.Input[Union[str, bool]]]):
+    def index(self, value: Optional[Union[str, bool]]):
         pulumi.set(self, "index", value)
 
     @property
     @pulumi.getter(name="localPath")
-    def local_path(self) -> Optional[pulumi.Input[str]]:
+    def local_path(self) -> Optional[str]:
         """
         The local path on disk to create static S3 resources for.  Files will be uploaded into S3
         objects, and directories will be recursively walked into.
@@ -134,19 +134,19 @@ class RouteArgs:
         return pulumi.get(self, "local_path")
 
     @local_path.setter
-    def local_path(self, value: Optional[pulumi.Input[str]]):
+    def local_path(self, value: Optional[str]):
         pulumi.set(self, "local_path", value)
 
     @property
     @pulumi.getter
-    def method(self) -> Optional[pulumi.Input['Method']]:
+    def method(self) -> Optional['Method']:
         """
         The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
         """
         return pulumi.get(self, "method")
 
     @method.setter
-    def method(self, value: Optional[pulumi.Input['Method']]):
+    def method(self, value: Optional['Method']):
         pulumi.set(self, "method", value)
 
     @property
@@ -163,11 +163,11 @@ class RouteArgs:
 
 
 @pulumi.input_type
-class SwaggerGatewayResponse:
+class SwaggerGatewayResponseArgs:
     def __init__(__self__, *,
-                 response_parameters: Optional[Mapping[str, str]] = None,
-                 response_templates: Optional[Mapping[str, str]] = None,
-                 status_code: Optional[float] = None):
+                 response_parameters: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 response_templates: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 status_code: Optional[pulumi.Input[float]] = None):
         if response_parameters is not None:
             pulumi.set(__self__, "response_parameters", response_parameters)
         if response_templates is not None:
@@ -177,29 +177,29 @@ class SwaggerGatewayResponse:
 
     @property
     @pulumi.getter(name="responseParameters")
-    def response_parameters(self) -> Optional[Mapping[str, str]]:
+    def response_parameters(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         return pulumi.get(self, "response_parameters")
 
     @response_parameters.setter
-    def response_parameters(self, value: Optional[Mapping[str, str]]):
+    def response_parameters(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "response_parameters", value)
 
     @property
     @pulumi.getter(name="responseTemplates")
-    def response_templates(self) -> Optional[Mapping[str, str]]:
+    def response_templates(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         return pulumi.get(self, "response_templates")
 
     @response_templates.setter
-    def response_templates(self, value: Optional[Mapping[str, str]]):
+    def response_templates(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "response_templates", value)
 
     @property
     @pulumi.getter(name="statusCode")
-    def status_code(self) -> Optional[float]:
+    def status_code(self) -> Optional[pulumi.Input[float]]:
         return pulumi.get(self, "status_code")
 
     @status_code.setter
-    def status_code(self, value: Optional[float]):
+    def status_code(self, value: Optional[pulumi.Input[float]]):
         pulumi.set(self, "status_code", value)
 
 

@@ -45,13 +45,13 @@ func NewRestAPI(ctx *pulumi.Context,
 type restAPIArgs struct {
 	// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
 	// set to true on a route, and this is not defined the value will default to HEADER.
-	ApiKeySource *string `pulumi:"apiKeySource"`
+	ApiKeySource *APIKeySource `pulumi:"apiKeySource"`
 	// Define custom gateway responses for the API. This can be used to properly enable
 	// CORS for Lambda Authorizers.
 	GatewayResponses map[string]SwaggerGatewayResponse `pulumi:"gatewayResponses"`
 	// Request Validator specifies the validator to use at the API level. Note method level validators
 	// override this.
-	RequestValidator *string `pulumi:"requestValidator"`
+	RequestValidator *RequestValidator `pulumi:"requestValidator"`
 	// Routes to use to initialize the APIGateway.  These will be used to create the Swagger
 	// specification for the API.
 	//
@@ -74,18 +74,18 @@ type restAPIArgs struct {
 type RestAPIArgs struct {
 	// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
 	// set to true on a route, and this is not defined the value will default to HEADER.
-	ApiKeySource *string
+	ApiKeySource *APIKeySource
 	// Define custom gateway responses for the API. This can be used to properly enable
 	// CORS for Lambda Authorizers.
-	GatewayResponses map[string]SwaggerGatewayResponse
+	GatewayResponses map[string]SwaggerGatewayResponseInput
 	// Request Validator specifies the validator to use at the API level. Note method level validators
 	// override this.
-	RequestValidator *string
+	RequestValidator *RequestValidator
 	// Routes to use to initialize the APIGateway.  These will be used to create the Swagger
 	// specification for the API.
 	//
 	// Either `swaggerString` or `routes` must be specified.
-	Routes RouteArrayInput
+	Routes []RouteArgs
 	// The stage name for your API. This will get added as a base path to your API url.
 	StageName pulumi.StringPtrInput
 	// Bucket to use for placing resources for static resources.  If not provided a default one will
@@ -165,7 +165,7 @@ type RestAPIArrayInput interface {
 type RestAPIArray []RestAPIInput
 
 func (RestAPIArray) ElementType() reflect.Type {
-	return reflect.TypeOf(([]*RestAPI)(nil))
+	return reflect.TypeOf((*[]*RestAPI)(nil)).Elem()
 }
 
 func (i RestAPIArray) ToRestAPIArrayOutput() RestAPIArrayOutput {
@@ -190,7 +190,7 @@ type RestAPIMapInput interface {
 type RestAPIMap map[string]RestAPIInput
 
 func (RestAPIMap) ElementType() reflect.Type {
-	return reflect.TypeOf((map[string]*RestAPI)(nil))
+	return reflect.TypeOf((*map[string]*RestAPI)(nil)).Elem()
 }
 
 func (i RestAPIMap) ToRestAPIMapOutput() RestAPIMapOutput {
@@ -201,9 +201,7 @@ func (i RestAPIMap) ToRestAPIMapOutputWithContext(ctx context.Context) RestAPIMa
 	return pulumi.ToOutputWithContext(ctx, i).(RestAPIMapOutput)
 }
 
-type RestAPIOutput struct {
-	*pulumi.OutputState
-}
+type RestAPIOutput struct{ *pulumi.OutputState }
 
 func (RestAPIOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*RestAPI)(nil))
@@ -222,14 +220,12 @@ func (o RestAPIOutput) ToRestAPIPtrOutput() RestAPIPtrOutput {
 }
 
 func (o RestAPIOutput) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
-	return o.ApplyT(func(v RestAPI) *RestAPI {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v RestAPI) *RestAPI {
 		return &v
 	}).(RestAPIPtrOutput)
 }
 
-type RestAPIPtrOutput struct {
-	*pulumi.OutputState
-}
+type RestAPIPtrOutput struct{ *pulumi.OutputState }
 
 func (RestAPIPtrOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((**RestAPI)(nil))
@@ -241,6 +237,16 @@ func (o RestAPIPtrOutput) ToRestAPIPtrOutput() RestAPIPtrOutput {
 
 func (o RestAPIPtrOutput) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
 	return o
+}
+
+func (o RestAPIPtrOutput) Elem() RestAPIOutput {
+	return o.ApplyT(func(v *RestAPI) RestAPI {
+		if v != nil {
+			return *v
+		}
+		var ret RestAPI
+		return ret
+	}).(RestAPIOutput)
 }
 
 type RestAPIArrayOutput struct{ *pulumi.OutputState }

@@ -6,11 +6,13 @@ types:
     properties:
       path:
         type: string
+        plain: true
         description: |
           The path on the API that will serve this route.  If not prefixed with `/`,
           then a `/` will be added automatically to the beginning.
       method:
         "$ref": "#/types/apigateway:index:Method"
+        plain: true
         description: |
           The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
       eventHandler:
@@ -19,23 +21,29 @@ types:
           A Lambda function which will handle the route for the given path and method.
       localPath:
         type: string
+        plain: true
         description: |
           The local path on disk to create static S3 resources for.  Files will be uploaded into S3
           objects, and directories will be recursively walked into.
       contentType:
         type: string
+        plain: true
         description: |
           The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
           `localPath` points to a directory, the content types for all files will be inferred.
       index:
         oneOf:
         - type: string
+          plain: true
         - type: boolean
+          plain: true
+        plain: true
         description: |
           By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
           To disable this pass `false` or supply a new index document name.
       data:
         "$ref": pulumi.json#/Any
+        plain: true
         description: |
           A raw Swagger object to include verbatim in the integration for this path.
       target:
@@ -200,6 +208,8 @@ resources:
         type: array
         items:
           "$ref": "#/types/apigateway:index:Route"
+          plain: true
+        plain: true
         description: |
           Routes to use to initialize the APIGateway.  These will be used to create the Swagger
           specification for the API.
@@ -219,11 +229,13 @@ resources:
           The stage name for your API. This will get added as a base path to your API url.
       requestValidator:
         "$ref": "#/types/apigateway:index:RequestValidator"
+        plain: true
         description: |
           Request Validator specifies the validator to use at the API level. Note method level validators
           override this.
       apiKeySource:
         "$ref": "#/types/apigateway:index:APIKeySource"
+        plain: true
         description: |
           The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
           set to true on a route, and this is not defined the value will default to HEADER.
@@ -236,13 +248,10 @@ resources:
         type: object
         additionalProperties:
           "$ref": "#/types/apigateway:index:SwaggerGatewayResponse"
+        plain: true
         description: |
           Define custom gateway responses for the API. This can be used to properly enable
           CORS for Lambda Authorizers.
-    plainInputs:
-    - requestValidator
-    - apiKeySource
-    - gatewayResponses
     properties:
       url:
         type: string

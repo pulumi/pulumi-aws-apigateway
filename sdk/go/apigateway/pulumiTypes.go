@@ -29,7 +29,7 @@ type Route struct {
 	// objects, and directories will be recursively walked into.
 	LocalPath *string `pulumi:"localPath"`
 	// The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
-	Method *string `pulumi:"method"`
+	Method *Method `pulumi:"method"`
 	// The path on the API that will serve this route.  If not prefixed with `/`,
 	// then a `/` will be added automatically to the beginning.
 	Path string `pulumi:"path"`
@@ -54,22 +54,22 @@ type RouteInput interface {
 type RouteArgs struct {
 	// The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
 	// `localPath` points to a directory, the content types for all files will be inferred.
-	ContentType pulumi.StringPtrInput `pulumi:"contentType"`
+	ContentType *string `pulumi:"contentType"`
 	// A raw Swagger object to include verbatim in the integration for this path.
-	Data pulumi.Input `pulumi:"data"`
+	Data interface{} `pulumi:"data"`
 	// A Lambda function which will handle the route for the given path and method.
 	EventHandler lambda.FunctionInput `pulumi:"eventHandler"`
 	// By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
 	// To disable this pass `false` or supply a new index document name.
-	Index pulumi.Input `pulumi:"index"`
+	Index interface{} `pulumi:"index"`
 	// The local path on disk to create static S3 resources for.  Files will be uploaded into S3
 	// objects, and directories will be recursively walked into.
-	LocalPath pulumi.StringPtrInput `pulumi:"localPath"`
+	LocalPath *string `pulumi:"localPath"`
 	// The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
 	Method *Method `pulumi:"method"`
 	// The path on the API that will serve this route.  If not prefixed with `/`,
 	// then a `/` will be added automatically to the beginning.
-	Path pulumi.StringInput `pulumi:"path"`
+	Path string `pulumi:"path"`
 	// The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
 	Target TargetPtrInput `pulumi:"target"`
 }
@@ -157,8 +157,8 @@ func (o RouteOutput) LocalPath() pulumi.StringPtrOutput {
 }
 
 // The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
-func (o RouteOutput) Method() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v Route) *string { return v.Method }).(pulumi.StringPtrOutput)
+func (o RouteOutput) Method() MethodPtrOutput {
+	return o.ApplyT(func(v Route) *Method { return v.Method }).(MethodPtrOutput)
 }
 
 // The path on the API that will serve this route.  If not prefixed with `/`,
@@ -305,94 +305,9 @@ type Target struct {
 	// The type of the network connection to the integration endpoint. The valid value is `INTERNET`
 	// for connections through the public routable internet or `VPC_LINK` for private connections
 	// between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
-	ConnectionType *string `pulumi:"connectionType"`
-	// Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
-	HttpMethod *string `pulumi:"httpMethod"`
-	// Specifies how the method request body of an unmapped content type will be passed through the
-	// integration request to the back end without transformation.
-	//
-	// The valid value is one of the following:
-	//
-	// * `WHEN_NO_MATCH`: passes the method request body through the integration request to the back end
-	// without transformation when the method request content type does not match any content type
-	// associated with the mapping templates defined in the integration request.
-	//
-	// * `WHEN_NO_TEMPLATES`: passes the method request body through the integration request to the back
-	// end without transformation when no mapping template is defined in the integration request. If
-	// a template is defined when this option is selected, the method request of an unmapped
-	// content-type will be rejected with an HTTP 415 Unsupported Media Type response.
-	//
-	// * `NEVER`: rejects the method request with an HTTP 415 Unsupported Media Type response when
-	// either the method request content type does not match any content type associated with the
-	// mapping templates defined in the integration request or no mapping template is defined in the
-	// integration request.
-	//
-	// Defaults to `WHEN_NO_MATCH` if unspecified.
-	PassthroughBehaviour *string `pulumi:"passthroughBehaviour"`
-	// Specifies an API method integration type. The valid value is one of the following:
-	//
-	// * `aws`: for integrating the API method request with an AWS service action, including the Lambda
-	// function-invoking action. With the Lambda function-invoking action, this is referred to as
-	// the Lambda custom integration. With any other AWS service action, this is known as AWS
-	// integration.
-	//
-	// * `aws_proxy`: for integrating the API method request with the Lambda function-invoking action
-	// with the client request passed through as-is. This integration is also referred to as the
-	// Lambda proxy integration.
-	//
-	// * `http`: for integrating the API method request with an HTTP endpoint, including a private HTTP
-	// endpoint within a VPC. This integration is also referred to as the HTTP custom integration.
-	//
-	// * `http_proxy`: for integrating the API method request with an HTTP endpoint, including a private
-	// HTTP endpoint within a VPC, with the client request passed through as-is. This is also
-	// referred to as the HTTP proxy integration.
-	//
-	// * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
-	// without invoking any backend.
-	Type string `pulumi:"type"`
-	// Specifies Uniform Resource Identifier (URI) of the integration endpoint.
-	//
-	// For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
-	// according to the RFC-3986 specification, for either standard integration, where
-	// connectionType is not VPC_LINK, or private integration, where connectionType is VPC_LINK. For
-	// a private HTTP integration, the URI is not used for routing.
-	//
-	// For AWS or AWS_PROXY integrations, the URI is of the form
-	// arn:aws:apigateway:{region}:{subdomain.service|service}:path|action/{service_api}. Here,
-	// {Region} is the API Gateway region (e.g., us-east-1); {service} is the name of the integrated
-	// AWS service (e.g., s3); and {subdomain} is a designated subdomain supported by certain AWS
-	// service for fast host-name lookup. action can be used for an AWS service action-based API,
-	// using an Action={name}&{p1}={v1}&p2={v2}... query string. The ensuing {service_api} refers to
-	// a supported action {name} plus any required input parameters. Alternatively, path can be used
-	// for an AWS service path-based API. The ensuing service_api refers to the path to an AWS
-	// service resource, including the region of the integrated AWS service, if applicable. For
-	// example, for integration with the S3 API of GetObject, the uri can be either
-	// arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
-	// arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
-	Uri string `pulumi:"uri"`
-}
-
-// TargetInput is an input type that accepts TargetArgs and TargetOutput values.
-// You can construct a concrete instance of `TargetInput` via:
-//
-//          TargetArgs{...}
-type TargetInput interface {
-	pulumi.Input
-
-	ToTargetOutput() TargetOutput
-	ToTargetOutputWithContext(context.Context) TargetOutput
-}
-
-type TargetArgs struct {
-	// The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
-	// otherwise.
-	ConnectionId pulumi.StringPtrInput `pulumi:"connectionId"`
-	// The type of the network connection to the integration endpoint. The valid value is `INTERNET`
-	// for connections through the public routable internet or `VPC_LINK` for private connections
-	// between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
 	ConnectionType *IntegrationConnectionType `pulumi:"connectionType"`
 	// Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
-	HttpMethod pulumi.StringPtrInput `pulumi:"httpMethod"`
+	HttpMethod *string `pulumi:"httpMethod"`
 	// Specifies how the method request body of an unmapped content type will be passed through the
 	// integration request to the back end without transformation.
 	//
@@ -435,6 +350,91 @@ type TargetArgs struct {
 	// * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
 	// without invoking any backend.
 	Type IntegrationType `pulumi:"type"`
+	// Specifies Uniform Resource Identifier (URI) of the integration endpoint.
+	//
+	// For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
+	// according to the RFC-3986 specification, for either standard integration, where
+	// connectionType is not VPC_LINK, or private integration, where connectionType is VPC_LINK. For
+	// a private HTTP integration, the URI is not used for routing.
+	//
+	// For AWS or AWS_PROXY integrations, the URI is of the form
+	// arn:aws:apigateway:{region}:{subdomain.service|service}:path|action/{service_api}. Here,
+	// {Region} is the API Gateway region (e.g., us-east-1); {service} is the name of the integrated
+	// AWS service (e.g., s3); and {subdomain} is a designated subdomain supported by certain AWS
+	// service for fast host-name lookup. action can be used for an AWS service action-based API,
+	// using an Action={name}&{p1}={v1}&p2={v2}... query string. The ensuing {service_api} refers to
+	// a supported action {name} plus any required input parameters. Alternatively, path can be used
+	// for an AWS service path-based API. The ensuing service_api refers to the path to an AWS
+	// service resource, including the region of the integrated AWS service, if applicable. For
+	// example, for integration with the S3 API of GetObject, the uri can be either
+	// arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
+	// arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
+	Uri string `pulumi:"uri"`
+}
+
+// TargetInput is an input type that accepts TargetArgs and TargetOutput values.
+// You can construct a concrete instance of `TargetInput` via:
+//
+//          TargetArgs{...}
+type TargetInput interface {
+	pulumi.Input
+
+	ToTargetOutput() TargetOutput
+	ToTargetOutputWithContext(context.Context) TargetOutput
+}
+
+type TargetArgs struct {
+	// The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
+	// otherwise.
+	ConnectionId pulumi.StringPtrInput `pulumi:"connectionId"`
+	// The type of the network connection to the integration endpoint. The valid value is `INTERNET`
+	// for connections through the public routable internet or `VPC_LINK` for private connections
+	// between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
+	ConnectionType IntegrationConnectionTypePtrInput `pulumi:"connectionType"`
+	// Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
+	HttpMethod pulumi.StringPtrInput `pulumi:"httpMethod"`
+	// Specifies how the method request body of an unmapped content type will be passed through the
+	// integration request to the back end without transformation.
+	//
+	// The valid value is one of the following:
+	//
+	// * `WHEN_NO_MATCH`: passes the method request body through the integration request to the back end
+	// without transformation when the method request content type does not match any content type
+	// associated with the mapping templates defined in the integration request.
+	//
+	// * `WHEN_NO_TEMPLATES`: passes the method request body through the integration request to the back
+	// end without transformation when no mapping template is defined in the integration request. If
+	// a template is defined when this option is selected, the method request of an unmapped
+	// content-type will be rejected with an HTTP 415 Unsupported Media Type response.
+	//
+	// * `NEVER`: rejects the method request with an HTTP 415 Unsupported Media Type response when
+	// either the method request content type does not match any content type associated with the
+	// mapping templates defined in the integration request or no mapping template is defined in the
+	// integration request.
+	//
+	// Defaults to `WHEN_NO_MATCH` if unspecified.
+	PassthroughBehaviour IntegrationPassthroughBehaviorPtrInput `pulumi:"passthroughBehaviour"`
+	// Specifies an API method integration type. The valid value is one of the following:
+	//
+	// * `aws`: for integrating the API method request with an AWS service action, including the Lambda
+	// function-invoking action. With the Lambda function-invoking action, this is referred to as
+	// the Lambda custom integration. With any other AWS service action, this is known as AWS
+	// integration.
+	//
+	// * `aws_proxy`: for integrating the API method request with the Lambda function-invoking action
+	// with the client request passed through as-is. This integration is also referred to as the
+	// Lambda proxy integration.
+	//
+	// * `http`: for integrating the API method request with an HTTP endpoint, including a private HTTP
+	// endpoint within a VPC. This integration is also referred to as the HTTP custom integration.
+	//
+	// * `http_proxy`: for integrating the API method request with an HTTP endpoint, including a private
+	// HTTP endpoint within a VPC, with the client request passed through as-is. This is also
+	// referred to as the HTTP proxy integration.
+	//
+	// * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
+	// without invoking any backend.
+	Type IntegrationTypeInput `pulumi:"type"`
 	// Specifies Uniform Resource Identifier (URI) of the integration endpoint.
 	//
 	// For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
@@ -529,7 +529,7 @@ func (o TargetOutput) ToTargetPtrOutput() TargetPtrOutput {
 }
 
 func (o TargetOutput) ToTargetPtrOutputWithContext(ctx context.Context) TargetPtrOutput {
-	return o.ApplyT(func(v Target) *Target {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v Target) *Target {
 		return &v
 	}).(TargetPtrOutput)
 }
@@ -543,8 +543,8 @@ func (o TargetOutput) ConnectionId() pulumi.StringPtrOutput {
 // The type of the network connection to the integration endpoint. The valid value is `INTERNET`
 // for connections through the public routable internet or `VPC_LINK` for private connections
 // between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
-func (o TargetOutput) ConnectionType() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v Target) *string { return v.ConnectionType }).(pulumi.StringPtrOutput)
+func (o TargetOutput) ConnectionType() IntegrationConnectionTypePtrOutput {
+	return o.ApplyT(func(v Target) *IntegrationConnectionType { return v.ConnectionType }).(IntegrationConnectionTypePtrOutput)
 }
 
 // Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
@@ -572,8 +572,8 @@ func (o TargetOutput) HttpMethod() pulumi.StringPtrOutput {
 // integration request.
 //
 // Defaults to `WHEN_NO_MATCH` if unspecified.
-func (o TargetOutput) PassthroughBehaviour() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v Target) *string { return v.PassthroughBehaviour }).(pulumi.StringPtrOutput)
+func (o TargetOutput) PassthroughBehaviour() IntegrationPassthroughBehaviorPtrOutput {
+	return o.ApplyT(func(v Target) *IntegrationPassthroughBehavior { return v.PassthroughBehaviour }).(IntegrationPassthroughBehaviorPtrOutput)
 }
 
 // Specifies an API method integration type. The valid value is one of the following:
@@ -596,8 +596,8 @@ func (o TargetOutput) PassthroughBehaviour() pulumi.StringPtrOutput {
 //
 // * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
 // without invoking any backend.
-func (o TargetOutput) Type() pulumi.StringOutput {
-	return o.ApplyT(func(v Target) string { return v.Type }).(pulumi.StringOutput)
+func (o TargetOutput) Type() IntegrationTypeOutput {
+	return o.ApplyT(func(v Target) IntegrationType { return v.Type }).(IntegrationTypeOutput)
 }
 
 // Specifies Uniform Resource Identifier (URI) of the integration endpoint.
@@ -638,7 +638,13 @@ func (o TargetPtrOutput) ToTargetPtrOutputWithContext(ctx context.Context) Targe
 }
 
 func (o TargetPtrOutput) Elem() TargetOutput {
-	return o.ApplyT(func(v *Target) Target { return *v }).(TargetOutput)
+	return o.ApplyT(func(v *Target) Target {
+		if v != nil {
+			return *v
+		}
+		var ret Target
+		return ret
+	}).(TargetOutput)
 }
 
 // The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
@@ -655,13 +661,13 @@ func (o TargetPtrOutput) ConnectionId() pulumi.StringPtrOutput {
 // The type of the network connection to the integration endpoint. The valid value is `INTERNET`
 // for connections through the public routable internet or `VPC_LINK` for private connections
 // between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
-func (o TargetPtrOutput) ConnectionType() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Target) *string {
+func (o TargetPtrOutput) ConnectionType() IntegrationConnectionTypePtrOutput {
+	return o.ApplyT(func(v *Target) *IntegrationConnectionType {
 		if v == nil {
 			return nil
 		}
 		return v.ConnectionType
-	}).(pulumi.StringPtrOutput)
+	}).(IntegrationConnectionTypePtrOutput)
 }
 
 // Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
@@ -694,13 +700,13 @@ func (o TargetPtrOutput) HttpMethod() pulumi.StringPtrOutput {
 // integration request.
 //
 // Defaults to `WHEN_NO_MATCH` if unspecified.
-func (o TargetPtrOutput) PassthroughBehaviour() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Target) *string {
+func (o TargetPtrOutput) PassthroughBehaviour() IntegrationPassthroughBehaviorPtrOutput {
+	return o.ApplyT(func(v *Target) *IntegrationPassthroughBehavior {
 		if v == nil {
 			return nil
 		}
 		return v.PassthroughBehaviour
-	}).(pulumi.StringPtrOutput)
+	}).(IntegrationPassthroughBehaviorPtrOutput)
 }
 
 // Specifies an API method integration type. The valid value is one of the following:
@@ -723,13 +729,13 @@ func (o TargetPtrOutput) PassthroughBehaviour() pulumi.StringPtrOutput {
 //
 // * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
 // without invoking any backend.
-func (o TargetPtrOutput) Type() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Target) *string {
+func (o TargetPtrOutput) Type() IntegrationTypePtrOutput {
+	return o.ApplyT(func(v *Target) *IntegrationType {
 		if v == nil {
 			return nil
 		}
 		return &v.Type
-	}).(pulumi.StringPtrOutput)
+	}).(IntegrationTypePtrOutput)
 }
 
 // Specifies Uniform Resource Identifier (URI) of the integration endpoint.

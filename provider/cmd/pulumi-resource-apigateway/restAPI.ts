@@ -23,12 +23,12 @@ import * as awsx from "@pulumi/awsx";
 // TODO: Should this be broken up into subtypes for the mutually exclusive allowed structures?
 export interface RestAPIRoute /* extends BaseRoute */ {
     eventHandler: aws.lambda.Function;
-    method: pulumi.Input<Method>;
-    path: pulumi.Input<string>;
+    method: Method;
+    path: string;
 
-    localPath: pulumi.Input<string>;
+    localPath: string;
     contentType: pulumi.Input<string>;
-    index: pulumi.Input<string | boolean>;
+    index: string | boolean;
 
     data: any;
 
@@ -67,7 +67,7 @@ export declare type IntegrationPassthroughBehavior = "when_no_match" | "when_no_
 
 
 export interface RestAPIArgs {
-    routes: pulumi.Input<pulumi.Input<RestAPIRoute>[]>;
+    routes:RestAPIRoute[];
     swaggerString: pulumi.Input<string>;
     stageName: pulumi.Input<string>;
     requestValidator: RequestValidator;
@@ -85,9 +85,6 @@ export class RestAPI extends pulumi.ComponentResource {
 
     constructor(name: string, args: RestAPIArgs, opts?: pulumi.ComponentResourceOptions) {
         super("apigateway:index:RestAPI", name, args, opts);
-
-        // TODO[pulumi/pulumi#7150]: Config doesn't work inside multi-lang components so we have to hardcode :-(
-        aws.config.region = "ap-southeast-2";
 
         // TODO[pulumi/pulumi#6957]: Ideally `routes` would be a plainInput so this `apply` wasn't needed.
         const api = pulumi.output(args.routes).apply(routes => {

@@ -5,7 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs, enums } from "./types";
 import * as utilities from "./utilities";
 
-import * as aws from "@pulumi/aws";
+import * as pulumiAws from "@pulumi/aws";
 
 export class RestAPI extends pulumi.ComponentResource {
     /** @internal */
@@ -25,19 +25,19 @@ export class RestAPI extends pulumi.ComponentResource {
     /**
      * The underlying RestAPI resource.
      */
-    public /*out*/ readonly api!: pulumi.Output<aws.apigateway.RestApi>;
+    public /*out*/ readonly api!: pulumi.Output<pulumiAws.apigateway.RestApi>;
     /**
      * The underlying RestAPIPolicy resource.
      */
-    public /*out*/ readonly apiPolicy!: pulumi.Output<aws.apigateway.RestApiPolicy | undefined>;
+    public /*out*/ readonly apiPolicy!: pulumi.Output<pulumiAws.apigateway.RestApiPolicy | undefined>;
     /**
      * The underlying Deployment resource.
      */
-    public /*out*/ readonly deployment!: pulumi.Output<aws.apigateway.Deployment>;
+    public /*out*/ readonly deployment!: pulumi.Output<pulumiAws.apigateway.Deployment>;
     /**
      * The underlying Stage resource.
      */
-    public /*out*/ readonly stage!: pulumi.Output<aws.apigateway.Stage>;
+    public /*out*/ readonly stage!: pulumi.Output<pulumiAws.apigateway.Stage>;
     /**
      * The URL where the Rest API is exposed.
      */
@@ -93,7 +93,7 @@ export interface RestAPIArgs {
      * Define custom gateway responses for the API. This can be used to properly enable
      * CORS for Lambda Authorizers.
      */
-    gatewayResponses?: {[key: string]: inputs.SwaggerGatewayResponse};
+    gatewayResponses?: {[key: string]: pulumi.Input<inputs.SwaggerGatewayResponseArgs>};
     /**
      * Request Validator specifies the validator to use at the API level. Note method level validators
      * override this.
@@ -105,7 +105,7 @@ export interface RestAPIArgs {
      *
      * Either `swaggerString` or `routes` must be specified.
      */
-    routes?: pulumi.Input<pulumi.Input<inputs.RouteArgs>[]>;
+    routes?: inputs.RouteArgs[];
     /**
      * The stage name for your API. This will get added as a base path to your API url.
      */
@@ -114,7 +114,7 @@ export interface RestAPIArgs {
      * Bucket to use for placing resources for static resources.  If not provided a default one will
      * be created on your behalf if any `StaticRoute`s are provided.
      */
-    staticRoutesBucket?: pulumi.Input<aws.s3.Bucket>;
+    staticRoutesBucket?: pulumi.Input<pulumiAws.s3.Bucket>;
     /**
      * A Swagger specification already in string form to use to initialize the APIGateway.  Note
      * that you must manually provide permission for any route targets to be invoked by API Gateway
