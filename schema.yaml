@@ -50,6 +50,42 @@ types:
         "$ref": "#/types/apigateway:index:Target"
         description: |
           The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
+      requiredParameters:
+        type: array
+        items:
+          "$ref": "#/types/apigateway:index:RequiredParameter"
+          plain: true
+        plain: true
+        description: |
+          Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+          gateway will validate these before sending traffic to the event handler.
+      requestValidator:
+        "$ref": "#/types/apigateway:index:RequestValidator"
+        plain: true
+        description: |
+          Request Validator specifies the validator to use at the method level. This will override anything
+          defined at the API level.
+      apiKeyRequired:
+        type: boolean
+        plain: true
+        description: |
+          If true, an API key will be required for this route. The source for the API Key can be set at
+          the API level and by default, the source will be the HEADER.
+      authorizers:
+        type: array
+        items:
+          "$ref": "#/types/apigateway:index:Authorizer"
+          plain: true
+        plain: true
+        description: |
+          Authorizers allows you to define Lambda authorizers be applied for authorization when the
+          the route is called.
+      iamAuthEnabled:
+        type: boolean
+        plain: true
+        description: |
+          By default, the route method auth type is set to `NONE`. If true, the auth type will be
+          set to `AWS_IAM`.
     required:
     - path
     description: |
@@ -200,6 +236,109 @@ types:
         type: object
         additionalProperties:
           type: string
+  apigateway:index:RequiredParameter:
+    type: object
+    properties:
+      name:
+        type: string
+      in:
+        type: string
+        enum:
+        - value: path
+        - value: query
+        - value: header
+  apigateway:index:Authorizer:
+    type: object
+    properties:
+      authorizerName:
+        type: string
+        plain: true
+        description: |
+          The name for the Authorizer to be referenced as. This must be unique for each unique
+          authorizer within the API. If no name if specified, a name will be generated for you.
+      parameterName:
+        type: string
+        plain: true
+        description: |
+          parameterName is the name of the header or query parameter containing the authorization
+          token. Must be "Unused" for multiple identity sources.
+      parameterLocation:
+        type: string
+        enum:
+        - value: query
+        - value: header
+        plain: true
+        description: |
+          Defines where in the request API Gateway should look for identity information. The value must
+          be "header" or "query". If there are multiple identity sources, the value must be "header".
+      authType:
+        type: string
+        plain: true
+        description: |
+          Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
+      type:
+        type: string
+        enum:
+        - value: token
+        - value: request
+        plain: true
+        description: |
+          The type of the authorizer. This value must be one of the following:
+          - "token", for an authorizer with the caller identity embedded in an authorization token
+          - "request", for an authorizer with the caller identity contained in request parameters
+      handler:
+        "$ref": "/aws/v4.6.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+        description: |
+          The authorizerHandler specifies information about the authorizing Lambda.
+      identitySource:
+        type: array
+        items:
+          type: string
+          plain: true
+        plain: true
+        description: |
+          List of mapping expressions of the request parameters as the identity source. This indicates
+          where in the request identity information is expected. Applicable for the authorizer of the
+          "request" type only. Example: ["method.request.header.HeaderAuth1",
+          "method.request.querystring.QueryString1"]
+      identityValidationExpression:
+        type: string
+        plain: true
+        description: |
+          A regular expression for validating the token as the incoming identity. It only invokes the
+          authorizer's lambda if there is a match, else it will return a 401. This does not apply to
+          REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
+      authorizerResultTtlInSeconds:
+        type: number
+        plain: true
+        description: |
+          The number of seconds during which the resulting IAM policy is cached. Default is 300s. You
+          can set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an
+          authorizer across more than one route you will want to disable the cache or else it will
+          cause problems for you.
+      providerARNs:
+        type: array
+        items:
+          type: string
+        plain: true
+        description: |
+          The ARNs of the Cognito User Pools to use.
+      methodsToAuthorize:
+        type: array
+        items:
+          type: string
+          plain: true
+        plain: true
+        description: |
+          For method authorization, you can define resource servers and custom scopes by specifying the
+          "resource-server/scope". e.g. ["com.hamuta.movies/drama.view",
+          "http://my.resource.com/file.read"] For more information on resource servers and custom
+          scopes visit the AWS documentation -
+          https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
+    required:
+    - parameterName
+    description: |
+      LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
 resources:
   apigateway:index:RestAPI:
     isComponent: true

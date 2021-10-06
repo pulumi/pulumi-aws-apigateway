@@ -11,21 +11,275 @@ from ._enums import *
 import pulumi_aws
 
 __all__ = [
+    'AuthorizerArgs',
+    'RequiredParameterArgs',
     'RouteArgs',
     'SwaggerGatewayResponseArgs',
     'TargetArgs',
 ]
 
 @pulumi.input_type
+class AuthorizerArgs:
+    def __init__(__self__, *,
+                 parameter_name: str,
+                 auth_type: Optional[str] = None,
+                 authorizer_name: Optional[str] = None,
+                 authorizer_result_ttl_in_seconds: Optional[float] = None,
+                 handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
+                 identity_source: Optional[Sequence[str]] = None,
+                 identity_validation_expression: Optional[str] = None,
+                 methods_to_authorize: Optional[Sequence[str]] = None,
+                 parameter_location: Optional[str] = None,
+                 provider_arns: Optional[Sequence[pulumi.Input[str]]] = None,
+                 type: Optional[str] = None):
+        """
+        LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
+
+        :param str parameter_name: parameterName is the name of the header or query parameter containing the authorization
+               token. Must be "Unused" for multiple identity sources.
+        :param str auth_type: Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
+        :param str authorizer_name: The name for the Authorizer to be referenced as. This must be unique for each unique
+               authorizer within the API. If no name if specified, a name will be generated for you.
+        :param float authorizer_result_ttl_in_seconds: The number of seconds during which the resulting IAM policy is cached. Default is 300s. You
+               can set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an
+               authorizer across more than one route you will want to disable the cache or else it will
+               cause problems for you.
+        :param pulumi.Input['pulumi_aws.lambda_.Function'] handler: The authorizerHandler specifies information about the authorizing Lambda.
+        :param Sequence[str] identity_source: List of mapping expressions of the request parameters as the identity source. This indicates
+               where in the request identity information is expected. Applicable for the authorizer of the
+               "request" type only. Example: ["method.request.header.HeaderAuth1",
+               "method.request.querystring.QueryString1"]
+        :param str identity_validation_expression: A regular expression for validating the token as the incoming identity. It only invokes the
+               authorizer's lambda if there is a match, else it will return a 401. This does not apply to
+               REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
+        :param Sequence[str] methods_to_authorize: For method authorization, you can define resource servers and custom scopes by specifying the
+               "resource-server/scope". e.g. ["com.hamuta.movies/drama.view",
+               "http://my.resource.com/file.read"] For more information on resource servers and custom
+               scopes visit the AWS documentation -
+               https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
+        :param str parameter_location: Defines where in the request API Gateway should look for identity information. The value must
+               be "header" or "query". If there are multiple identity sources, the value must be "header".
+        :param Sequence[pulumi.Input[str]] provider_arns: The ARNs of the Cognito User Pools to use.
+        :param str type: The type of the authorizer. This value must be one of the following:
+               - "token", for an authorizer with the caller identity embedded in an authorization token
+               - "request", for an authorizer with the caller identity contained in request parameters
+        """
+        pulumi.set(__self__, "parameter_name", parameter_name)
+        if auth_type is not None:
+            pulumi.set(__self__, "auth_type", auth_type)
+        if authorizer_name is not None:
+            pulumi.set(__self__, "authorizer_name", authorizer_name)
+        if authorizer_result_ttl_in_seconds is not None:
+            pulumi.set(__self__, "authorizer_result_ttl_in_seconds", authorizer_result_ttl_in_seconds)
+        if handler is not None:
+            pulumi.set(__self__, "handler", handler)
+        if identity_source is not None:
+            pulumi.set(__self__, "identity_source", identity_source)
+        if identity_validation_expression is not None:
+            pulumi.set(__self__, "identity_validation_expression", identity_validation_expression)
+        if methods_to_authorize is not None:
+            pulumi.set(__self__, "methods_to_authorize", methods_to_authorize)
+        if parameter_location is not None:
+            pulumi.set(__self__, "parameter_location", parameter_location)
+        if provider_arns is not None:
+            pulumi.set(__self__, "provider_arns", provider_arns)
+        if type is not None:
+            pulumi.set(__self__, "type", type)
+
+    @property
+    @pulumi.getter(name="parameterName")
+    def parameter_name(self) -> str:
+        """
+        parameterName is the name of the header or query parameter containing the authorization
+        token. Must be "Unused" for multiple identity sources.
+        """
+        return pulumi.get(self, "parameter_name")
+
+    @parameter_name.setter
+    def parameter_name(self, value: str):
+        pulumi.set(self, "parameter_name", value)
+
+    @property
+    @pulumi.getter(name="authType")
+    def auth_type(self) -> Optional[str]:
+        """
+        Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
+        """
+        return pulumi.get(self, "auth_type")
+
+    @auth_type.setter
+    def auth_type(self, value: Optional[str]):
+        pulumi.set(self, "auth_type", value)
+
+    @property
+    @pulumi.getter(name="authorizerName")
+    def authorizer_name(self) -> Optional[str]:
+        """
+        The name for the Authorizer to be referenced as. This must be unique for each unique
+        authorizer within the API. If no name if specified, a name will be generated for you.
+        """
+        return pulumi.get(self, "authorizer_name")
+
+    @authorizer_name.setter
+    def authorizer_name(self, value: Optional[str]):
+        pulumi.set(self, "authorizer_name", value)
+
+    @property
+    @pulumi.getter(name="authorizerResultTtlInSeconds")
+    def authorizer_result_ttl_in_seconds(self) -> Optional[float]:
+        """
+        The number of seconds during which the resulting IAM policy is cached. Default is 300s. You
+        can set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an
+        authorizer across more than one route you will want to disable the cache or else it will
+        cause problems for you.
+        """
+        return pulumi.get(self, "authorizer_result_ttl_in_seconds")
+
+    @authorizer_result_ttl_in_seconds.setter
+    def authorizer_result_ttl_in_seconds(self, value: Optional[float]):
+        pulumi.set(self, "authorizer_result_ttl_in_seconds", value)
+
+    @property
+    @pulumi.getter
+    def handler(self) -> Optional[pulumi.Input['pulumi_aws.lambda_.Function']]:
+        """
+        The authorizerHandler specifies information about the authorizing Lambda.
+        """
+        return pulumi.get(self, "handler")
+
+    @handler.setter
+    def handler(self, value: Optional[pulumi.Input['pulumi_aws.lambda_.Function']]):
+        pulumi.set(self, "handler", value)
+
+    @property
+    @pulumi.getter(name="identitySource")
+    def identity_source(self) -> Optional[Sequence[str]]:
+        """
+        List of mapping expressions of the request parameters as the identity source. This indicates
+        where in the request identity information is expected. Applicable for the authorizer of the
+        "request" type only. Example: ["method.request.header.HeaderAuth1",
+        "method.request.querystring.QueryString1"]
+        """
+        return pulumi.get(self, "identity_source")
+
+    @identity_source.setter
+    def identity_source(self, value: Optional[Sequence[str]]):
+        pulumi.set(self, "identity_source", value)
+
+    @property
+    @pulumi.getter(name="identityValidationExpression")
+    def identity_validation_expression(self) -> Optional[str]:
+        """
+        A regular expression for validating the token as the incoming identity. It only invokes the
+        authorizer's lambda if there is a match, else it will return a 401. This does not apply to
+        REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
+        """
+        return pulumi.get(self, "identity_validation_expression")
+
+    @identity_validation_expression.setter
+    def identity_validation_expression(self, value: Optional[str]):
+        pulumi.set(self, "identity_validation_expression", value)
+
+    @property
+    @pulumi.getter(name="methodsToAuthorize")
+    def methods_to_authorize(self) -> Optional[Sequence[str]]:
+        """
+        For method authorization, you can define resource servers and custom scopes by specifying the
+        "resource-server/scope". e.g. ["com.hamuta.movies/drama.view",
+        "http://my.resource.com/file.read"] For more information on resource servers and custom
+        scopes visit the AWS documentation -
+        https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
+        """
+        return pulumi.get(self, "methods_to_authorize")
+
+    @methods_to_authorize.setter
+    def methods_to_authorize(self, value: Optional[Sequence[str]]):
+        pulumi.set(self, "methods_to_authorize", value)
+
+    @property
+    @pulumi.getter(name="parameterLocation")
+    def parameter_location(self) -> Optional[str]:
+        """
+        Defines where in the request API Gateway should look for identity information. The value must
+        be "header" or "query". If there are multiple identity sources, the value must be "header".
+        """
+        return pulumi.get(self, "parameter_location")
+
+    @parameter_location.setter
+    def parameter_location(self, value: Optional[str]):
+        pulumi.set(self, "parameter_location", value)
+
+    @property
+    @pulumi.getter(name="providerARNs")
+    def provider_arns(self) -> Optional[Sequence[pulumi.Input[str]]]:
+        """
+        The ARNs of the Cognito User Pools to use.
+        """
+        return pulumi.get(self, "provider_arns")
+
+    @provider_arns.setter
+    def provider_arns(self, value: Optional[Sequence[pulumi.Input[str]]]):
+        pulumi.set(self, "provider_arns", value)
+
+    @property
+    @pulumi.getter
+    def type(self) -> Optional[str]:
+        """
+        The type of the authorizer. This value must be one of the following:
+        - "token", for an authorizer with the caller identity embedded in an authorization token
+        - "request", for an authorizer with the caller identity contained in request parameters
+        """
+        return pulumi.get(self, "type")
+
+    @type.setter
+    def type(self, value: Optional[str]):
+        pulumi.set(self, "type", value)
+
+
+@pulumi.input_type
+class RequiredParameterArgs:
+    def __init__(__self__, *,
+                 in_: Optional[pulumi.Input[str]] = None,
+                 name: Optional[pulumi.Input[str]] = None):
+        if in_ is not None:
+            pulumi.set(__self__, "in_", in_)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+
+    @property
+    @pulumi.getter(name="in")
+    def in_(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "in_")
+
+    @in_.setter
+    def in_(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "in_", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+
+@pulumi.input_type
 class RouteArgs:
     def __init__(__self__, *,
                  path: str,
+                 api_key_required: Optional[bool] = None,
+                 authorizers: Optional[Sequence['AuthorizerArgs']] = None,
                  content_type: Optional[str] = None,
                  data: Optional[Any] = None,
                  event_handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
+                 iam_auth_enabled: Optional[bool] = None,
                  index: Optional[Union[str, bool]] = None,
                  local_path: Optional[str] = None,
                  method: Optional['Method'] = None,
+                 request_validator: Optional['RequestValidator'] = None,
+                 required_parameters: Optional[Sequence['RequiredParameterArgs']] = None,
                  target: Optional[pulumi.Input['TargetArgs']] = None):
         """
         A route that that APIGateway should accept and forward to some type of destination. All routes
@@ -34,30 +288,50 @@ class RouteArgs:
 
         :param str path: The path on the API that will serve this route.  If not prefixed with `/`,
                then a `/` will be added automatically to the beginning.
+        :param bool api_key_required: If true, an API key will be required for this route. The source for the API Key can be set at
+               the API level and by default, the source will be the HEADER.
+        :param Sequence['AuthorizerArgs'] authorizers: Authorizers allows you to define Lambda authorizers be applied for authorization when the
+               the route is called.
         :param str content_type: The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
                `localPath` points to a directory, the content types for all files will be inferred.
         :param Any data: A raw Swagger object to include verbatim in the integration for this path.
         :param pulumi.Input['pulumi_aws.lambda_.Function'] event_handler: A Lambda function which will handle the route for the given path and method.
+        :param bool iam_auth_enabled: By default, the route method auth type is set to `NONE`. If true, the auth type will be
+               set to `AWS_IAM`.
         :param Union[str, bool] index: By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
                To disable this pass `false` or supply a new index document name.
         :param str local_path: The local path on disk to create static S3 resources for.  Files will be uploaded into S3
                objects, and directories will be recursively walked into.
         :param 'Method' method: The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
+        :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the method level. This will override anything
+               defined at the API level.
+        :param Sequence['RequiredParameterArgs'] required_parameters: Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+               gateway will validate these before sending traffic to the event handler.
         :param pulumi.Input['TargetArgs'] target: The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
         """
         pulumi.set(__self__, "path", path)
+        if api_key_required is not None:
+            pulumi.set(__self__, "api_key_required", api_key_required)
+        if authorizers is not None:
+            pulumi.set(__self__, "authorizers", authorizers)
         if content_type is not None:
             pulumi.set(__self__, "content_type", content_type)
         if data is not None:
             pulumi.set(__self__, "data", data)
         if event_handler is not None:
             pulumi.set(__self__, "event_handler", event_handler)
+        if iam_auth_enabled is not None:
+            pulumi.set(__self__, "iam_auth_enabled", iam_auth_enabled)
         if index is not None:
             pulumi.set(__self__, "index", index)
         if local_path is not None:
             pulumi.set(__self__, "local_path", local_path)
         if method is not None:
             pulumi.set(__self__, "method", method)
+        if request_validator is not None:
+            pulumi.set(__self__, "request_validator", request_validator)
+        if required_parameters is not None:
+            pulumi.set(__self__, "required_parameters", required_parameters)
         if target is not None:
             pulumi.set(__self__, "target", target)
 
@@ -73,6 +347,32 @@ class RouteArgs:
     @path.setter
     def path(self, value: str):
         pulumi.set(self, "path", value)
+
+    @property
+    @pulumi.getter(name="apiKeyRequired")
+    def api_key_required(self) -> Optional[bool]:
+        """
+        If true, an API key will be required for this route. The source for the API Key can be set at
+        the API level and by default, the source will be the HEADER.
+        """
+        return pulumi.get(self, "api_key_required")
+
+    @api_key_required.setter
+    def api_key_required(self, value: Optional[bool]):
+        pulumi.set(self, "api_key_required", value)
+
+    @property
+    @pulumi.getter
+    def authorizers(self) -> Optional[Sequence['AuthorizerArgs']]:
+        """
+        Authorizers allows you to define Lambda authorizers be applied for authorization when the
+        the route is called.
+        """
+        return pulumi.get(self, "authorizers")
+
+    @authorizers.setter
+    def authorizers(self, value: Optional[Sequence['AuthorizerArgs']]):
+        pulumi.set(self, "authorizers", value)
 
     @property
     @pulumi.getter(name="contentType")
@@ -112,6 +412,19 @@ class RouteArgs:
         pulumi.set(self, "event_handler", value)
 
     @property
+    @pulumi.getter(name="iamAuthEnabled")
+    def iam_auth_enabled(self) -> Optional[bool]:
+        """
+        By default, the route method auth type is set to `NONE`. If true, the auth type will be
+        set to `AWS_IAM`.
+        """
+        return pulumi.get(self, "iam_auth_enabled")
+
+    @iam_auth_enabled.setter
+    def iam_auth_enabled(self, value: Optional[bool]):
+        pulumi.set(self, "iam_auth_enabled", value)
+
+    @property
     @pulumi.getter
     def index(self) -> Optional[Union[str, bool]]:
         """
@@ -148,6 +461,32 @@ class RouteArgs:
     @method.setter
     def method(self, value: Optional['Method']):
         pulumi.set(self, "method", value)
+
+    @property
+    @pulumi.getter(name="requestValidator")
+    def request_validator(self) -> Optional['RequestValidator']:
+        """
+        Request Validator specifies the validator to use at the method level. This will override anything
+        defined at the API level.
+        """
+        return pulumi.get(self, "request_validator")
+
+    @request_validator.setter
+    def request_validator(self, value: Optional['RequestValidator']):
+        pulumi.set(self, "request_validator", value)
+
+    @property
+    @pulumi.getter(name="requiredParameters")
+    def required_parameters(self) -> Optional[Sequence['RequiredParameterArgs']]:
+        """
+        Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+        gateway will validate these before sending traffic to the event handler.
+        """
+        return pulumi.get(self, "required_parameters")
+
+    @required_parameters.setter
+    def required_parameters(self, value: Optional[Sequence['RequiredParameterArgs']]):
+        pulumi.set(self, "required_parameters", value)
 
     @property
     @pulumi.getter

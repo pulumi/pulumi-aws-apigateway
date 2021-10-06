@@ -18,17 +18,37 @@ namespace Pulumi.Apigateway.Inputs
     public sealed class RouteArgs : Pulumi.ResourceArgs
     {
         /// <summary>
+        /// If true, an API key will be required for this route. The source for the API Key can be set at
+        /// the API level and by default, the source will be the HEADER.
+        /// </summary>
+        [Input("apiKeyRequired")]
+        public bool? ApiKeyRequired { get; set; }
+
+        [Input("authorizers")]
+        private List<Inputs.AuthorizerArgs>? _authorizers;
+
+        /// <summary>
+        /// Authorizers allows you to define Lambda authorizers be applied for authorization when the
+        /// the route is called.
+        /// </summary>
+        public List<Inputs.AuthorizerArgs> Authorizers
+        {
+            get => _authorizers ?? (_authorizers = new List<Inputs.AuthorizerArgs>());
+            set => _authorizers = value;
+        }
+
+        /// <summary>
         /// The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
         /// `localPath` points to a directory, the content types for all files will be inferred.
         /// </summary>
         [Input("contentType")]
-        public Input<string>? ContentType { get; set; }
+        public string? ContentType { get; set; }
 
         /// <summary>
         /// A raw Swagger object to include verbatim in the integration for this path.
         /// </summary>
         [Input("data")]
-        public Input<object>? Data { get; set; }
+        public object? Data { get; set; }
 
         /// <summary>
         /// A Lambda function which will handle the route for the given path and method.
@@ -37,31 +57,58 @@ namespace Pulumi.Apigateway.Inputs
         public Input<Pulumi.Aws.Lambda.Function>? EventHandler { get; set; }
 
         /// <summary>
+        /// By default, the route method auth type is set to `NONE`. If true, the auth type will be
+        /// set to `AWS_IAM`.
+        /// </summary>
+        [Input("iamAuthEnabled")]
+        public bool? IamAuthEnabled { get; set; }
+
+        /// <summary>
         /// By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
         /// To disable this pass `false` or supply a new index document name.
         /// </summary>
         [Input("index")]
-        public InputUnion<string, bool>? Index { get; set; }
+        public Union<string, bool>? Index { get; set; }
 
         /// <summary>
         /// The local path on disk to create static S3 resources for.  Files will be uploaded into S3
         /// objects, and directories will be recursively walked into.
         /// </summary>
         [Input("localPath")]
-        public Input<string>? LocalPath { get; set; }
+        public string? LocalPath { get; set; }
 
         /// <summary>
         /// The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
         /// </summary>
         [Input("method")]
-        public Input<Pulumi.Apigateway.Method>? Method { get; set; }
+        public Pulumi.Apigateway.Method? Method { get; set; }
 
         /// <summary>
         /// The path on the API that will serve this route.  If not prefixed with `/`,
         /// then a `/` will be added automatically to the beginning.
         /// </summary>
         [Input("path", required: true)]
-        public Input<string> Path { get; set; } = null!;
+        public string Path { get; set; } = null!;
+
+        /// <summary>
+        /// Request Validator specifies the validator to use at the method level. This will override anything
+        /// defined at the API level.
+        /// </summary>
+        [Input("requestValidator")]
+        public Pulumi.Apigateway.RequestValidator? RequestValidator { get; set; }
+
+        [Input("requiredParameters")]
+        private List<Inputs.RequiredParameterArgs>? _requiredParameters;
+
+        /// <summary>
+        /// Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+        /// gateway will validate these before sending traffic to the event handler.
+        /// </summary>
+        public List<Inputs.RequiredParameterArgs> RequiredParameters
+        {
+            get => _requiredParameters ?? (_requiredParameters = new List<Inputs.RequiredParameterArgs>());
+            set => _requiredParameters = value;
+        }
 
         /// <summary>
         /// The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).

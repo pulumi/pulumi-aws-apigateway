@@ -7,11 +7,93 @@ import { input as inputs, output as outputs, enums } from "../types";
 import * as pulumiAws from "@pulumi/aws";
 
 /**
+ * LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
+ */
+export interface AuthorizerArgs {
+    /**
+     * Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
+     */
+    authType?: string;
+    /**
+     * The name for the Authorizer to be referenced as. This must be unique for each unique
+     * authorizer within the API. If no name if specified, a name will be generated for you.
+     */
+    authorizerName?: string;
+    /**
+     * The number of seconds during which the resulting IAM policy is cached. Default is 300s. You
+     * can set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an
+     * authorizer across more than one route you will want to disable the cache or else it will
+     * cause problems for you.
+     */
+    authorizerResultTtlInSeconds?: number;
+    /**
+     * The authorizerHandler specifies information about the authorizing Lambda.
+     */
+    handler?: pulumi.Input<pulumiAws.lambda.Function>;
+    /**
+     * List of mapping expressions of the request parameters as the identity source. This indicates
+     * where in the request identity information is expected. Applicable for the authorizer of the
+     * "request" type only. Example: ["method.request.header.HeaderAuth1",
+     * "method.request.querystring.QueryString1"]
+     */
+    identitySource?: string[];
+    /**
+     * A regular expression for validating the token as the incoming identity. It only invokes the
+     * authorizer's lambda if there is a match, else it will return a 401. This does not apply to
+     * REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
+     */
+    identityValidationExpression?: string;
+    /**
+     * For method authorization, you can define resource servers and custom scopes by specifying the
+     * "resource-server/scope". e.g. ["com.hamuta.movies/drama.view",
+     * "http://my.resource.com/file.read"] For more information on resource servers and custom
+     * scopes visit the AWS documentation -
+     * https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
+     */
+    methodsToAuthorize?: string[];
+    /**
+     * Defines where in the request API Gateway should look for identity information. The value must
+     * be "header" or "query". If there are multiple identity sources, the value must be "header".
+     */
+    parameterLocation?: string;
+    /**
+     * parameterName is the name of the header or query parameter containing the authorization
+     * token. Must be "Unused" for multiple identity sources.
+     */
+    parameterName: string;
+    /**
+     * The ARNs of the Cognito User Pools to use.
+     */
+    providerARNs?: pulumi.Input<string>[];
+    /**
+     * The type of the authorizer. This value must be one of the following:
+     * - "token", for an authorizer with the caller identity embedded in an authorization token
+     * - "request", for an authorizer with the caller identity contained in request parameters
+     */
+    type?: string;
+}
+
+export interface RequiredParameterArgs {
+    in?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
+}
+
+/**
  * A route that that APIGateway should accept and forward to some type of destination. All routes
  * have an incoming path that they match against.  However, destinations are determined by the kind
  * of the route.
  */
 export interface RouteArgs {
+    /**
+     * If true, an API key will be required for this route. The source for the API Key can be set at
+     * the API level and by default, the source will be the HEADER.
+     */
+    apiKeyRequired?: boolean;
+    /**
+     * Authorizers allows you to define Lambda authorizers be applied for authorization when the
+     * the route is called.
+     */
+    authorizers?: inputs.AuthorizerArgs[];
     /**
      * The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
      * `localPath` points to a directory, the content types for all files will be inferred.
@@ -25,6 +107,11 @@ export interface RouteArgs {
      * A Lambda function which will handle the route for the given path and method.
      */
     eventHandler?: pulumi.Input<pulumiAws.lambda.Function>;
+    /**
+     * By default, the route method auth type is set to `NONE`. If true, the auth type will be
+     * set to `AWS_IAM`.
+     */
+    iamAuthEnabled?: boolean;
     /**
      * By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
      * To disable this pass `false` or supply a new index document name.
@@ -44,6 +131,16 @@ export interface RouteArgs {
      * then a `/` will be added automatically to the beginning.
      */
     path: string;
+    /**
+     * Request Validator specifies the validator to use at the method level. This will override anything
+     * defined at the API level.
+     */
+    requestValidator?: enums.RequestValidator;
+    /**
+     * Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+     * gateway will validate these before sending traffic to the event handler.
+     */
+    requiredParameters?: inputs.RequiredParameterArgs[];
     /**
      * The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
      */

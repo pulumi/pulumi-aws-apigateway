@@ -78,15 +78,15 @@ namespace Pulumi.Apigateway
         public Pulumi.Apigateway.APIKeySource? ApiKeySource { get; set; }
 
         [Input("gatewayResponses")]
-        private ImmutableDictionary<string, Inputs.SwaggerGatewayResponseArgs>? _gatewayResponses;
+        private Dictionary<string, Input<Inputs.SwaggerGatewayResponseArgs>>? _gatewayResponses;
 
         /// <summary>
         /// Define custom gateway responses for the API. This can be used to properly enable
         /// CORS for Lambda Authorizers.
         /// </summary>
-        public ImmutableDictionary<string, Inputs.SwaggerGatewayResponseArgs> GatewayResponses
+        public Dictionary<string, Input<Inputs.SwaggerGatewayResponseArgs>> GatewayResponses
         {
-            get => _gatewayResponses ?? (_gatewayResponses = new ImmutableDictionary<string, Inputs.SwaggerGatewayResponseArgs>());
+            get => _gatewayResponses ?? (_gatewayResponses = new Dictionary<string, Input<Inputs.SwaggerGatewayResponseArgs>>());
             set => _gatewayResponses = value;
         }
 
@@ -98,7 +98,7 @@ namespace Pulumi.Apigateway
         public Pulumi.Apigateway.RequestValidator? RequestValidator { get; set; }
 
         [Input("routes")]
-        private InputList<Inputs.RouteArgs>? _routes;
+        private List<Inputs.RouteArgs>? _routes;
 
         /// <summary>
         /// Routes to use to initialize the APIGateway.  These will be used to create the Swagger
@@ -106,9 +106,9 @@ namespace Pulumi.Apigateway
         /// 
         /// Either `swaggerString` or `routes` must be specified.
         /// </summary>
-        public InputList<Inputs.RouteArgs> Routes
+        public List<Inputs.RouteArgs> Routes
         {
-            get => _routes ?? (_routes = new InputList<Inputs.RouteArgs>());
+            get => _routes ?? (_routes = new List<Inputs.RouteArgs>());
             set => _routes = value;
         }
 

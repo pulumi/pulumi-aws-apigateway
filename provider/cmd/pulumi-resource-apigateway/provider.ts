@@ -23,7 +23,6 @@ export class Provider implements provider.Provider {
     async construct(name: string, type: string, inputs: pulumi.Inputs,
         options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
 
-        // TODO: Add support for additional component resources here.
         switch (type) {
             case "apigateway:index:RestAPI":
                 return await constructRestAPI(name, inputs, options);

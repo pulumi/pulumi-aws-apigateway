@@ -10,11 +10,11 @@ VERSION_PATH    := provider/pkg/version.Version
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
 
-generate:: gen_go_sdk gen_nodejs_sdk gen_python_sdk
+generate:: gen_go_sdk gen_nodejs_sdk gen_python_sdk gen_dotnet_sdk
 
-build:: build_provider build_nodejs_sdk build_python_sdk
+build:: build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk
 
-install:: install_provider install_nodejs_sdk
+install:: install_provider install_nodejs_sdk install_dotnet_sdk
 
 
 # Provider

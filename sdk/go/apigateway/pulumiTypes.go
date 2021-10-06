@@ -11,10 +11,357 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
+type Authorizer struct {
+	// Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
+	AuthType *string `pulumi:"authType"`
+	// The name for the Authorizer to be referenced as. This must be unique for each unique
+	// authorizer within the API. If no name if specified, a name will be generated for you.
+	AuthorizerName *string `pulumi:"authorizerName"`
+	// The number of seconds during which the resulting IAM policy is cached. Default is 300s. You
+	// can set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an
+	// authorizer across more than one route you will want to disable the cache or else it will
+	// cause problems for you.
+	AuthorizerResultTtlInSeconds *float64 `pulumi:"authorizerResultTtlInSeconds"`
+	// The authorizerHandler specifies information about the authorizing Lambda.
+	Handler *lambda.Function `pulumi:"handler"`
+	// List of mapping expressions of the request parameters as the identity source. This indicates
+	// where in the request identity information is expected. Applicable for the authorizer of the
+	// "request" type only. Example: ["method.request.header.HeaderAuth1",
+	// "method.request.querystring.QueryString1"]
+	IdentitySource []string `pulumi:"identitySource"`
+	// A regular expression for validating the token as the incoming identity. It only invokes the
+	// authorizer's lambda if there is a match, else it will return a 401. This does not apply to
+	// REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
+	IdentityValidationExpression *string `pulumi:"identityValidationExpression"`
+	// For method authorization, you can define resource servers and custom scopes by specifying the
+	// "resource-server/scope". e.g. ["com.hamuta.movies/drama.view",
+	// "http://my.resource.com/file.read"] For more information on resource servers and custom
+	// scopes visit the AWS documentation -
+	// https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
+	MethodsToAuthorize []string `pulumi:"methodsToAuthorize"`
+	// Defines where in the request API Gateway should look for identity information. The value must
+	// be "header" or "query". If there are multiple identity sources, the value must be "header".
+	ParameterLocation *string `pulumi:"parameterLocation"`
+	// parameterName is the name of the header or query parameter containing the authorization
+	// token. Must be "Unused" for multiple identity sources.
+	ParameterName string `pulumi:"parameterName"`
+	// The ARNs of the Cognito User Pools to use.
+	ProviderARNs []string `pulumi:"providerARNs"`
+	// The type of the authorizer. This value must be one of the following:
+	// - "token", for an authorizer with the caller identity embedded in an authorization token
+	// - "request", for an authorizer with the caller identity contained in request parameters
+	Type *string `pulumi:"type"`
+}
+
+// AuthorizerInput is an input type that accepts AuthorizerArgs and AuthorizerOutput values.
+// You can construct a concrete instance of `AuthorizerInput` via:
+//
+//          AuthorizerArgs{...}
+type AuthorizerInput interface {
+	pulumi.Input
+
+	ToAuthorizerOutput() AuthorizerOutput
+	ToAuthorizerOutputWithContext(context.Context) AuthorizerOutput
+}
+
+// LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
+type AuthorizerArgs struct {
+	// Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
+	AuthType *string `pulumi:"authType"`
+	// The name for the Authorizer to be referenced as. This must be unique for each unique
+	// authorizer within the API. If no name if specified, a name will be generated for you.
+	AuthorizerName *string `pulumi:"authorizerName"`
+	// The number of seconds during which the resulting IAM policy is cached. Default is 300s. You
+	// can set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an
+	// authorizer across more than one route you will want to disable the cache or else it will
+	// cause problems for you.
+	AuthorizerResultTtlInSeconds *float64 `pulumi:"authorizerResultTtlInSeconds"`
+	// The authorizerHandler specifies information about the authorizing Lambda.
+	Handler lambda.FunctionInput `pulumi:"handler"`
+	// List of mapping expressions of the request parameters as the identity source. This indicates
+	// where in the request identity information is expected. Applicable for the authorizer of the
+	// "request" type only. Example: ["method.request.header.HeaderAuth1",
+	// "method.request.querystring.QueryString1"]
+	IdentitySource []string `pulumi:"identitySource"`
+	// A regular expression for validating the token as the incoming identity. It only invokes the
+	// authorizer's lambda if there is a match, else it will return a 401. This does not apply to
+	// REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
+	IdentityValidationExpression *string `pulumi:"identityValidationExpression"`
+	// For method authorization, you can define resource servers and custom scopes by specifying the
+	// "resource-server/scope". e.g. ["com.hamuta.movies/drama.view",
+	// "http://my.resource.com/file.read"] For more information on resource servers and custom
+	// scopes visit the AWS documentation -
+	// https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
+	MethodsToAuthorize []string `pulumi:"methodsToAuthorize"`
+	// Defines where in the request API Gateway should look for identity information. The value must
+	// be "header" or "query". If there are multiple identity sources, the value must be "header".
+	ParameterLocation *string `pulumi:"parameterLocation"`
+	// parameterName is the name of the header or query parameter containing the authorization
+	// token. Must be "Unused" for multiple identity sources.
+	ParameterName string `pulumi:"parameterName"`
+	// The ARNs of the Cognito User Pools to use.
+	ProviderARNs []pulumi.StringInput `pulumi:"providerARNs"`
+	// The type of the authorizer. This value must be one of the following:
+	// - "token", for an authorizer with the caller identity embedded in an authorization token
+	// - "request", for an authorizer with the caller identity contained in request parameters
+	Type *string `pulumi:"type"`
+}
+
+func (AuthorizerArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*Authorizer)(nil)).Elem()
+}
+
+func (i AuthorizerArgs) ToAuthorizerOutput() AuthorizerOutput {
+	return i.ToAuthorizerOutputWithContext(context.Background())
+}
+
+func (i AuthorizerArgs) ToAuthorizerOutputWithContext(ctx context.Context) AuthorizerOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(AuthorizerOutput)
+}
+
+// AuthorizerArrayInput is an input type that accepts AuthorizerArray and AuthorizerArrayOutput values.
+// You can construct a concrete instance of `AuthorizerArrayInput` via:
+//
+//          AuthorizerArray{ AuthorizerArgs{...} }
+type AuthorizerArrayInput interface {
+	pulumi.Input
+
+	ToAuthorizerArrayOutput() AuthorizerArrayOutput
+	ToAuthorizerArrayOutputWithContext(context.Context) AuthorizerArrayOutput
+}
+
+type AuthorizerArray []AuthorizerInput
+
+func (AuthorizerArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]Authorizer)(nil)).Elem()
+}
+
+func (i AuthorizerArray) ToAuthorizerArrayOutput() AuthorizerArrayOutput {
+	return i.ToAuthorizerArrayOutputWithContext(context.Background())
+}
+
+func (i AuthorizerArray) ToAuthorizerArrayOutputWithContext(ctx context.Context) AuthorizerArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(AuthorizerArrayOutput)
+}
+
+// LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
+type AuthorizerOutput struct{ *pulumi.OutputState }
+
+func (AuthorizerOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Authorizer)(nil)).Elem()
+}
+
+func (o AuthorizerOutput) ToAuthorizerOutput() AuthorizerOutput {
+	return o
+}
+
+func (o AuthorizerOutput) ToAuthorizerOutputWithContext(ctx context.Context) AuthorizerOutput {
+	return o
+}
+
+// Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
+func (o AuthorizerOutput) AuthType() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Authorizer) *string { return v.AuthType }).(pulumi.StringPtrOutput)
+}
+
+// The name for the Authorizer to be referenced as. This must be unique for each unique
+// authorizer within the API. If no name if specified, a name will be generated for you.
+func (o AuthorizerOutput) AuthorizerName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Authorizer) *string { return v.AuthorizerName }).(pulumi.StringPtrOutput)
+}
+
+// The number of seconds during which the resulting IAM policy is cached. Default is 300s. You
+// can set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an
+// authorizer across more than one route you will want to disable the cache or else it will
+// cause problems for you.
+func (o AuthorizerOutput) AuthorizerResultTtlInSeconds() pulumi.Float64PtrOutput {
+	return o.ApplyT(func(v Authorizer) *float64 { return v.AuthorizerResultTtlInSeconds }).(pulumi.Float64PtrOutput)
+}
+
+// The authorizerHandler specifies information about the authorizing Lambda.
+func (o AuthorizerOutput) Handler() lambda.FunctionOutput {
+	return o.ApplyT(func(v Authorizer) *lambda.Function { return v.Handler }).(lambda.FunctionOutput)
+}
+
+// List of mapping expressions of the request parameters as the identity source. This indicates
+// where in the request identity information is expected. Applicable for the authorizer of the
+// "request" type only. Example: ["method.request.header.HeaderAuth1",
+// "method.request.querystring.QueryString1"]
+func (o AuthorizerOutput) IdentitySource() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v Authorizer) []string { return v.IdentitySource }).(pulumi.StringArrayOutput)
+}
+
+// A regular expression for validating the token as the incoming identity. It only invokes the
+// authorizer's lambda if there is a match, else it will return a 401. This does not apply to
+// REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
+func (o AuthorizerOutput) IdentityValidationExpression() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Authorizer) *string { return v.IdentityValidationExpression }).(pulumi.StringPtrOutput)
+}
+
+// For method authorization, you can define resource servers and custom scopes by specifying the
+// "resource-server/scope". e.g. ["com.hamuta.movies/drama.view",
+// "http://my.resource.com/file.read"] For more information on resource servers and custom
+// scopes visit the AWS documentation -
+// https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
+func (o AuthorizerOutput) MethodsToAuthorize() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v Authorizer) []string { return v.MethodsToAuthorize }).(pulumi.StringArrayOutput)
+}
+
+// Defines where in the request API Gateway should look for identity information. The value must
+// be "header" or "query". If there are multiple identity sources, the value must be "header".
+func (o AuthorizerOutput) ParameterLocation() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Authorizer) *string { return v.ParameterLocation }).(pulumi.StringPtrOutput)
+}
+
+// parameterName is the name of the header or query parameter containing the authorization
+// token. Must be "Unused" for multiple identity sources.
+func (o AuthorizerOutput) ParameterName() pulumi.StringOutput {
+	return o.ApplyT(func(v Authorizer) string { return v.ParameterName }).(pulumi.StringOutput)
+}
+
+// The ARNs of the Cognito User Pools to use.
+func (o AuthorizerOutput) ProviderARNs() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v Authorizer) []string { return v.ProviderARNs }).(pulumi.StringArrayOutput)
+}
+
+// The type of the authorizer. This value must be one of the following:
+// - "token", for an authorizer with the caller identity embedded in an authorization token
+// - "request", for an authorizer with the caller identity contained in request parameters
+func (o AuthorizerOutput) Type() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Authorizer) *string { return v.Type }).(pulumi.StringPtrOutput)
+}
+
+type AuthorizerArrayOutput struct{ *pulumi.OutputState }
+
+func (AuthorizerArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]Authorizer)(nil)).Elem()
+}
+
+func (o AuthorizerArrayOutput) ToAuthorizerArrayOutput() AuthorizerArrayOutput {
+	return o
+}
+
+func (o AuthorizerArrayOutput) ToAuthorizerArrayOutputWithContext(ctx context.Context) AuthorizerArrayOutput {
+	return o
+}
+
+func (o AuthorizerArrayOutput) Index(i pulumi.IntInput) AuthorizerOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Authorizer {
+		return vs[0].([]Authorizer)[vs[1].(int)]
+	}).(AuthorizerOutput)
+}
+
+type RequiredParameter struct {
+	In   *string `pulumi:"in"`
+	Name *string `pulumi:"name"`
+}
+
+// RequiredParameterInput is an input type that accepts RequiredParameterArgs and RequiredParameterOutput values.
+// You can construct a concrete instance of `RequiredParameterInput` via:
+//
+//          RequiredParameterArgs{...}
+type RequiredParameterInput interface {
+	pulumi.Input
+
+	ToRequiredParameterOutput() RequiredParameterOutput
+	ToRequiredParameterOutputWithContext(context.Context) RequiredParameterOutput
+}
+
+type RequiredParameterArgs struct {
+	In   pulumi.StringPtrInput `pulumi:"in"`
+	Name pulumi.StringPtrInput `pulumi:"name"`
+}
+
+func (RequiredParameterArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RequiredParameter)(nil)).Elem()
+}
+
+func (i RequiredParameterArgs) ToRequiredParameterOutput() RequiredParameterOutput {
+	return i.ToRequiredParameterOutputWithContext(context.Background())
+}
+
+func (i RequiredParameterArgs) ToRequiredParameterOutputWithContext(ctx context.Context) RequiredParameterOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RequiredParameterOutput)
+}
+
+// RequiredParameterArrayInput is an input type that accepts RequiredParameterArray and RequiredParameterArrayOutput values.
+// You can construct a concrete instance of `RequiredParameterArrayInput` via:
+//
+//          RequiredParameterArray{ RequiredParameterArgs{...} }
+type RequiredParameterArrayInput interface {
+	pulumi.Input
+
+	ToRequiredParameterArrayOutput() RequiredParameterArrayOutput
+	ToRequiredParameterArrayOutputWithContext(context.Context) RequiredParameterArrayOutput
+}
+
+type RequiredParameterArray []RequiredParameterInput
+
+func (RequiredParameterArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RequiredParameter)(nil)).Elem()
+}
+
+func (i RequiredParameterArray) ToRequiredParameterArrayOutput() RequiredParameterArrayOutput {
+	return i.ToRequiredParameterArrayOutputWithContext(context.Background())
+}
+
+func (i RequiredParameterArray) ToRequiredParameterArrayOutputWithContext(ctx context.Context) RequiredParameterArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RequiredParameterArrayOutput)
+}
+
+type RequiredParameterOutput struct{ *pulumi.OutputState }
+
+func (RequiredParameterOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RequiredParameter)(nil)).Elem()
+}
+
+func (o RequiredParameterOutput) ToRequiredParameterOutput() RequiredParameterOutput {
+	return o
+}
+
+func (o RequiredParameterOutput) ToRequiredParameterOutputWithContext(ctx context.Context) RequiredParameterOutput {
+	return o
+}
+
+func (o RequiredParameterOutput) In() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RequiredParameter) *string { return v.In }).(pulumi.StringPtrOutput)
+}
+
+func (o RequiredParameterOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RequiredParameter) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+type RequiredParameterArrayOutput struct{ *pulumi.OutputState }
+
+func (RequiredParameterArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]RequiredParameter)(nil)).Elem()
+}
+
+func (o RequiredParameterArrayOutput) ToRequiredParameterArrayOutput() RequiredParameterArrayOutput {
+	return o
+}
+
+func (o RequiredParameterArrayOutput) ToRequiredParameterArrayOutputWithContext(ctx context.Context) RequiredParameterArrayOutput {
+	return o
+}
+
+func (o RequiredParameterArrayOutput) Index(i pulumi.IntInput) RequiredParameterOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RequiredParameter {
+		return vs[0].([]RequiredParameter)[vs[1].(int)]
+	}).(RequiredParameterOutput)
+}
+
 // A route that that APIGateway should accept and forward to some type of destination. All routes
 // have an incoming path that they match against.  However, destinations are determined by the kind
 // of the route.
 type Route struct {
+	// If true, an API key will be required for this route. The source for the API Key can be set at
+	// the API level and by default, the source will be the HEADER.
+	ApiKeyRequired *bool `pulumi:"apiKeyRequired"`
+	// Authorizers allows you to define Lambda authorizers be applied for authorization when the
+	// the route is called.
+	Authorizers []Authorizer `pulumi:"authorizers"`
 	// The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
 	// `localPath` points to a directory, the content types for all files will be inferred.
 	ContentType *string `pulumi:"contentType"`
@@ -22,6 +369,9 @@ type Route struct {
 	Data interface{} `pulumi:"data"`
 	// A Lambda function which will handle the route for the given path and method.
 	EventHandler *lambda.Function `pulumi:"eventHandler"`
+	// By default, the route method auth type is set to `NONE`. If true, the auth type will be
+	// set to `AWS_IAM`.
+	IamAuthEnabled *bool `pulumi:"iamAuthEnabled"`
 	// By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
 	// To disable this pass `false` or supply a new index document name.
 	Index interface{} `pulumi:"index"`
@@ -33,6 +383,12 @@ type Route struct {
 	// The path on the API that will serve this route.  If not prefixed with `/`,
 	// then a `/` will be added automatically to the beginning.
 	Path string `pulumi:"path"`
+	// Request Validator specifies the validator to use at the method level. This will override anything
+	// defined at the API level.
+	RequestValidator *RequestValidator `pulumi:"requestValidator"`
+	// Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+	// gateway will validate these before sending traffic to the event handler.
+	RequiredParameters []RequiredParameter `pulumi:"requiredParameters"`
 	// The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
 	Target *Target `pulumi:"target"`
 }
@@ -52,6 +408,12 @@ type RouteInput interface {
 // have an incoming path that they match against.  However, destinations are determined by the kind
 // of the route.
 type RouteArgs struct {
+	// If true, an API key will be required for this route. The source for the API Key can be set at
+	// the API level and by default, the source will be the HEADER.
+	ApiKeyRequired *bool `pulumi:"apiKeyRequired"`
+	// Authorizers allows you to define Lambda authorizers be applied for authorization when the
+	// the route is called.
+	Authorizers []AuthorizerArgs `pulumi:"authorizers"`
 	// The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
 	// `localPath` points to a directory, the content types for all files will be inferred.
 	ContentType *string `pulumi:"contentType"`
@@ -59,6 +421,9 @@ type RouteArgs struct {
 	Data interface{} `pulumi:"data"`
 	// A Lambda function which will handle the route for the given path and method.
 	EventHandler lambda.FunctionInput `pulumi:"eventHandler"`
+	// By default, the route method auth type is set to `NONE`. If true, the auth type will be
+	// set to `AWS_IAM`.
+	IamAuthEnabled *bool `pulumi:"iamAuthEnabled"`
 	// By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
 	// To disable this pass `false` or supply a new index document name.
 	Index interface{} `pulumi:"index"`
@@ -70,6 +435,12 @@ type RouteArgs struct {
 	// The path on the API that will serve this route.  If not prefixed with `/`,
 	// then a `/` will be added automatically to the beginning.
 	Path string `pulumi:"path"`
+	// Request Validator specifies the validator to use at the method level. This will override anything
+	// defined at the API level.
+	RequestValidator *RequestValidator `pulumi:"requestValidator"`
+	// Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+	// gateway will validate these before sending traffic to the event handler.
+	RequiredParameters []RequiredParameterArgs `pulumi:"requiredParameters"`
 	// The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
 	Target TargetPtrInput `pulumi:"target"`
 }
@@ -128,6 +499,18 @@ func (o RouteOutput) ToRouteOutputWithContext(ctx context.Context) RouteOutput {
 	return o
 }
 
+// If true, an API key will be required for this route. The source for the API Key can be set at
+// the API level and by default, the source will be the HEADER.
+func (o RouteOutput) ApiKeyRequired() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v Route) *bool { return v.ApiKeyRequired }).(pulumi.BoolPtrOutput)
+}
+
+// Authorizers allows you to define Lambda authorizers be applied for authorization when the
+// the route is called.
+func (o RouteOutput) Authorizers() AuthorizerArrayOutput {
+	return o.ApplyT(func(v Route) []Authorizer { return v.Authorizers }).(AuthorizerArrayOutput)
+}
+
 // The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
 // `localPath` points to a directory, the content types for all files will be inferred.
 func (o RouteOutput) ContentType() pulumi.StringPtrOutput {
@@ -142,6 +525,12 @@ func (o RouteOutput) Data() pulumi.AnyOutput {
 // A Lambda function which will handle the route for the given path and method.
 func (o RouteOutput) EventHandler() lambda.FunctionOutput {
 	return o.ApplyT(func(v Route) *lambda.Function { return v.EventHandler }).(lambda.FunctionOutput)
+}
+
+// By default, the route method auth type is set to `NONE`. If true, the auth type will be
+// set to `AWS_IAM`.
+func (o RouteOutput) IamAuthEnabled() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v Route) *bool { return v.IamAuthEnabled }).(pulumi.BoolPtrOutput)
 }
 
 // By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
@@ -165,6 +554,18 @@ func (o RouteOutput) Method() MethodPtrOutput {
 // then a `/` will be added automatically to the beginning.
 func (o RouteOutput) Path() pulumi.StringOutput {
 	return o.ApplyT(func(v Route) string { return v.Path }).(pulumi.StringOutput)
+}
+
+// Request Validator specifies the validator to use at the method level. This will override anything
+// defined at the API level.
+func (o RouteOutput) RequestValidator() RequestValidatorPtrOutput {
+	return o.ApplyT(func(v Route) *RequestValidator { return v.RequestValidator }).(RequestValidatorPtrOutput)
+}
+
+// Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+// gateway will validate these before sending traffic to the event handler.
+func (o RouteOutput) RequiredParameters() RequiredParameterArrayOutput {
+	return o.ApplyT(func(v Route) []RequiredParameter { return v.RequiredParameters }).(RequiredParameterArrayOutput)
 }
 
 // The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
@@ -767,6 +1168,10 @@ func (o TargetPtrOutput) Uri() pulumi.StringPtrOutput {
 }
 
 func init() {
+	pulumi.RegisterOutputType(AuthorizerOutput{})
+	pulumi.RegisterOutputType(AuthorizerArrayOutput{})
+	pulumi.RegisterOutputType(RequiredParameterOutput{})
+	pulumi.RegisterOutputType(RequiredParameterArrayOutput{})
 	pulumi.RegisterOutputType(RouteOutput{})
 	pulumi.RegisterOutputType(RouteArrayOutput{})
 	pulumi.RegisterOutputType(SwaggerGatewayResponseOutput{})
