@@ -9,7 +9,7 @@ import * as pulumiAws from "@pulumi/aws";
 
 export class RestAPI extends pulumi.ComponentResource {
     /** @internal */
-    public static readonly __pulumiType = 'apigateway:index:RestAPI';
+    public static readonly __pulumiType = 'aws-apigateway:index:RestAPI';
 
     /**
      * Returns true if the given object is an instance of RestAPI.  This is designed to work even

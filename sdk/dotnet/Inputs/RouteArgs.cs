@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Apigateway.Inputs
+namespace Pulumi.AwsApiGateway.Inputs
 {
 
     /// <summary>
@@ -81,7 +81,7 @@ namespace Pulumi.Apigateway.Inputs
         /// The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
         /// </summary>
         [Input("method")]
-        public Pulumi.Apigateway.Method? Method { get; set; }
+        public Pulumi.AwsApiGateway.Method? Method { get; set; }
 
         /// <summary>
         /// The path on the API that will serve this route.  If not prefixed with `/`,
@@ -95,7 +95,7 @@ namespace Pulumi.Apigateway.Inputs
         /// defined at the API level.
         /// </summary>
         [Input("requestValidator")]
-        public Pulumi.Apigateway.RequestValidator? RequestValidator { get; set; }
+        public Pulumi.AwsApiGateway.RequestValidator? RequestValidator { get; set; }
 
         [Input("requiredParameters")]
         private List<Inputs.RequiredParameterArgs>? _requiredParameters;

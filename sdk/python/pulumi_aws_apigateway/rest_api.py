@@ -248,7 +248,7 @@ class RestAPI(pulumi.ComponentResource):
             __props__.__dict__["stage"] = None
             __props__.__dict__["url"] = None
         super(RestAPI, __self__).__init__(
-            'apigateway:index:RestAPI',
+            'aws-apigateway:index:RestAPI',
             resource_name,
             __props__,
             opts,

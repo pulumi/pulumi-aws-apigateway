@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Apigateway.Inputs
+namespace Pulumi.AwsApiGateway.Inputs
 {
 
     public sealed class TargetArgs : Pulumi.ResourceArgs
@@ -25,7 +25,7 @@ namespace Pulumi.Apigateway.Inputs
         /// between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
         /// </summary>
         [Input("connectionType")]
-        public Input<Pulumi.Apigateway.IntegrationConnectionType>? ConnectionType { get; set; }
+        public Input<Pulumi.AwsApiGateway.IntegrationConnectionType>? ConnectionType { get; set; }
 
         /// <summary>
         /// Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
@@ -56,7 +56,7 @@ namespace Pulumi.Apigateway.Inputs
         /// Defaults to `WHEN_NO_MATCH` if unspecified.
         /// </summary>
         [Input("passthroughBehaviour")]
-        public Input<Pulumi.Apigateway.IntegrationPassthroughBehavior>? PassthroughBehaviour { get; set; }
+        public Input<Pulumi.AwsApiGateway.IntegrationPassthroughBehavior>? PassthroughBehaviour { get; set; }
 
         /// <summary>
         /// Specifies an API method integration type. The valid value is one of the following:
@@ -81,7 +81,7 @@ namespace Pulumi.Apigateway.Inputs
         /// without invoking any backend.
         /// </summary>
         [Input("type", required: true)]
-        public Input<Pulumi.Apigateway.IntegrationType> Type { get; set; } = null!;
+        public Input<Pulumi.AwsApiGateway.IntegrationType> Type { get; set; } = null!;
 
         /// <summary>
         /// Specifies Uniform Resource Identifier (URI) of the integration endpoint.

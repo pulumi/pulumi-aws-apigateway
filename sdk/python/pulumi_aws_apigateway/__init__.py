@@ -13,11 +13,11 @@ _utilities.register(
     resource_modules="""
 [
  {
-  "pkg": "apigateway",
+  "pkg": "aws-apigateway",
   "mod": "index",
-  "fqn": "pulumi_apigateway",
+  "fqn": "pulumi_aws_apigateway",
   "classes": {
-   "apigateway:index:RestAPI": "RestAPI"
+   "aws-apigateway:index:RestAPI": "RestAPI"
   }
  }
 ]
@@ -25,9 +25,9 @@ _utilities.register(
     resource_packages="""
 [
  {
-  "pkg": "apigateway",
-  "token": "pulumi:providers:apigateway",
-  "fqn": "pulumi_apigateway",
+  "pkg": "aws-apigateway",
+  "token": "pulumi:providers:aws-apigateway",
+  "fqn": "pulumi_aws_apigateway",
   "class": "Provider"
  }
 ]

@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Apigateway
+namespace Pulumi.AwsApiGateway
 {
-    [ApigatewayResourceType("apigateway:index:RestAPI")]
+    [AwsApiGatewayResourceType("aws-apigateway:index:RestAPI")]
     public partial class RestAPI : Pulumi.ComponentResource
     {
         /// <summary>
@@ -51,7 +51,7 @@ namespace Pulumi.Apigateway
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public RestAPI(string name, RestAPIArgs? args = null, ComponentResourceOptions? options = null)
-            : base("apigateway:index:RestAPI", name, args ?? new RestAPIArgs(), MakeResourceOptions(options, ""), remote: true)
+            : base("aws-apigateway:index:RestAPI", name, args ?? new RestAPIArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
 
@@ -75,7 +75,7 @@ namespace Pulumi.Apigateway
         /// set to true on a route, and this is not defined the value will default to HEADER.
         /// </summary>
         [Input("apiKeySource")]
-        public Pulumi.Apigateway.APIKeySource? ApiKeySource { get; set; }
+        public Pulumi.AwsApiGateway.APIKeySource? ApiKeySource { get; set; }
 
         [Input("gatewayResponses")]
         private Dictionary<string, Input<Inputs.SwaggerGatewayResponseArgs>>? _gatewayResponses;
@@ -95,7 +95,7 @@ namespace Pulumi.Apigateway
         /// override this.
         /// </summary>
         [Input("requestValidator")]
-        public Pulumi.Apigateway.RequestValidator? RequestValidator { get; set; }
+        public Pulumi.AwsApiGateway.RequestValidator? RequestValidator { get; set; }
 
         [Input("routes")]
         private List<Inputs.RouteArgs>? _routes;

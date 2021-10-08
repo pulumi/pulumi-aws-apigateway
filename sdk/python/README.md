@@ -19,7 +19,7 @@ pulumi.export('url', api.url)
 TypeScript:
 
 ```ts
-import * as apigateway from "./apigateway";
+import * as apigateway from "@pulumi/aws-apigateway";
 import * as aws from "@pulumi/aws";
 
 const f = new aws.lambda.CallbackFunction("f", {

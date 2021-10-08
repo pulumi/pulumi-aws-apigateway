@@ -1,7 +1,7 @@
 ---
-name: apigateway
+name: aws-apigateway
 types:
-  apigateway:index:Route:
+  aws-apigateway:index:Route:
     type: object
     properties:
       path:
@@ -11,7 +11,7 @@ types:
           The path on the API that will serve this route.  If not prefixed with `/`,
           then a `/` will be added automatically to the beginning.
       method:
-        "$ref": "#/types/apigateway:index:Method"
+        "$ref": "#/types/aws-apigateway:index:Method"
         plain: true
         description: |
           The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
@@ -47,20 +47,20 @@ types:
         description: |
           A raw Swagger object to include verbatim in the integration for this path.
       target:
-        "$ref": "#/types/apigateway:index:Target"
+        "$ref": "#/types/aws-apigateway:index:Target"
         description: |
           The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
       requiredParameters:
         type: array
         items:
-          "$ref": "#/types/apigateway:index:RequiredParameter"
+          "$ref": "#/types/aws-apigateway:index:RequiredParameter"
           plain: true
         plain: true
         description: |
           Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
           gateway will validate these before sending traffic to the event handler.
       requestValidator:
-        "$ref": "#/types/apigateway:index:RequestValidator"
+        "$ref": "#/types/aws-apigateway:index:RequestValidator"
         plain: true
         description: |
           Request Validator specifies the validator to use at the method level. This will override anything
@@ -74,7 +74,7 @@ types:
       authorizers:
         type: array
         items:
-          "$ref": "#/types/apigateway:index:Authorizer"
+          "$ref": "#/types/aws-apigateway:index:Authorizer"
           plain: true
         plain: true
         description: |
@@ -92,11 +92,11 @@ types:
       A route that that APIGateway should accept and forward to some type of destination. All routes
       have an incoming path that they match against.  However, destinations are determined by the kind
       of the route.
-  apigateway:index:Target:
+  aws-apigateway:index:Target:
     type: object
     properties:
       type:
-        "$ref": "#/types/apigateway:index:IntegrationType"
+        "$ref": "#/types/aws-apigateway:index:IntegrationType"
         description: |
           Specifies an API method integration type. The valid value is one of the following:
           
@@ -146,7 +146,7 @@ types:
           arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
           arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
       connectionType:
-        "$ref": "#/types/apigateway:index:IntegrationConnectionType"
+        "$ref": "#/types/aws-apigateway:index:IntegrationConnectionType"
         description: |
           The type of the network connection to the integration endpoint. The valid value is `INTERNET`
           for connections through the public routable internet or `VPC_LINK` for private connections
@@ -157,7 +157,7 @@ types:
           The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
           otherwise.
       passthroughBehaviour:
-        "$ref": "#/types/apigateway:index:IntegrationPassthroughBehavior"
+        "$ref": "#/types/aws-apigateway:index:IntegrationPassthroughBehavior"
         description: |
           Specifies how the method request body of an unmapped content type will be passed through the
           integration request to the back end without transformation.
@@ -182,7 +182,7 @@ types:
     required:
     - type
     - uri
-  apigateway:index:Method:
+  aws-apigateway:index:Method:
     type: string
     enum:
     - value: ANY
@@ -193,23 +193,23 @@ types:
     - value: PATCH
     - value: OPTIONS
     - value: HEAD
-  apigateway:index:RequestValidator:
+  aws-apigateway:index:RequestValidator:
     type: string
     enum:
     - value: ALL
     - value: PARAMS_ONLY
     - value: BODY_ONLY
-  apigateway:index:APIKeySource:
+  aws-apigateway:index:APIKeySource:
     type: string
     enum:
     - value: HEADER
     - value: AUTHORIZER
-  apigateway:index:IntegrationConnectionType:
+  aws-apigateway:index:IntegrationConnectionType:
     type: string
     enum:
     - value: INTERNET
     - value: VPC_LINK
-  apigateway:index:IntegrationType:
+  aws-apigateway:index:IntegrationType:
     type: string
     enum:
     - value: aws
@@ -217,13 +217,13 @@ types:
     - value: http
     - value: http_proxy
     - value: mock
-  apigateway:index:IntegrationPassthroughBehavior:
+  aws-apigateway:index:IntegrationPassthroughBehavior:
     type: string
     enum:
     - value: when_no_match
     - value: when_no_templates
     - value: never
-  apigateway:index:SwaggerGatewayResponse:
+  aws-apigateway:index:SwaggerGatewayResponse:
     type: object
     properties:
       statusCode:
@@ -236,7 +236,7 @@ types:
         type: object
         additionalProperties:
           type: string
-  apigateway:index:RequiredParameter:
+  aws-apigateway:index:RequiredParameter:
     type: object
     properties:
       name:
@@ -247,7 +247,7 @@ types:
         - value: path
         - value: query
         - value: header
-  apigateway:index:Authorizer:
+  aws-apigateway:index:Authorizer:
     type: object
     properties:
       authorizerName:
@@ -340,13 +340,13 @@ types:
     description: |
       LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
 resources:
-  apigateway:index:RestAPI:
+  aws-apigateway:index:RestAPI:
     isComponent: true
     inputProperties:
       routes:
         type: array
         items:
-          "$ref": "#/types/apigateway:index:Route"
+          "$ref": "#/types/aws-apigateway:index:Route"
           plain: true
         plain: true
         description: |
@@ -367,13 +367,13 @@ resources:
         description: |
           The stage name for your API. This will get added as a base path to your API url.
       requestValidator:
-        "$ref": "#/types/apigateway:index:RequestValidator"
+        "$ref": "#/types/aws-apigateway:index:RequestValidator"
         plain: true
         description: |
           Request Validator specifies the validator to use at the API level. Note method level validators
           override this.
       apiKeySource:
-        "$ref": "#/types/apigateway:index:APIKeySource"
+        "$ref": "#/types/aws-apigateway:index:APIKeySource"
         plain: true
         description: |
           The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
@@ -386,7 +386,7 @@ resources:
       gatewayResponses:
         type: object
         additionalProperties:
-          "$ref": "#/types/apigateway:index:SwaggerGatewayResponse"
+          "$ref": "#/types/aws-apigateway:index:SwaggerGatewayResponse"
         plain: true
         description: |
           Define custom gateway responses for the API. This can be used to properly enable
@@ -419,12 +419,14 @@ resources:
     - stage
 language:
   csharp:
+    namespaces: 
+      aws-apigateway: AwsApiGateway
     packageReferences:
       Pulumi: 3.*
       Pulumi.Aws: 4.*
   go:
-    generateResourceContainerTypes: true
     importBasePath: github.com/lukehoban/pulumi-package-aws-apigateway/sdk/go/apigateway
+    rootPackageName: apigateway
   nodejs:
     dependencies:
       "@pulumi/aws": "^4.5.1"

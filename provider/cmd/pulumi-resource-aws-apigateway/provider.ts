@@ -24,7 +24,7 @@ export class Provider implements provider.Provider {
         options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
 
         switch (type) {
-            case "apigateway:index:RestAPI":
+            case "aws-apigateway:index:RestAPI":
                 return await constructRestAPI(name, inputs, options);
             default:
                 throw new Error(`unknown resource type ${type}`);

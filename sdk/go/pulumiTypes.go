@@ -1168,6 +1168,16 @@ func (o TargetPtrOutput) Uri() pulumi.StringPtrOutput {
 }
 
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*AuthorizerInput)(nil)).Elem(), AuthorizerArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*AuthorizerArrayInput)(nil)).Elem(), AuthorizerArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RequiredParameterInput)(nil)).Elem(), RequiredParameterArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RequiredParameterArrayInput)(nil)).Elem(), RequiredParameterArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RouteInput)(nil)).Elem(), RouteArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RouteArrayInput)(nil)).Elem(), RouteArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SwaggerGatewayResponseInput)(nil)).Elem(), SwaggerGatewayResponseArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SwaggerGatewayResponseMapInput)(nil)).Elem(), SwaggerGatewayResponseMap{})
+	pulumi.RegisterInputType(reflect.TypeOf((*TargetInput)(nil)).Elem(), TargetArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*TargetPtrInput)(nil)).Elem(), TargetArgs{})
 	pulumi.RegisterOutputType(AuthorizerOutput{})
 	pulumi.RegisterOutputType(AuthorizerArrayOutput{})
 	pulumi.RegisterOutputType(RequiredParameterOutput{})

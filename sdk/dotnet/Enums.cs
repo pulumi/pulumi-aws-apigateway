@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using Pulumi;
 
-namespace Pulumi.Apigateway
+namespace Pulumi.AwsApiGateway
 {
     [EnumType]
     public readonly struct APIKeySource : IEquatable<APIKeySource>

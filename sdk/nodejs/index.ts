@@ -25,21 +25,21 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
-            case "apigateway:index:RestAPI":
+            case "aws-apigateway:index:RestAPI":
                 return new RestAPI(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
     },
 };
-pulumi.runtime.registerResourceModule("apigateway", "index", _module)
+pulumi.runtime.registerResourceModule("aws-apigateway", "index", _module)
 
 import { Provider } from "./provider";
 
-pulumi.runtime.registerResourcePackage("apigateway", {
+pulumi.runtime.registerResourcePackage("aws-apigateway", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {
-        if (type !== "pulumi:providers:apigateway") {
+        if (type !== "pulumi:providers:aws-apigateway") {
             throw new Error(`unknown provider type ${type}`);
         }
         return new Provider(name, <any>undefined, { urn });

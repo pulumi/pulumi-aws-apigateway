@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using Pulumi;
 
-namespace Pulumi.Apigateway
+namespace Pulumi.AwsApiGateway
 {
     static class Utilities
     {
@@ -66,7 +66,7 @@ namespace Pulumi.Apigateway
         static Utilities()
         {
             var assembly = typeof(Utilities).GetTypeInfo().Assembly;
-            using var stream = assembly.GetManifestResourceStream("Pulumi.Apigateway.version.txt");
+            using var stream = assembly.GetManifestResourceStream("Pulumi.AwsApiGateway.version.txt");
             using var reader = new StreamReader(stream ?? throw new NotSupportedException("Missing embedded version.txt file"));
             version = reader.ReadToEnd().Trim();
             var parts = version.Split("\n");
@@ -78,9 +78,9 @@ namespace Pulumi.Apigateway
         }
     }
 
-    internal sealed class ApigatewayResourceTypeAttribute : Pulumi.ResourceTypeAttribute
+    internal sealed class AwsApiGatewayResourceTypeAttribute : Pulumi.ResourceTypeAttribute
     {
-        public ApigatewayResourceTypeAttribute(string type) : base(type, Utilities.Version)
+        public AwsApiGatewayResourceTypeAttribute(string type) : base(type, Utilities.Version)
         {
         }
     }

@@ -1,5 +1,5 @@
 {
-    "name": "@pulumi/apigateway",
+    "name": "@pulumi/aws-apigateway",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc"

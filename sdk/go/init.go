@@ -20,7 +20,7 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
-	case "apigateway:index:RestAPI":
+	case "aws-apigateway:index:RestAPI":
 		r = &RestAPI{}
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
@@ -39,7 +39,7 @@ func (p *pkg) Version() semver.Version {
 }
 
 func (p *pkg) ConstructProvider(ctx *pulumi.Context, name, typ, urn string) (pulumi.ProviderResource, error) {
-	if typ != "pulumi:providers:apigateway" {
+	if typ != "pulumi:providers:aws-apigateway" {
 		return nil, fmt.Errorf("unknown provider type: %s", typ)
 	}
 
@@ -54,12 +54,12 @@ func init() {
 		fmt.Printf("failed to determine package version. defaulting to v1: %v\n", err)
 	}
 	pulumi.RegisterResourceModule(
-		"apigateway",
+		"aws-apigateway",
 		"index",
 		&module{version},
 	)
 	pulumi.RegisterResourcePackage(
-		"apigateway",
+		"aws-apigateway",
 		&pkg{version},
 	)
 }

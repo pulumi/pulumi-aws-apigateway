@@ -1,6 +1,6 @@
 VERSION         := 0.0.1
 
-PACK            := apigateway
+PACK            := aws-apigateway
 PROJECT         := github.com/lukehoban/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}

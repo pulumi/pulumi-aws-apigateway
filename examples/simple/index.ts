@@ -1,4 +1,4 @@
-import * as apigateway from "@pulumi/apigateway";
+import * as apigateway from "@pulumi/aws-apigateway";
 import * as aws from "@pulumi/aws";
 
 const f = new aws.lambda.CallbackFunction("f", {

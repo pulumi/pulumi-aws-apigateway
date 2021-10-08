@@ -35,7 +35,7 @@ func NewRestAPI(ctx *pulumi.Context,
 	}
 
 	var resource RestAPI
-	err := ctx.RegisterRemoteComponentResource("apigateway:index:RestAPI", name, args, &resource, opts...)
+	err := ctx.RegisterRemoteComponentResource("aws-apigateway:index:RestAPI", name, args, &resource, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,85 +122,6 @@ func (i *RestAPI) ToRestAPIOutputWithContext(ctx context.Context) RestAPIOutput 
 	return pulumi.ToOutputWithContext(ctx, i).(RestAPIOutput)
 }
 
-func (i *RestAPI) ToRestAPIPtrOutput() RestAPIPtrOutput {
-	return i.ToRestAPIPtrOutputWithContext(context.Background())
-}
-
-func (i *RestAPI) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RestAPIPtrOutput)
-}
-
-type RestAPIPtrInput interface {
-	pulumi.Input
-
-	ToRestAPIPtrOutput() RestAPIPtrOutput
-	ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput
-}
-
-type restAPIPtrType RestAPIArgs
-
-func (*restAPIPtrType) ElementType() reflect.Type {
-	return reflect.TypeOf((**RestAPI)(nil))
-}
-
-func (i *restAPIPtrType) ToRestAPIPtrOutput() RestAPIPtrOutput {
-	return i.ToRestAPIPtrOutputWithContext(context.Background())
-}
-
-func (i *restAPIPtrType) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RestAPIPtrOutput)
-}
-
-// RestAPIArrayInput is an input type that accepts RestAPIArray and RestAPIArrayOutput values.
-// You can construct a concrete instance of `RestAPIArrayInput` via:
-//
-//          RestAPIArray{ RestAPIArgs{...} }
-type RestAPIArrayInput interface {
-	pulumi.Input
-
-	ToRestAPIArrayOutput() RestAPIArrayOutput
-	ToRestAPIArrayOutputWithContext(context.Context) RestAPIArrayOutput
-}
-
-type RestAPIArray []RestAPIInput
-
-func (RestAPIArray) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]*RestAPI)(nil)).Elem()
-}
-
-func (i RestAPIArray) ToRestAPIArrayOutput() RestAPIArrayOutput {
-	return i.ToRestAPIArrayOutputWithContext(context.Background())
-}
-
-func (i RestAPIArray) ToRestAPIArrayOutputWithContext(ctx context.Context) RestAPIArrayOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RestAPIArrayOutput)
-}
-
-// RestAPIMapInput is an input type that accepts RestAPIMap and RestAPIMapOutput values.
-// You can construct a concrete instance of `RestAPIMapInput` via:
-//
-//          RestAPIMap{ "key": RestAPIArgs{...} }
-type RestAPIMapInput interface {
-	pulumi.Input
-
-	ToRestAPIMapOutput() RestAPIMapOutput
-	ToRestAPIMapOutputWithContext(context.Context) RestAPIMapOutput
-}
-
-type RestAPIMap map[string]RestAPIInput
-
-func (RestAPIMap) ElementType() reflect.Type {
-	return reflect.TypeOf((*map[string]*RestAPI)(nil)).Elem()
-}
-
-func (i RestAPIMap) ToRestAPIMapOutput() RestAPIMapOutput {
-	return i.ToRestAPIMapOutputWithContext(context.Background())
-}
-
-func (i RestAPIMap) ToRestAPIMapOutputWithContext(ctx context.Context) RestAPIMapOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(RestAPIMapOutput)
-}
-
 type RestAPIOutput struct{ *pulumi.OutputState }
 
 func (RestAPIOutput) ElementType() reflect.Type {
@@ -215,83 +136,6 @@ func (o RestAPIOutput) ToRestAPIOutputWithContext(ctx context.Context) RestAPIOu
 	return o
 }
 
-func (o RestAPIOutput) ToRestAPIPtrOutput() RestAPIPtrOutput {
-	return o.ToRestAPIPtrOutputWithContext(context.Background())
-}
-
-func (o RestAPIOutput) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
-	return o.ApplyTWithContext(ctx, func(_ context.Context, v RestAPI) *RestAPI {
-		return &v
-	}).(RestAPIPtrOutput)
-}
-
-type RestAPIPtrOutput struct{ *pulumi.OutputState }
-
-func (RestAPIPtrOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((**RestAPI)(nil))
-}
-
-func (o RestAPIPtrOutput) ToRestAPIPtrOutput() RestAPIPtrOutput {
-	return o
-}
-
-func (o RestAPIPtrOutput) ToRestAPIPtrOutputWithContext(ctx context.Context) RestAPIPtrOutput {
-	return o
-}
-
-func (o RestAPIPtrOutput) Elem() RestAPIOutput {
-	return o.ApplyT(func(v *RestAPI) RestAPI {
-		if v != nil {
-			return *v
-		}
-		var ret RestAPI
-		return ret
-	}).(RestAPIOutput)
-}
-
-type RestAPIArrayOutput struct{ *pulumi.OutputState }
-
-func (RestAPIArrayOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*[]RestAPI)(nil))
-}
-
-func (o RestAPIArrayOutput) ToRestAPIArrayOutput() RestAPIArrayOutput {
-	return o
-}
-
-func (o RestAPIArrayOutput) ToRestAPIArrayOutputWithContext(ctx context.Context) RestAPIArrayOutput {
-	return o
-}
-
-func (o RestAPIArrayOutput) Index(i pulumi.IntInput) RestAPIOutput {
-	return pulumi.All(o, i).ApplyT(func(vs []interface{}) RestAPI {
-		return vs[0].([]RestAPI)[vs[1].(int)]
-	}).(RestAPIOutput)
-}
-
-type RestAPIMapOutput struct{ *pulumi.OutputState }
-
-func (RestAPIMapOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*map[string]RestAPI)(nil))
-}
-
-func (o RestAPIMapOutput) ToRestAPIMapOutput() RestAPIMapOutput {
-	return o
-}
-
-func (o RestAPIMapOutput) ToRestAPIMapOutputWithContext(ctx context.Context) RestAPIMapOutput {
-	return o
-}
-
-func (o RestAPIMapOutput) MapIndex(k pulumi.StringInput) RestAPIOutput {
-	return pulumi.All(o, k).ApplyT(func(vs []interface{}) RestAPI {
-		return vs[0].(map[string]RestAPI)[vs[1].(string)]
-	}).(RestAPIOutput)
-}
-
 func init() {
 	pulumi.RegisterOutputType(RestAPIOutput{})
-	pulumi.RegisterOutputType(RestAPIPtrOutput{})
-	pulumi.RegisterOutputType(RestAPIArrayOutput{})
-	pulumi.RegisterOutputType(RestAPIMapOutput{})
 }
