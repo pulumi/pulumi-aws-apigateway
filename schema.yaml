@@ -425,7 +425,7 @@ language:
       Pulumi: 3.*
       Pulumi.Aws: 4.*
   go:
-    importBasePath: github.com/lukehoban/pulumi-package-aws-apigateway/sdk/apigateway
+    importBasePath: github.com/pulumi/pulumi-aws-apigateway/sdk/apigateway
   nodejs:
     dependencies:
       "@pulumi/aws": "^4.5.1"

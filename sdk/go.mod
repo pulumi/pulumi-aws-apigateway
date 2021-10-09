@@ -1,4 +1,4 @@
-module github.com/lukehoban/pulumi-package-aws-apigateway/sdk
+module github.com/pulumi/pulumi-aws-apigateway/sdk
 
 go 1.15
 
