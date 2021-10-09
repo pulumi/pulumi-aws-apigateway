@@ -1,4 +1,4 @@
-VERSION         := 0.0.1
+VERSION         := $(shell pulumictl get version)
 
 PACK            := aws-apigateway
 PROJECT         := github.com/pulumi/pulumi-${PACK}
@@ -42,6 +42,7 @@ gen_go_sdk::
 	rm -rf go
 	cd provider/cmd/${CODEGEN} && go run . go ../../../sdk/go ${SCHEMA_PATH}
 
+build_go_sdk::
 
 # .NET SDK
 
@@ -92,6 +93,6 @@ build_python_sdk:: gen_python_sdk
 	cd sdk/python/ && \
 		python3 setup.py clean --all 2>/dev/null && \
 		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
-		sed -i.bak -e "s/\$${VERSION}/${PYPI_VERSION}/g" -e "s/\$${PLUGIN_VERSION}/${VERSION}/g" ./bin/setup.py && \
+		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
 		rm ./bin/setup.py.bak && \
 		cd ./bin && python3 setup.py build sdist
