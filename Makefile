@@ -1,7 +1,7 @@
 VERSION         := $(shell pulumictl get version)
 
 PACK            := aws-apigateway
-PROJECT         := github.com/lukehoban/pulumi-${PACK}
+PROJECT         := github.com/pulumi/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
 CODEGEN         := pulumi-gen-${PACK}
