@@ -16,7 +16,7 @@ api = apigateway.RestAPI('api', routes=[
 pulumi.export('url', api.url)
 ```
 
-Go:
+Go: 
 
 ```go
 getMethod := apigateway.MethodGET
