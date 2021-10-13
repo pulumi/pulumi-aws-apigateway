@@ -57,6 +57,13 @@ jobs:
         run: make dist
       - name: Upload Provider Binaries
         run: aws s3 cp dist s3://get.pulumi.com/releases/plugins/ --recursive
+      - name: Create GH Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
     strategy:
       fail-fast: true
       matrix:

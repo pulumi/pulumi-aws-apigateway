@@ -16,6 +16,21 @@ api = apigateway.RestAPI('api', routes=[
 pulumi.export('url', api.url)
 ```
 
+Go:
+
+```go
+getMethod := apigateway.MethodGET
+restAPI, err := apigateway.NewRestAPI(ctx, "api", &apigateway.RestAPIArgs{
+    Routes: []apigateway.RouteArgs{
+        apigateway.RouteArgs{
+            Path:         "/",
+            Method:       &getMethod,
+            EventHandler: f,
+        },
+    },
+})
+```
+
 TypeScript:
 
 ```ts
