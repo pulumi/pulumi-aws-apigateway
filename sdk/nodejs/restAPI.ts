@@ -7,6 +7,12 @@ import * as utilities from "./utilities";
 
 import * as pulumiAws from "@pulumi/aws";
 
+/**
+ * The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The
+ * REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event
+ * hander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket
+ * and serves them or (3) an integration target such as an HTTP proxy or service integration.
+ */
 export class RestAPI extends pulumi.ComponentResource {
     /** @internal */
     public static readonly __pulumiType = 'aws-apigateway:index:RestAPI';

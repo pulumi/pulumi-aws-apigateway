@@ -169,7 +169,11 @@ class RestAPI(pulumi.ComponentResource):
                  swagger_string: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a RestAPI resource with the given unique name, props, and options.
+        The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The
+        REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event
+        hander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket
+        and serves them or (3) an integration target such as an HTTP proxy or service integration.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
@@ -198,7 +202,11 @@ class RestAPI(pulumi.ComponentResource):
                  args: Optional[RestAPIArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a RestAPI resource with the given unique name, props, and options.
+        The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The
+        REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event
+        hander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket
+        and serves them or (3) an integration target such as an HTTP proxy or service integration.
+
         :param str resource_name: The name of the resource.
         :param RestAPIArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

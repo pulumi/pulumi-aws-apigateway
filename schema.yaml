@@ -1,5 +1,6 @@
 ---
 name: aws-apigateway
+logoUrl: https://raw.githubusercontent.com/pulumi/pulumi-aws-apigateway/main/assets/logo.svg
 types:
   aws-apigateway:index:Route:
     type: object
@@ -417,6 +418,11 @@ resources:
     - api
     - deployment
     - stage
+    description: |
+      The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The 
+      REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event 
+      hander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket 
+      and serves them or (3) an integration target such as an HTTP proxy or service integration.
 language:
   csharp:
     namespaces: 
