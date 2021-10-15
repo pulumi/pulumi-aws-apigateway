@@ -3,7 +3,7 @@
     "dependencies": {
         "@pulumi/pulumi": "^3.13.2",
         "@pulumi/aws": "^4.22.1",
-        "@pulumi/awsx": "^0.32.0"
+        "@pulumi/awsx": "^0.32.1-alpha.1634010693"
     },
     "devDependencies": {
         "@types/node": "^10.0.0",
