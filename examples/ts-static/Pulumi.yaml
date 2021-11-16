@@ -1,0 +1,3 @@
+name: apigateway-ts-static
+runtime: nodejs
+description: Apigateway static example
