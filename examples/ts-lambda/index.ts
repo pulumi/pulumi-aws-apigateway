@@ -1,12 +1,12 @@
-import * as apigateway from "@pulumi/aws-apigateway";
 import * as aws from "@pulumi/aws";
+import * as apigateway from "@pulumi/aws-apigateway";
 
-const f = new aws.lambda.CallbackFunction("f", {
+const helloHandler = new aws.lambda.CallbackFunction("hello-handler", {
     callback: async (ev, ctx) => {
         console.log(JSON.stringify(ev));
         return {
             statusCode: 200,
-            body: "goodbye",
+            body: "Hello, API Gateway!",
         };
     },
 });
@@ -15,7 +15,7 @@ const api = new apigateway.RestAPI("api", {
     routes: [{
         path: "/",
         method: "GET",
-        eventHandler: f,
+        eventHandler: helloHandler,
     }],
 });
 

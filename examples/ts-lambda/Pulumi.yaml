@@ -1,0 +1,3 @@
+name: apigateway-ts-lambda
+runtime: nodejs
+description: Apigateway lambda example
