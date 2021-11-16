@@ -1,0 +1,8 @@
+{
+    "go.buildTags": "all",
+    "go.testTimeout": "1h",
+    "gopls": {
+        // Experimental but seems to work and means we don't need a vscode instance per go.mod file.
+        "experimentalWorkspaceModule": true,
+    },
+}
