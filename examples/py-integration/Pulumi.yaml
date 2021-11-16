@@ -1,0 +1,6 @@
+name: apigateway-py-integration
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Apigateway integration example
