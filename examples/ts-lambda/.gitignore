@@ -1,6 +1,2 @@
 /bin/
 /node_modules/
-
-# Example-specific ignores
-Pulumi.*.yaml
-yarn.lock
