@@ -1,0 +1,3 @@
+name: apigateway-ts-integration
+runtime: nodejs
+description: Apigateway integration example
