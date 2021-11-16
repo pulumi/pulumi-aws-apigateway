@@ -1,0 +1,6 @@
+name: apigateway-py-static
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Apigateway static example
