@@ -1,0 +1,6 @@
+name: apigateway-py-lambda
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Apigateway lambda example
