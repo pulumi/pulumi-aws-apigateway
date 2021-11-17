@@ -1,0 +1,3 @@
+name: apigateway-go-cognito
+runtime: go
+description: Apigateway Cognito authorizer example

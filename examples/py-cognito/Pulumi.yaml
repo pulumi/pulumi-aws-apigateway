@@ -1,0 +1,6 @@
+name: apigateway-py-cognito
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Apigateway Cognito authorizer example
