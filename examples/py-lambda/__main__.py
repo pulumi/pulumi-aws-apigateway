@@ -11,6 +11,7 @@ helloHandler = aws.lambda_.Function("mylambda",
     handler="handler.handler",
 )
 
+# Define an endpoint that invokes a lambda to handle requests
 api = apigateway.RestAPI('api', routes=[
     apigateway.RouteArgs(path="/", method="GET", event_handler=helloHandler),
 ])

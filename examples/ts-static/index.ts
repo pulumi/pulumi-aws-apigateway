@@ -1,9 +1,9 @@
 import * as apigateway from "@pulumi/aws-apigateway";
 
+// Define an endpoint that serves an entire directory of static content.
 const api = new apigateway.RestAPI("api", {
     routes: [{
         path: "/",
-        method: "GET",
         localPath: "www",
     }],
 });

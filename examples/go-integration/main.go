@@ -7,6 +7,7 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
+		// Define an endpoint that proxies HTTP requests to https://www.google.com.
 		getMethod := apigateway.MethodGET
 		restAPI, err := apigateway.NewRestAPI(ctx, "api", &apigateway.RestAPIArgs{
 			Routes: []apigateway.RouteArgs{

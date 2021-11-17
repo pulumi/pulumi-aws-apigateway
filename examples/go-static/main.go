@@ -7,13 +7,12 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		getMethod := apigateway.MethodGET
+		// Define an endpoint that serves an entire directory of static content.
 		localPath := "www"
 		restAPI, err := apigateway.NewRestAPI(ctx, "api", &apigateway.RestAPIArgs{
 			Routes: []apigateway.RouteArgs{
 				{
 					Path:      "/",
-					Method:    &getMethod,
 					LocalPath: &localPath,
 				},
 			},

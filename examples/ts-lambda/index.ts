@@ -11,6 +11,7 @@ const helloHandler = new aws.lambda.CallbackFunction("hello-handler", {
     },
 });
 
+// Define an endpoint that invokes a lambda to handle requests
 const api = new apigateway.RestAPI("api", {
     routes: [{
         path: "/",

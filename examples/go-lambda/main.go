@@ -19,6 +19,7 @@ func main() {
 			return err
 		}
 
+		// Define an endpoint that invokes a lambda to handle requests
 		getMethod := apigateway.MethodGET
 		restAPI, err := apigateway.NewRestAPI(ctx, "api", &apigateway.RestAPIArgs{
 			Routes: []apigateway.RouteArgs{
