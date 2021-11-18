@@ -1,0 +1,21 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: make install
+
+vscode:
+  extensions:
+    - "golang.go"
+    - "ms-dotnettools.csharp"
+    - "ms-python.python"
+    - "formulahendry.dotnet-test-explorer"
+
+# See: https://www.gitpod.io/docs/prebuilds/#configure-the-github-app
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: true
+    addCheck: true

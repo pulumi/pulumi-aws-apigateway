@@ -1,0 +1,13 @@
+{
+    "name": "pulumi-codespace",
+    "build": {
+      "dockerfile": "../.gitpod.Dockerfile",
+    },
+    "postCreateCommand": "make install",
+    "remoteUser": "gitpod",
+    "containerEnv": {
+        "PULUMI_ACCESS_TOKEN": "${localEnv:PULUMI_ACCESS_TOKEN}",
+        "PULUMI_TEST_ORG": "${localEnv:PULUMI_TEST_ORG}"
+    },
+    "extensions": ["golang.go", "ms-dotnettools.csharp", "ms-python.python", "formulahendry.dotnet-test-explorer"],
+}
