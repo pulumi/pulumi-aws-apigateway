@@ -1,6 +1,7 @@
 import * as aws from "@pulumi/aws";
 import * as apigateway from "@pulumi/aws-apigateway";
 
+// Create a user pool to contain authorized users of the API
 const userPool = new aws.cognito.UserPool('user-pool');
 
 const api = new apigateway.RestAPI("api", {

@@ -8,7 +8,11 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
+		// Create a user pool to contain authorized users of the API
 		userPool, err := cognito.NewUserPool(ctx, "user-pool", &cognito.UserPoolArgs{})
+		if err != nil {
+			return err
+		}
 
 		localPath := "www"
 		restAPI, err := apigateway.NewRestAPI(ctx, "api", &apigateway.RestAPIArgs{
