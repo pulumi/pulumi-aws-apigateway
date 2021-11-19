@@ -1,0 +1,6 @@
+name: apigateway-py-lambda-auth
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Apigateway Lambda authorizer example
