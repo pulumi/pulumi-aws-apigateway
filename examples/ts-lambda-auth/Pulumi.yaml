@@ -1,0 +1,3 @@
+name: apigateway-ts-lambda-auth
+runtime: nodejs
+description: Apigateway Lambda authorizer example
