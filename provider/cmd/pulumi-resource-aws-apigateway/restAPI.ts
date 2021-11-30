@@ -157,6 +157,10 @@ export class RestAPI extends pulumi.ComponentResource {
 
         this.registerOutputs({
             url: api.url,
+            api: api.restAPI,
+            deployment: api.deployment,
+            stage: api.stage,
+            apiPolicy: api.apiPolicy,
         });
     }
 }
