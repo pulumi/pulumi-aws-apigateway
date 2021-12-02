@@ -19,28 +19,28 @@ namespace Pulumi.AwsApiGateway
     public partial class RestAPI : Pulumi.ComponentResource
     {
         /// <summary>
-        /// The underlying RestAPI resource.
+        /// The provider-assigned unique ID for the underlying RestAPI. 
         /// </summary>
-        [Output("api")]
-        public Output<Pulumi.Aws.ApiGateway.RestApi> Api { get; private set; } = null!;
+        [Output("apiId")]
+        public Output<string> ApiId { get; private set; } = null!;
 
         /// <summary>
-        /// The underlying RestAPIPolicy resource.
+        /// The provider-assigned unique ID for the underlying RestAPIPolicy resource.
         /// </summary>
-        [Output("apiPolicy")]
-        public Output<Pulumi.Aws.ApiGateway.RestApiPolicy?> ApiPolicy { get; private set; } = null!;
+        [Output("apiPolicyId")]
+        public Output<string?> ApiPolicyId { get; private set; } = null!;
 
         /// <summary>
-        /// The underlying Deployment resource.
+        /// The provider-assigned unique ID for the underlying Deployment.
         /// </summary>
-        [Output("deployment")]
-        public Output<Pulumi.Aws.ApiGateway.Deployment> Deployment { get; private set; } = null!;
+        [Output("deploymentId")]
+        public Output<string> DeploymentId { get; private set; } = null!;
 
         /// <summary>
-        /// The underlying Stage resource.
+        /// Name of the stage created with the deployment.
         /// </summary>
-        [Output("stage")]
-        public Output<Pulumi.Aws.ApiGateway.Stage> Stage { get; private set; } = null!;
+        [Output("stageName")]
+        public Output<string> StageName { get; private set; } = null!;
 
         /// <summary>
         /// The URL where the Rest API is exposed.

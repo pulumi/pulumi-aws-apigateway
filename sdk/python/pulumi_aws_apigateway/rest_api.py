@@ -250,10 +250,9 @@ class RestAPI(pulumi.ComponentResource):
             __props__.__dict__["stage_name"] = stage_name
             __props__.__dict__["static_routes_bucket"] = static_routes_bucket
             __props__.__dict__["swagger_string"] = swagger_string
-            __props__.__dict__["api"] = None
-            __props__.__dict__["api_policy"] = None
-            __props__.__dict__["deployment"] = None
-            __props__.__dict__["stage"] = None
+            __props__.__dict__["api_id"] = None
+            __props__.__dict__["api_policy_id"] = None
+            __props__.__dict__["deployment_id"] = None
             __props__.__dict__["url"] = None
         super(RestAPI, __self__).__init__(
             'aws-apigateway:index:RestAPI',
@@ -263,36 +262,36 @@ class RestAPI(pulumi.ComponentResource):
             remote=True)
 
     @property
-    @pulumi.getter
-    def api(self) -> pulumi.Output['pulumi_aws.apigateway.RestApi']:
+    @pulumi.getter(name="apiId")
+    def api_id(self) -> pulumi.Output[str]:
         """
-        The underlying RestAPI resource.
+        The provider-assigned unique ID for the underlying RestAPI. 
         """
-        return pulumi.get(self, "api")
+        return pulumi.get(self, "api_id")
 
     @property
-    @pulumi.getter(name="apiPolicy")
-    def api_policy(self) -> pulumi.Output[Optional['pulumi_aws.apigateway.RestApiPolicy']]:
+    @pulumi.getter(name="apiPolicyId")
+    def api_policy_id(self) -> pulumi.Output[Optional[str]]:
         """
-        The underlying RestAPIPolicy resource.
+        The provider-assigned unique ID for the underlying RestAPIPolicy resource.
         """
-        return pulumi.get(self, "api_policy")
+        return pulumi.get(self, "api_policy_id")
 
     @property
-    @pulumi.getter
-    def deployment(self) -> pulumi.Output['pulumi_aws.apigateway.Deployment']:
+    @pulumi.getter(name="deploymentId")
+    def deployment_id(self) -> pulumi.Output[str]:
         """
-        The underlying Deployment resource.
+        The provider-assigned unique ID for the underlying Deployment.
         """
-        return pulumi.get(self, "deployment")
+        return pulumi.get(self, "deployment_id")
 
     @property
-    @pulumi.getter
-    def stage(self) -> pulumi.Output['pulumi_aws.apigateway.Stage']:
+    @pulumi.getter(name="stageName")
+    def stage_name(self) -> pulumi.Output[str]:
         """
-        The underlying Stage resource.
+        Name of the stage created with the deployment.
         """
-        return pulumi.get(self, "stage")
+        return pulumi.get(self, "stage_name")
 
     @property
     @pulumi.getter
