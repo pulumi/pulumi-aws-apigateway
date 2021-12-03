@@ -7,6 +7,7 @@ import (
 	"context"
 	"reflect"
 
+	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/apigateway"
 	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -18,14 +19,14 @@ import (
 type RestAPI struct {
 	pulumi.ResourceState
 
-	// The provider-assigned unique ID for the underlying RestAPI.
-	ApiId pulumi.StringOutput `pulumi:"apiId"`
-	// The provider-assigned unique ID for the underlying RestAPIPolicy resource.
-	ApiPolicyId pulumi.StringPtrOutput `pulumi:"apiPolicyId"`
-	// The provider-assigned unique ID for the underlying Deployment.
-	DeploymentId pulumi.StringOutput `pulumi:"deploymentId"`
-	// Name of the stage created with the deployment.
-	StageName pulumi.StringOutput `pulumi:"stageName"`
+	// The underlying RestAPI resource.
+	Api apigateway.RestApiOutput `pulumi:"api"`
+	// The underlying RestAPIPolicy resource.
+	ApiPolicy apigateway.RestApiPolicyOutput `pulumi:"apiPolicy"`
+	// The underlying Deployment resource.
+	Deployment apigateway.DeploymentOutput `pulumi:"deployment"`
+	// The underlying Stage resource.
+	Stage apigateway.StageOutput `pulumi:"stage"`
 	// The URL where the Rest API is exposed.
 	Url pulumi.StringOutput `pulumi:"url"`
 }

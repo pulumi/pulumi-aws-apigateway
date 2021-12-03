@@ -29,21 +29,21 @@ export class RestAPI extends pulumi.ComponentResource {
     }
 
     /**
-     * The provider-assigned unique ID for the underlying RestAPI. 
+     * The underlying RestAPI resource.
      */
-    public /*out*/ readonly apiId!: pulumi.Output<string>;
+    public /*out*/ readonly api!: pulumi.Output<pulumiAws.apigateway.RestApi>;
     /**
-     * The provider-assigned unique ID for the underlying RestAPIPolicy resource.
+     * The underlying RestAPIPolicy resource.
      */
-    public /*out*/ readonly apiPolicyId!: pulumi.Output<string | undefined>;
+    public /*out*/ readonly apiPolicy!: pulumi.Output<pulumiAws.apigateway.RestApiPolicy | undefined>;
     /**
-     * The provider-assigned unique ID for the underlying Deployment.
+     * The underlying Deployment resource.
      */
-    public /*out*/ readonly deploymentId!: pulumi.Output<string>;
+    public /*out*/ readonly deployment!: pulumi.Output<pulumiAws.apigateway.Deployment>;
     /**
-     * Name of the stage created with the deployment.
+     * The underlying Stage resource.
      */
-    public readonly stageName!: pulumi.Output<string>;
+    public /*out*/ readonly stage!: pulumi.Output<pulumiAws.apigateway.Stage>;
     /**
      * The URL where the Rest API is exposed.
      */
@@ -67,15 +67,16 @@ export class RestAPI extends pulumi.ComponentResource {
             inputs["stageName"] = args ? args.stageName : undefined;
             inputs["staticRoutesBucket"] = args ? args.staticRoutesBucket : undefined;
             inputs["swaggerString"] = args ? args.swaggerString : undefined;
-            inputs["apiId"] = undefined /*out*/;
-            inputs["apiPolicyId"] = undefined /*out*/;
-            inputs["deploymentId"] = undefined /*out*/;
+            inputs["api"] = undefined /*out*/;
+            inputs["apiPolicy"] = undefined /*out*/;
+            inputs["deployment"] = undefined /*out*/;
+            inputs["stage"] = undefined /*out*/;
             inputs["url"] = undefined /*out*/;
         } else {
-            inputs["apiId"] = undefined /*out*/;
-            inputs["apiPolicyId"] = undefined /*out*/;
-            inputs["deploymentId"] = undefined /*out*/;
-            inputs["stageName"] = undefined /*out*/;
+            inputs["api"] = undefined /*out*/;
+            inputs["apiPolicy"] = undefined /*out*/;
+            inputs["deployment"] = undefined /*out*/;
+            inputs["stage"] = undefined /*out*/;
             inputs["url"] = undefined /*out*/;
         }
         if (!opts.version) {

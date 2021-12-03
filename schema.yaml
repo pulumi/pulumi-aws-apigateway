@@ -397,27 +397,27 @@ resources:
         type: string
         description: |
           The URL where the Rest API is exposed.
-      apiId:
-        type: string
+      api:
+        "$ref": "/aws/v4.6.0/schema.json#/resources/aws:apigateway%2FrestApi:RestApi"
         description: |
-          The provider-assigned unique ID for the underlying RestAPI. 
-      deploymentId:
-        type: string
+          The underlying RestAPI resource.
+      deployment:
+        "$ref": "/aws/v4.6.0/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment"
         description: |
-          The provider-assigned unique ID for the underlying Deployment.
-      stageName:
-        type: string
+          The underlying Deployment resource.
+      stage:
+        "$ref": "/aws/v4.6.0/schema.json#/resources/aws:apigateway%2Fstage:Stage"
         description: |
-          Name of the stage created with the deployment.
-      apiPolicyId:
-        type: string
+          The underlying Stage resource.
+      apiPolicy:
+        "$ref": "/aws/v4.6.0/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy"
         description: |
-          The provider-assigned unique ID for the underlying RestAPIPolicy resource.
+          The underlying RestAPIPolicy resource.
     required:
     - url
-    - apiId
-    - deploymentId
-    - stageName
+    - api
+    - deployment
+    - stage
     description: |
       The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The 
       REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event 

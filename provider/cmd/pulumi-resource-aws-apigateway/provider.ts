@@ -43,10 +43,10 @@ async function constructRestAPI(name: string, inputs: pulumi.Inputs,
         urn: restAPI.urn,
         state: {
             url: restAPI.url,
-            apiId: restAPI.api.id,
-            deployment: restAPI.deployment.id,
-            stageName: restAPI.stage.stageName,
-            apiPolicy: restAPI.apiPolicy?.apply(apiPolicy => apiPolicy?.id),
+            api: restAPI.api,
+            deployment: restAPI,
+            stage: restAPI.stage,
+            apiPolicy: restAPI.apiPolicy,
         },
     };
 }
