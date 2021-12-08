@@ -19,4 +19,17 @@ const api = new apigateway.RestAPI("api", {
     }],
 });
 
+const apiKey = new aws.apigateway.ApiKey("api-key");
+const usagePlan = new aws.apigateway.UsagePlan("usage-plan", {
+    apiStages: [{
+        apiId: api.api.id,
+        stage: api.stage.stageName,
+    }],
+});
+new aws.apigateway.UsagePlanKey("usage-plan-key", {
+    keyId: apiKey.id,
+    keyType: "API_KEY",
+    usagePlanId: usagePlan.id,
+});
+
 export const url = api.url;
