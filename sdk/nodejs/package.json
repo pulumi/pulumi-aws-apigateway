@@ -1,6 +1,7 @@
 {
     "name": "@pulumi/aws-apigateway",
     "version": "${VERSION}",
+    "license": "Apache-2.0",
     "scripts": {
         "build": "tsc"
     },

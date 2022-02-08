@@ -1,5 +1,6 @@
 ---
 name: aws-apigateway
+license: Apache-2.0
 logoUrl: https://raw.githubusercontent.com/pulumi/pulumi-aws-apigateway/main/assets/logo.svg
 types:
   aws-apigateway:index:Route:
