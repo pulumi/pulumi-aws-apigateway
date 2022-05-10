@@ -12,7 +12,7 @@ SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
 
 generate:: gen_go_sdk gen_nodejs_sdk gen_python_sdk gen_dotnet_sdk
 
-build:: build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk
+build:: build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk build_go_sdk
 
 install:: install_provider install_nodejs_sdk install_dotnet_sdk
 
@@ -42,7 +42,7 @@ gen_go_sdk::
 	rm -rf go
 	cd provider/cmd/${CODEGEN} && go run . go ../../../sdk/go ${SCHEMA_PATH}
 
-build_go_sdk::
+build_go_sdk:: gen_go_sdk
 
 # .NET SDK
 

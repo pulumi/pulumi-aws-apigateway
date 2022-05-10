@@ -57,32 +57,30 @@ export class RestAPI extends pulumi.ComponentResource {
      * @param opts A bag of options that control this resource's behavior.
      */
     constructor(name: string, args?: RestAPIArgs, opts?: pulumi.ComponentResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            inputs["apiKeySource"] = args ? args.apiKeySource : undefined;
-            inputs["gatewayResponses"] = args ? args.gatewayResponses : undefined;
-            inputs["requestValidator"] = args ? args.requestValidator : undefined;
-            inputs["routes"] = args ? args.routes : undefined;
-            inputs["stageName"] = args ? args.stageName : undefined;
-            inputs["staticRoutesBucket"] = args ? args.staticRoutesBucket : undefined;
-            inputs["swaggerString"] = args ? args.swaggerString : undefined;
-            inputs["api"] = undefined /*out*/;
-            inputs["apiPolicy"] = undefined /*out*/;
-            inputs["deployment"] = undefined /*out*/;
-            inputs["stage"] = undefined /*out*/;
-            inputs["url"] = undefined /*out*/;
+            resourceInputs["apiKeySource"] = args ? args.apiKeySource : undefined;
+            resourceInputs["gatewayResponses"] = args ? args.gatewayResponses : undefined;
+            resourceInputs["requestValidator"] = args ? args.requestValidator : undefined;
+            resourceInputs["routes"] = args ? args.routes : undefined;
+            resourceInputs["stageName"] = args ? args.stageName : undefined;
+            resourceInputs["staticRoutesBucket"] = args ? args.staticRoutesBucket : undefined;
+            resourceInputs["swaggerString"] = args ? args.swaggerString : undefined;
+            resourceInputs["api"] = undefined /*out*/;
+            resourceInputs["apiPolicy"] = undefined /*out*/;
+            resourceInputs["deployment"] = undefined /*out*/;
+            resourceInputs["stage"] = undefined /*out*/;
+            resourceInputs["url"] = undefined /*out*/;
         } else {
-            inputs["api"] = undefined /*out*/;
-            inputs["apiPolicy"] = undefined /*out*/;
-            inputs["deployment"] = undefined /*out*/;
-            inputs["stage"] = undefined /*out*/;
-            inputs["url"] = undefined /*out*/;
+            resourceInputs["api"] = undefined /*out*/;
+            resourceInputs["apiPolicy"] = undefined /*out*/;
+            resourceInputs["deployment"] = undefined /*out*/;
+            resourceInputs["stage"] = undefined /*out*/;
+            resourceInputs["url"] = undefined /*out*/;
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(RestAPI.__pulumiType, name, inputs, opts, true /*remote*/);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(RestAPI.__pulumiType, name, resourceInputs, opts, true /*remote*/);
     }
 }
 
