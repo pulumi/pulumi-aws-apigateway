@@ -133,7 +133,7 @@ export class RestAPI extends pulumi.ComponentResource {
     public readonly apiPolicy?: pulumi.Output<aws.apigateway.RestApiPolicy | undefined>;
 
     constructor(name: string, args: RestAPIArgs, opts?: pulumi.ComponentResourceOptions) {
-        super("apigateway:index:RestAPI", name, args, opts);
+        super("aws-apigateway:index:RestAPI", name, args, opts);
 
         // TODO[pulumi/pulumi#7434]: Node.js does not yet deserialize `plain` inputs correctly,
         // so we need to `apply` here.
