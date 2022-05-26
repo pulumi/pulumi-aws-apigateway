@@ -1,6 +1,13 @@
 {
     "name": "@pulumi/aws-apigateway",
     "version": "${VERSION}",
+    "keywords": [
+        "pulumi",
+        "aws",
+        "apigateway",
+        "category/cloud",
+        "kind/component"
+    ],
     "license": "Apache-2.0",
     "scripts": {
         "build": "tsc",
