@@ -44,6 +44,7 @@ setup(name='pulumi_aws_apigateway',
       cmdclass={
           'install': InstallPluginCommand,
       },
+      keywords='pulumi aws apigateway category/cloud kind/component',
       license='Apache-2.0',
       packages=find_packages(),
       package_data={
