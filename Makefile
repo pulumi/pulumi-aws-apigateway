@@ -21,19 +21,15 @@ install:: install_provider install_nodejs_sdk install_dotnet_sdk
 
 build_provider::
 	cd provider/cmd/${PROVIDER}/ && \
-		yarn install && \
-		yarn run tsc --version && \
-		yarn run tsc && \
-		cp package.json yarn.lock ${PROVIDER} ${PROVIDER}.cmd PulumiPlugin.yaml ./bin/ && \
-		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
-		rm ./bin/package.json.bak
+        yarn install && \
+        yarn tsc && \
+        cp package.json ../../../schema.yaml ./bin && \
+        sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" bin/package.json
 
+install_provider:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 install_provider:: build_provider
-	mkdir -p bin && rm -rf bin/*
-	cp -a provider/cmd/${PROVIDER}/bin/. bin/
-	cd provider/cmd/${PROVIDER}/ && cp ${PROVIDER} ${PROVIDER}.cmd PulumiPlugin.yaml ../../../bin/
-	cd bin && yarn install
-	chmod +x bin/${PROVIDER}
+	cd provider/cmd/${PROVIDER}/ && \
+        yarn run pkg . ${PKG_ARGS} --target node16 --output ../../../bin/${PROVIDER}
 
 
 # Go SDK
@@ -99,13 +95,20 @@ build_python_sdk:: gen_python_sdk
 		rm ./bin/setup.py.bak && \
 		cd ./bin && python3 setup.py build sdist
 
-dist::
-	mkdir dist
-	tar --gzip --exclude yarn.lock --exclude pulumi-resource-${PACK}.cmd -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-amd64.tar.gz -C provider/cmd/pulumi-resource-aws-apigateway/bin/ .
-	# the contents of the linux-arm64, darwin6-arm64 and darwin-amd64 packages are the same
-	cp dist/pulumi-resource-${PACK}-v${VERSION}-linux-amd64.tar.gz dist/pulumi-resource-${PACK}-v${VERSION}-darwin-amd64.tar.gz
-	cp dist/pulumi-resource-${PACK}-v${VERSION}-linux-amd64.tar.gz dist/pulumi-resource-${PACK}-v${VERSION}-darwin-arm64.tar.gz
-	tar --gzip --exclude yarn.lock --exclude pulumi-resource-${PACK} -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-windows-amd64.tar.gz -C provider/cmd/pulumi-resource-aws-apigateway/bin/ .
-
+# builds all providers required for publishing
+dist:: PKG_ARGS := --no-bytecode --public-packages "*" --public
+dist:: build_provider
+	cd provider/cmd/${PROVIDER}/ && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-macos-x64 --output ../../../bin/darwin-amd64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-macos-arm64 --output ../../../bin/darwin-arm64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-x64 --output ../../../bin/linux-amd64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-arm64 --output ../../../bin/linux-arm64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-win-x64 --output ../../../bin/windows-amd64/${PROVIDER}.exe
+	mkdir -p dist
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-amd64.tar.gz README.md LICENSE -C bin/linux-amd64/ .
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-arm64.tar.gz README.md LICENSE -C bin/linux-arm64/ .
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-darwin-amd64.tar.gz README.md LICENSE -C bin/darwin-amd64/ .
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-darwin-arm64.tar.gz README.md LICENSE -C bin/darwin-arm64/ .
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-windows-amd64.tar.gz README.md LICENSE -C bin/windows-amd64/ .
 test::
 	cd examples && go test -v -tags=all -timeout 2h
