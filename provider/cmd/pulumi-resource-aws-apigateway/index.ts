@@ -13,17 +13,21 @@
 // limitations under the License.
 
 import * as pulumi from "@pulumi/pulumi";
-
+import { readFileSync } from "fs";
 import { Provider } from "./provider";
+import { parse } from 'yaml';
 
 function main(args: string[]) {
+    const file = readFileSync(require.resolve('./schema.yaml'), 'utf8');
+    const schema = JSON.stringify(parse(file));
     let version: string = require("./package.json").version;
     // Node allows for the version to be prefixed by a "v",
     // while semver doesn't. If there is a v, strip it off.
     if (version.startsWith("v")) {
         version = version.slice(1);
     }
-    return pulumi.provider.main(new Provider(version), args);
+    const provider = new Provider(version, schema);
+    return pulumi.provider.main(provider, args);
 }
 
 main(process.argv.slice(2));
