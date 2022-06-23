@@ -13,15 +13,14 @@
 // limitations under the License.
 
 import * as pulumi from "@pulumi/pulumi";
-import * as provider from "@pulumi/pulumi/provider";
 
 import { RestAPI, RestAPIArgs } from "./restAPI";
 
-export class Provider implements provider.Provider {
-    constructor(readonly version: string) { }
+export class Provider implements pulumi.provider.Provider {
+    constructor(readonly version: string, readonly schema: string) { }
 
     async construct(name: string, type: string, inputs: pulumi.Inputs,
-        options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
+        options: pulumi.ComponentResourceOptions): Promise<pulumi.provider.ConstructResult> {
 
         switch (type) {
             case "aws-apigateway:index:RestAPI":
@@ -33,7 +32,7 @@ export class Provider implements provider.Provider {
 }
 
 async function constructRestAPI(name: string, inputs: pulumi.Inputs,
-    options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
+    options: pulumi.ComponentResourceOptions): Promise<pulumi.provider.ConstructResult> {
 
     // Create the component resource.
     const restAPI = new RestAPI(name, inputs as RestAPIArgs, options);
