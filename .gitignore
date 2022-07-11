@@ -19,3 +19,9 @@ ci-scripts/
 
 /provider/cmd/pulumi-resource-*/schema.go
 !provider/cmd/pulumi-resource-*/yarn.lock
+
+sdk/java/build
+sdk/java/.gradle
+sdk/java/gradle
+sdk/java/gradlew
+sdk/java/gradlew.bat
