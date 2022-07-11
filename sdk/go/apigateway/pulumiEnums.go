@@ -3,12 +3,176 @@
 
 package apigateway
 
+import (
+	"context"
+	"reflect"
+
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+)
+
 type APIKeySource string
 
 const (
 	APIKeySourceHEADER     = APIKeySource("HEADER")
 	APIKeySourceAUTHORIZER = APIKeySource("AUTHORIZER")
 )
+
+func (APIKeySource) ElementType() reflect.Type {
+	return reflect.TypeOf((*APIKeySource)(nil)).Elem()
+}
+
+func (e APIKeySource) ToAPIKeySourceOutput() APIKeySourceOutput {
+	return pulumi.ToOutput(e).(APIKeySourceOutput)
+}
+
+func (e APIKeySource) ToAPIKeySourceOutputWithContext(ctx context.Context) APIKeySourceOutput {
+	return pulumi.ToOutputWithContext(ctx, e).(APIKeySourceOutput)
+}
+
+func (e APIKeySource) ToAPIKeySourcePtrOutput() APIKeySourcePtrOutput {
+	return e.ToAPIKeySourcePtrOutputWithContext(context.Background())
+}
+
+func (e APIKeySource) ToAPIKeySourcePtrOutputWithContext(ctx context.Context) APIKeySourcePtrOutput {
+	return APIKeySource(e).ToAPIKeySourceOutputWithContext(ctx).ToAPIKeySourcePtrOutputWithContext(ctx)
+}
+
+func (e APIKeySource) ToStringOutput() pulumi.StringOutput {
+	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e APIKeySource) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e APIKeySource) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
+}
+
+func (e APIKeySource) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
+}
+
+type APIKeySourceOutput struct{ *pulumi.OutputState }
+
+func (APIKeySourceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*APIKeySource)(nil)).Elem()
+}
+
+func (o APIKeySourceOutput) ToAPIKeySourceOutput() APIKeySourceOutput {
+	return o
+}
+
+func (o APIKeySourceOutput) ToAPIKeySourceOutputWithContext(ctx context.Context) APIKeySourceOutput {
+	return o
+}
+
+func (o APIKeySourceOutput) ToAPIKeySourcePtrOutput() APIKeySourcePtrOutput {
+	return o.ToAPIKeySourcePtrOutputWithContext(context.Background())
+}
+
+func (o APIKeySourceOutput) ToAPIKeySourcePtrOutputWithContext(ctx context.Context) APIKeySourcePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v APIKeySource) *APIKeySource {
+		return &v
+	}).(APIKeySourcePtrOutput)
+}
+
+func (o APIKeySourceOutput) ToStringOutput() pulumi.StringOutput {
+	return o.ToStringOutputWithContext(context.Background())
+}
+
+func (o APIKeySourceOutput) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e APIKeySource) string {
+		return string(e)
+	}).(pulumi.StringOutput)
+}
+
+func (o APIKeySourceOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o APIKeySourceOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e APIKeySource) *string {
+		v := string(e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+type APIKeySourcePtrOutput struct{ *pulumi.OutputState }
+
+func (APIKeySourcePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**APIKeySource)(nil)).Elem()
+}
+
+func (o APIKeySourcePtrOutput) ToAPIKeySourcePtrOutput() APIKeySourcePtrOutput {
+	return o
+}
+
+func (o APIKeySourcePtrOutput) ToAPIKeySourcePtrOutputWithContext(ctx context.Context) APIKeySourcePtrOutput {
+	return o
+}
+
+func (o APIKeySourcePtrOutput) Elem() APIKeySourceOutput {
+	return o.ApplyT(func(v *APIKeySource) APIKeySource {
+		if v != nil {
+			return *v
+		}
+		var ret APIKeySource
+		return ret
+	}).(APIKeySourceOutput)
+}
+
+func (o APIKeySourcePtrOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o APIKeySourcePtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e *APIKeySource) *string {
+		if e == nil {
+			return nil
+		}
+		v := string(*e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+// APIKeySourceInput is an input type that accepts APIKeySourceArgs and APIKeySourceOutput values.
+// You can construct a concrete instance of `APIKeySourceInput` via:
+//
+//          APIKeySourceArgs{...}
+type APIKeySourceInput interface {
+	pulumi.Input
+
+	ToAPIKeySourceOutput() APIKeySourceOutput
+	ToAPIKeySourceOutputWithContext(context.Context) APIKeySourceOutput
+}
+
+var apikeySourcePtrType = reflect.TypeOf((**APIKeySource)(nil)).Elem()
+
+type APIKeySourcePtrInput interface {
+	pulumi.Input
+
+	ToAPIKeySourcePtrOutput() APIKeySourcePtrOutput
+	ToAPIKeySourcePtrOutputWithContext(context.Context) APIKeySourcePtrOutput
+}
+
+type apikeySourcePtr string
+
+func APIKeySourcePtr(v string) APIKeySourcePtrInput {
+	return (*apikeySourcePtr)(&v)
+}
+
+func (*apikeySourcePtr) ElementType() reflect.Type {
+	return apikeySourcePtrType
+}
+
+func (in *apikeySourcePtr) ToAPIKeySourcePtrOutput() APIKeySourcePtrOutput {
+	return pulumi.ToOutput(in).(APIKeySourcePtrOutput)
+}
+
+func (in *apikeySourcePtr) ToAPIKeySourcePtrOutputWithContext(ctx context.Context) APIKeySourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, in).(APIKeySourcePtrOutput)
+}
 
 type IntegrationConnectionType string
 
@@ -17,6 +181,163 @@ const (
 	IntegrationConnectionType_VPC_LINK = IntegrationConnectionType("VPC_LINK")
 )
 
+func (IntegrationConnectionType) ElementType() reflect.Type {
+	return reflect.TypeOf((*IntegrationConnectionType)(nil)).Elem()
+}
+
+func (e IntegrationConnectionType) ToIntegrationConnectionTypeOutput() IntegrationConnectionTypeOutput {
+	return pulumi.ToOutput(e).(IntegrationConnectionTypeOutput)
+}
+
+func (e IntegrationConnectionType) ToIntegrationConnectionTypeOutputWithContext(ctx context.Context) IntegrationConnectionTypeOutput {
+	return pulumi.ToOutputWithContext(ctx, e).(IntegrationConnectionTypeOutput)
+}
+
+func (e IntegrationConnectionType) ToIntegrationConnectionTypePtrOutput() IntegrationConnectionTypePtrOutput {
+	return e.ToIntegrationConnectionTypePtrOutputWithContext(context.Background())
+}
+
+func (e IntegrationConnectionType) ToIntegrationConnectionTypePtrOutputWithContext(ctx context.Context) IntegrationConnectionTypePtrOutput {
+	return IntegrationConnectionType(e).ToIntegrationConnectionTypeOutputWithContext(ctx).ToIntegrationConnectionTypePtrOutputWithContext(ctx)
+}
+
+func (e IntegrationConnectionType) ToStringOutput() pulumi.StringOutput {
+	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e IntegrationConnectionType) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e IntegrationConnectionType) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
+}
+
+func (e IntegrationConnectionType) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
+}
+
+type IntegrationConnectionTypeOutput struct{ *pulumi.OutputState }
+
+func (IntegrationConnectionTypeOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*IntegrationConnectionType)(nil)).Elem()
+}
+
+func (o IntegrationConnectionTypeOutput) ToIntegrationConnectionTypeOutput() IntegrationConnectionTypeOutput {
+	return o
+}
+
+func (o IntegrationConnectionTypeOutput) ToIntegrationConnectionTypeOutputWithContext(ctx context.Context) IntegrationConnectionTypeOutput {
+	return o
+}
+
+func (o IntegrationConnectionTypeOutput) ToIntegrationConnectionTypePtrOutput() IntegrationConnectionTypePtrOutput {
+	return o.ToIntegrationConnectionTypePtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationConnectionTypeOutput) ToIntegrationConnectionTypePtrOutputWithContext(ctx context.Context) IntegrationConnectionTypePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v IntegrationConnectionType) *IntegrationConnectionType {
+		return &v
+	}).(IntegrationConnectionTypePtrOutput)
+}
+
+func (o IntegrationConnectionTypeOutput) ToStringOutput() pulumi.StringOutput {
+	return o.ToStringOutputWithContext(context.Background())
+}
+
+func (o IntegrationConnectionTypeOutput) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e IntegrationConnectionType) string {
+		return string(e)
+	}).(pulumi.StringOutput)
+}
+
+func (o IntegrationConnectionTypeOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationConnectionTypeOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e IntegrationConnectionType) *string {
+		v := string(e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+type IntegrationConnectionTypePtrOutput struct{ *pulumi.OutputState }
+
+func (IntegrationConnectionTypePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**IntegrationConnectionType)(nil)).Elem()
+}
+
+func (o IntegrationConnectionTypePtrOutput) ToIntegrationConnectionTypePtrOutput() IntegrationConnectionTypePtrOutput {
+	return o
+}
+
+func (o IntegrationConnectionTypePtrOutput) ToIntegrationConnectionTypePtrOutputWithContext(ctx context.Context) IntegrationConnectionTypePtrOutput {
+	return o
+}
+
+func (o IntegrationConnectionTypePtrOutput) Elem() IntegrationConnectionTypeOutput {
+	return o.ApplyT(func(v *IntegrationConnectionType) IntegrationConnectionType {
+		if v != nil {
+			return *v
+		}
+		var ret IntegrationConnectionType
+		return ret
+	}).(IntegrationConnectionTypeOutput)
+}
+
+func (o IntegrationConnectionTypePtrOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationConnectionTypePtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e *IntegrationConnectionType) *string {
+		if e == nil {
+			return nil
+		}
+		v := string(*e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+// IntegrationConnectionTypeInput is an input type that accepts IntegrationConnectionTypeArgs and IntegrationConnectionTypeOutput values.
+// You can construct a concrete instance of `IntegrationConnectionTypeInput` via:
+//
+//          IntegrationConnectionTypeArgs{...}
+type IntegrationConnectionTypeInput interface {
+	pulumi.Input
+
+	ToIntegrationConnectionTypeOutput() IntegrationConnectionTypeOutput
+	ToIntegrationConnectionTypeOutputWithContext(context.Context) IntegrationConnectionTypeOutput
+}
+
+var integrationConnectionTypePtrType = reflect.TypeOf((**IntegrationConnectionType)(nil)).Elem()
+
+type IntegrationConnectionTypePtrInput interface {
+	pulumi.Input
+
+	ToIntegrationConnectionTypePtrOutput() IntegrationConnectionTypePtrOutput
+	ToIntegrationConnectionTypePtrOutputWithContext(context.Context) IntegrationConnectionTypePtrOutput
+}
+
+type integrationConnectionTypePtr string
+
+func IntegrationConnectionTypePtr(v string) IntegrationConnectionTypePtrInput {
+	return (*integrationConnectionTypePtr)(&v)
+}
+
+func (*integrationConnectionTypePtr) ElementType() reflect.Type {
+	return integrationConnectionTypePtrType
+}
+
+func (in *integrationConnectionTypePtr) ToIntegrationConnectionTypePtrOutput() IntegrationConnectionTypePtrOutput {
+	return pulumi.ToOutput(in).(IntegrationConnectionTypePtrOutput)
+}
+
+func (in *integrationConnectionTypePtr) ToIntegrationConnectionTypePtrOutputWithContext(ctx context.Context) IntegrationConnectionTypePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, in).(IntegrationConnectionTypePtrOutput)
+}
+
 type IntegrationPassthroughBehavior string
 
 const (
@@ -24,6 +345,163 @@ const (
 	IntegrationPassthroughBehavior_When_no_templates = IntegrationPassthroughBehavior("when_no_templates")
 	IntegrationPassthroughBehaviorNever              = IntegrationPassthroughBehavior("never")
 )
+
+func (IntegrationPassthroughBehavior) ElementType() reflect.Type {
+	return reflect.TypeOf((*IntegrationPassthroughBehavior)(nil)).Elem()
+}
+
+func (e IntegrationPassthroughBehavior) ToIntegrationPassthroughBehaviorOutput() IntegrationPassthroughBehaviorOutput {
+	return pulumi.ToOutput(e).(IntegrationPassthroughBehaviorOutput)
+}
+
+func (e IntegrationPassthroughBehavior) ToIntegrationPassthroughBehaviorOutputWithContext(ctx context.Context) IntegrationPassthroughBehaviorOutput {
+	return pulumi.ToOutputWithContext(ctx, e).(IntegrationPassthroughBehaviorOutput)
+}
+
+func (e IntegrationPassthroughBehavior) ToIntegrationPassthroughBehaviorPtrOutput() IntegrationPassthroughBehaviorPtrOutput {
+	return e.ToIntegrationPassthroughBehaviorPtrOutputWithContext(context.Background())
+}
+
+func (e IntegrationPassthroughBehavior) ToIntegrationPassthroughBehaviorPtrOutputWithContext(ctx context.Context) IntegrationPassthroughBehaviorPtrOutput {
+	return IntegrationPassthroughBehavior(e).ToIntegrationPassthroughBehaviorOutputWithContext(ctx).ToIntegrationPassthroughBehaviorPtrOutputWithContext(ctx)
+}
+
+func (e IntegrationPassthroughBehavior) ToStringOutput() pulumi.StringOutput {
+	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e IntegrationPassthroughBehavior) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e IntegrationPassthroughBehavior) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
+}
+
+func (e IntegrationPassthroughBehavior) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
+}
+
+type IntegrationPassthroughBehaviorOutput struct{ *pulumi.OutputState }
+
+func (IntegrationPassthroughBehaviorOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*IntegrationPassthroughBehavior)(nil)).Elem()
+}
+
+func (o IntegrationPassthroughBehaviorOutput) ToIntegrationPassthroughBehaviorOutput() IntegrationPassthroughBehaviorOutput {
+	return o
+}
+
+func (o IntegrationPassthroughBehaviorOutput) ToIntegrationPassthroughBehaviorOutputWithContext(ctx context.Context) IntegrationPassthroughBehaviorOutput {
+	return o
+}
+
+func (o IntegrationPassthroughBehaviorOutput) ToIntegrationPassthroughBehaviorPtrOutput() IntegrationPassthroughBehaviorPtrOutput {
+	return o.ToIntegrationPassthroughBehaviorPtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationPassthroughBehaviorOutput) ToIntegrationPassthroughBehaviorPtrOutputWithContext(ctx context.Context) IntegrationPassthroughBehaviorPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v IntegrationPassthroughBehavior) *IntegrationPassthroughBehavior {
+		return &v
+	}).(IntegrationPassthroughBehaviorPtrOutput)
+}
+
+func (o IntegrationPassthroughBehaviorOutput) ToStringOutput() pulumi.StringOutput {
+	return o.ToStringOutputWithContext(context.Background())
+}
+
+func (o IntegrationPassthroughBehaviorOutput) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e IntegrationPassthroughBehavior) string {
+		return string(e)
+	}).(pulumi.StringOutput)
+}
+
+func (o IntegrationPassthroughBehaviorOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationPassthroughBehaviorOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e IntegrationPassthroughBehavior) *string {
+		v := string(e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+type IntegrationPassthroughBehaviorPtrOutput struct{ *pulumi.OutputState }
+
+func (IntegrationPassthroughBehaviorPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**IntegrationPassthroughBehavior)(nil)).Elem()
+}
+
+func (o IntegrationPassthroughBehaviorPtrOutput) ToIntegrationPassthroughBehaviorPtrOutput() IntegrationPassthroughBehaviorPtrOutput {
+	return o
+}
+
+func (o IntegrationPassthroughBehaviorPtrOutput) ToIntegrationPassthroughBehaviorPtrOutputWithContext(ctx context.Context) IntegrationPassthroughBehaviorPtrOutput {
+	return o
+}
+
+func (o IntegrationPassthroughBehaviorPtrOutput) Elem() IntegrationPassthroughBehaviorOutput {
+	return o.ApplyT(func(v *IntegrationPassthroughBehavior) IntegrationPassthroughBehavior {
+		if v != nil {
+			return *v
+		}
+		var ret IntegrationPassthroughBehavior
+		return ret
+	}).(IntegrationPassthroughBehaviorOutput)
+}
+
+func (o IntegrationPassthroughBehaviorPtrOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationPassthroughBehaviorPtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e *IntegrationPassthroughBehavior) *string {
+		if e == nil {
+			return nil
+		}
+		v := string(*e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+// IntegrationPassthroughBehaviorInput is an input type that accepts IntegrationPassthroughBehaviorArgs and IntegrationPassthroughBehaviorOutput values.
+// You can construct a concrete instance of `IntegrationPassthroughBehaviorInput` via:
+//
+//          IntegrationPassthroughBehaviorArgs{...}
+type IntegrationPassthroughBehaviorInput interface {
+	pulumi.Input
+
+	ToIntegrationPassthroughBehaviorOutput() IntegrationPassthroughBehaviorOutput
+	ToIntegrationPassthroughBehaviorOutputWithContext(context.Context) IntegrationPassthroughBehaviorOutput
+}
+
+var integrationPassthroughBehaviorPtrType = reflect.TypeOf((**IntegrationPassthroughBehavior)(nil)).Elem()
+
+type IntegrationPassthroughBehaviorPtrInput interface {
+	pulumi.Input
+
+	ToIntegrationPassthroughBehaviorPtrOutput() IntegrationPassthroughBehaviorPtrOutput
+	ToIntegrationPassthroughBehaviorPtrOutputWithContext(context.Context) IntegrationPassthroughBehaviorPtrOutput
+}
+
+type integrationPassthroughBehaviorPtr string
+
+func IntegrationPassthroughBehaviorPtr(v string) IntegrationPassthroughBehaviorPtrInput {
+	return (*integrationPassthroughBehaviorPtr)(&v)
+}
+
+func (*integrationPassthroughBehaviorPtr) ElementType() reflect.Type {
+	return integrationPassthroughBehaviorPtrType
+}
+
+func (in *integrationPassthroughBehaviorPtr) ToIntegrationPassthroughBehaviorPtrOutput() IntegrationPassthroughBehaviorPtrOutput {
+	return pulumi.ToOutput(in).(IntegrationPassthroughBehaviorPtrOutput)
+}
+
+func (in *integrationPassthroughBehaviorPtr) ToIntegrationPassthroughBehaviorPtrOutputWithContext(ctx context.Context) IntegrationPassthroughBehaviorPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, in).(IntegrationPassthroughBehaviorPtrOutput)
+}
 
 type IntegrationType string
 
@@ -34,6 +512,163 @@ const (
 	IntegrationType_Http_proxy = IntegrationType("http_proxy")
 	IntegrationTypeMock        = IntegrationType("mock")
 )
+
+func (IntegrationType) ElementType() reflect.Type {
+	return reflect.TypeOf((*IntegrationType)(nil)).Elem()
+}
+
+func (e IntegrationType) ToIntegrationTypeOutput() IntegrationTypeOutput {
+	return pulumi.ToOutput(e).(IntegrationTypeOutput)
+}
+
+func (e IntegrationType) ToIntegrationTypeOutputWithContext(ctx context.Context) IntegrationTypeOutput {
+	return pulumi.ToOutputWithContext(ctx, e).(IntegrationTypeOutput)
+}
+
+func (e IntegrationType) ToIntegrationTypePtrOutput() IntegrationTypePtrOutput {
+	return e.ToIntegrationTypePtrOutputWithContext(context.Background())
+}
+
+func (e IntegrationType) ToIntegrationTypePtrOutputWithContext(ctx context.Context) IntegrationTypePtrOutput {
+	return IntegrationType(e).ToIntegrationTypeOutputWithContext(ctx).ToIntegrationTypePtrOutputWithContext(ctx)
+}
+
+func (e IntegrationType) ToStringOutput() pulumi.StringOutput {
+	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e IntegrationType) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e IntegrationType) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
+}
+
+func (e IntegrationType) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
+}
+
+type IntegrationTypeOutput struct{ *pulumi.OutputState }
+
+func (IntegrationTypeOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*IntegrationType)(nil)).Elem()
+}
+
+func (o IntegrationTypeOutput) ToIntegrationTypeOutput() IntegrationTypeOutput {
+	return o
+}
+
+func (o IntegrationTypeOutput) ToIntegrationTypeOutputWithContext(ctx context.Context) IntegrationTypeOutput {
+	return o
+}
+
+func (o IntegrationTypeOutput) ToIntegrationTypePtrOutput() IntegrationTypePtrOutput {
+	return o.ToIntegrationTypePtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationTypeOutput) ToIntegrationTypePtrOutputWithContext(ctx context.Context) IntegrationTypePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v IntegrationType) *IntegrationType {
+		return &v
+	}).(IntegrationTypePtrOutput)
+}
+
+func (o IntegrationTypeOutput) ToStringOutput() pulumi.StringOutput {
+	return o.ToStringOutputWithContext(context.Background())
+}
+
+func (o IntegrationTypeOutput) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e IntegrationType) string {
+		return string(e)
+	}).(pulumi.StringOutput)
+}
+
+func (o IntegrationTypeOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationTypeOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e IntegrationType) *string {
+		v := string(e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+type IntegrationTypePtrOutput struct{ *pulumi.OutputState }
+
+func (IntegrationTypePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**IntegrationType)(nil)).Elem()
+}
+
+func (o IntegrationTypePtrOutput) ToIntegrationTypePtrOutput() IntegrationTypePtrOutput {
+	return o
+}
+
+func (o IntegrationTypePtrOutput) ToIntegrationTypePtrOutputWithContext(ctx context.Context) IntegrationTypePtrOutput {
+	return o
+}
+
+func (o IntegrationTypePtrOutput) Elem() IntegrationTypeOutput {
+	return o.ApplyT(func(v *IntegrationType) IntegrationType {
+		if v != nil {
+			return *v
+		}
+		var ret IntegrationType
+		return ret
+	}).(IntegrationTypeOutput)
+}
+
+func (o IntegrationTypePtrOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o IntegrationTypePtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e *IntegrationType) *string {
+		if e == nil {
+			return nil
+		}
+		v := string(*e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+// IntegrationTypeInput is an input type that accepts IntegrationTypeArgs and IntegrationTypeOutput values.
+// You can construct a concrete instance of `IntegrationTypeInput` via:
+//
+//          IntegrationTypeArgs{...}
+type IntegrationTypeInput interface {
+	pulumi.Input
+
+	ToIntegrationTypeOutput() IntegrationTypeOutput
+	ToIntegrationTypeOutputWithContext(context.Context) IntegrationTypeOutput
+}
+
+var integrationTypePtrType = reflect.TypeOf((**IntegrationType)(nil)).Elem()
+
+type IntegrationTypePtrInput interface {
+	pulumi.Input
+
+	ToIntegrationTypePtrOutput() IntegrationTypePtrOutput
+	ToIntegrationTypePtrOutputWithContext(context.Context) IntegrationTypePtrOutput
+}
+
+type integrationTypePtr string
+
+func IntegrationTypePtr(v string) IntegrationTypePtrInput {
+	return (*integrationTypePtr)(&v)
+}
+
+func (*integrationTypePtr) ElementType() reflect.Type {
+	return integrationTypePtrType
+}
+
+func (in *integrationTypePtr) ToIntegrationTypePtrOutput() IntegrationTypePtrOutput {
+	return pulumi.ToOutput(in).(IntegrationTypePtrOutput)
+}
+
+func (in *integrationTypePtr) ToIntegrationTypePtrOutputWithContext(ctx context.Context) IntegrationTypePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, in).(IntegrationTypePtrOutput)
+}
 
 type Method string
 
@@ -48,6 +683,163 @@ const (
 	MethodHEAD    = Method("HEAD")
 )
 
+func (Method) ElementType() reflect.Type {
+	return reflect.TypeOf((*Method)(nil)).Elem()
+}
+
+func (e Method) ToMethodOutput() MethodOutput {
+	return pulumi.ToOutput(e).(MethodOutput)
+}
+
+func (e Method) ToMethodOutputWithContext(ctx context.Context) MethodOutput {
+	return pulumi.ToOutputWithContext(ctx, e).(MethodOutput)
+}
+
+func (e Method) ToMethodPtrOutput() MethodPtrOutput {
+	return e.ToMethodPtrOutputWithContext(context.Background())
+}
+
+func (e Method) ToMethodPtrOutputWithContext(ctx context.Context) MethodPtrOutput {
+	return Method(e).ToMethodOutputWithContext(ctx).ToMethodPtrOutputWithContext(ctx)
+}
+
+func (e Method) ToStringOutput() pulumi.StringOutput {
+	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e Method) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e Method) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
+}
+
+func (e Method) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
+}
+
+type MethodOutput struct{ *pulumi.OutputState }
+
+func (MethodOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*Method)(nil)).Elem()
+}
+
+func (o MethodOutput) ToMethodOutput() MethodOutput {
+	return o
+}
+
+func (o MethodOutput) ToMethodOutputWithContext(ctx context.Context) MethodOutput {
+	return o
+}
+
+func (o MethodOutput) ToMethodPtrOutput() MethodPtrOutput {
+	return o.ToMethodPtrOutputWithContext(context.Background())
+}
+
+func (o MethodOutput) ToMethodPtrOutputWithContext(ctx context.Context) MethodPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v Method) *Method {
+		return &v
+	}).(MethodPtrOutput)
+}
+
+func (o MethodOutput) ToStringOutput() pulumi.StringOutput {
+	return o.ToStringOutputWithContext(context.Background())
+}
+
+func (o MethodOutput) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e Method) string {
+		return string(e)
+	}).(pulumi.StringOutput)
+}
+
+func (o MethodOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o MethodOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e Method) *string {
+		v := string(e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+type MethodPtrOutput struct{ *pulumi.OutputState }
+
+func (MethodPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**Method)(nil)).Elem()
+}
+
+func (o MethodPtrOutput) ToMethodPtrOutput() MethodPtrOutput {
+	return o
+}
+
+func (o MethodPtrOutput) ToMethodPtrOutputWithContext(ctx context.Context) MethodPtrOutput {
+	return o
+}
+
+func (o MethodPtrOutput) Elem() MethodOutput {
+	return o.ApplyT(func(v *Method) Method {
+		if v != nil {
+			return *v
+		}
+		var ret Method
+		return ret
+	}).(MethodOutput)
+}
+
+func (o MethodPtrOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o MethodPtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e *Method) *string {
+		if e == nil {
+			return nil
+		}
+		v := string(*e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+// MethodInput is an input type that accepts MethodArgs and MethodOutput values.
+// You can construct a concrete instance of `MethodInput` via:
+//
+//          MethodArgs{...}
+type MethodInput interface {
+	pulumi.Input
+
+	ToMethodOutput() MethodOutput
+	ToMethodOutputWithContext(context.Context) MethodOutput
+}
+
+var methodPtrType = reflect.TypeOf((**Method)(nil)).Elem()
+
+type MethodPtrInput interface {
+	pulumi.Input
+
+	ToMethodPtrOutput() MethodPtrOutput
+	ToMethodPtrOutputWithContext(context.Context) MethodPtrOutput
+}
+
+type methodPtr string
+
+func MethodPtr(v string) MethodPtrInput {
+	return (*methodPtr)(&v)
+}
+
+func (*methodPtr) ElementType() reflect.Type {
+	return methodPtrType
+}
+
+func (in *methodPtr) ToMethodPtrOutput() MethodPtrOutput {
+	return pulumi.ToOutput(in).(MethodPtrOutput)
+}
+
+func (in *methodPtr) ToMethodPtrOutputWithContext(ctx context.Context) MethodPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, in).(MethodPtrOutput)
+}
+
 type RequestValidator string
 
 const (
@@ -56,5 +848,186 @@ const (
 	RequestValidator_BODY_ONLY   = RequestValidator("BODY_ONLY")
 )
 
+func (RequestValidator) ElementType() reflect.Type {
+	return reflect.TypeOf((*RequestValidator)(nil)).Elem()
+}
+
+func (e RequestValidator) ToRequestValidatorOutput() RequestValidatorOutput {
+	return pulumi.ToOutput(e).(RequestValidatorOutput)
+}
+
+func (e RequestValidator) ToRequestValidatorOutputWithContext(ctx context.Context) RequestValidatorOutput {
+	return pulumi.ToOutputWithContext(ctx, e).(RequestValidatorOutput)
+}
+
+func (e RequestValidator) ToRequestValidatorPtrOutput() RequestValidatorPtrOutput {
+	return e.ToRequestValidatorPtrOutputWithContext(context.Background())
+}
+
+func (e RequestValidator) ToRequestValidatorPtrOutputWithContext(ctx context.Context) RequestValidatorPtrOutput {
+	return RequestValidator(e).ToRequestValidatorOutputWithContext(ctx).ToRequestValidatorPtrOutputWithContext(ctx)
+}
+
+func (e RequestValidator) ToStringOutput() pulumi.StringOutput {
+	return pulumi.ToOutput(pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e RequestValidator) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return pulumi.ToOutputWithContext(ctx, pulumi.String(e)).(pulumi.StringOutput)
+}
+
+func (e RequestValidator) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringPtrOutputWithContext(context.Background())
+}
+
+func (e RequestValidator) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return pulumi.String(e).ToStringOutputWithContext(ctx).ToStringPtrOutputWithContext(ctx)
+}
+
+type RequestValidatorOutput struct{ *pulumi.OutputState }
+
+func (RequestValidatorOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RequestValidator)(nil)).Elem()
+}
+
+func (o RequestValidatorOutput) ToRequestValidatorOutput() RequestValidatorOutput {
+	return o
+}
+
+func (o RequestValidatorOutput) ToRequestValidatorOutputWithContext(ctx context.Context) RequestValidatorOutput {
+	return o
+}
+
+func (o RequestValidatorOutput) ToRequestValidatorPtrOutput() RequestValidatorPtrOutput {
+	return o.ToRequestValidatorPtrOutputWithContext(context.Background())
+}
+
+func (o RequestValidatorOutput) ToRequestValidatorPtrOutputWithContext(ctx context.Context) RequestValidatorPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v RequestValidator) *RequestValidator {
+		return &v
+	}).(RequestValidatorPtrOutput)
+}
+
+func (o RequestValidatorOutput) ToStringOutput() pulumi.StringOutput {
+	return o.ToStringOutputWithContext(context.Background())
+}
+
+func (o RequestValidatorOutput) ToStringOutputWithContext(ctx context.Context) pulumi.StringOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e RequestValidator) string {
+		return string(e)
+	}).(pulumi.StringOutput)
+}
+
+func (o RequestValidatorOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o RequestValidatorOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e RequestValidator) *string {
+		v := string(e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+type RequestValidatorPtrOutput struct{ *pulumi.OutputState }
+
+func (RequestValidatorPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**RequestValidator)(nil)).Elem()
+}
+
+func (o RequestValidatorPtrOutput) ToRequestValidatorPtrOutput() RequestValidatorPtrOutput {
+	return o
+}
+
+func (o RequestValidatorPtrOutput) ToRequestValidatorPtrOutputWithContext(ctx context.Context) RequestValidatorPtrOutput {
+	return o
+}
+
+func (o RequestValidatorPtrOutput) Elem() RequestValidatorOutput {
+	return o.ApplyT(func(v *RequestValidator) RequestValidator {
+		if v != nil {
+			return *v
+		}
+		var ret RequestValidator
+		return ret
+	}).(RequestValidatorOutput)
+}
+
+func (o RequestValidatorPtrOutput) ToStringPtrOutput() pulumi.StringPtrOutput {
+	return o.ToStringPtrOutputWithContext(context.Background())
+}
+
+func (o RequestValidatorPtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulumi.StringPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, e *RequestValidator) *string {
+		if e == nil {
+			return nil
+		}
+		v := string(*e)
+		return &v
+	}).(pulumi.StringPtrOutput)
+}
+
+// RequestValidatorInput is an input type that accepts RequestValidatorArgs and RequestValidatorOutput values.
+// You can construct a concrete instance of `RequestValidatorInput` via:
+//
+//          RequestValidatorArgs{...}
+type RequestValidatorInput interface {
+	pulumi.Input
+
+	ToRequestValidatorOutput() RequestValidatorOutput
+	ToRequestValidatorOutputWithContext(context.Context) RequestValidatorOutput
+}
+
+var requestValidatorPtrType = reflect.TypeOf((**RequestValidator)(nil)).Elem()
+
+type RequestValidatorPtrInput interface {
+	pulumi.Input
+
+	ToRequestValidatorPtrOutput() RequestValidatorPtrOutput
+	ToRequestValidatorPtrOutputWithContext(context.Context) RequestValidatorPtrOutput
+}
+
+type requestValidatorPtr string
+
+func RequestValidatorPtr(v string) RequestValidatorPtrInput {
+	return (*requestValidatorPtr)(&v)
+}
+
+func (*requestValidatorPtr) ElementType() reflect.Type {
+	return requestValidatorPtrType
+}
+
+func (in *requestValidatorPtr) ToRequestValidatorPtrOutput() RequestValidatorPtrOutput {
+	return pulumi.ToOutput(in).(RequestValidatorPtrOutput)
+}
+
+func (in *requestValidatorPtr) ToRequestValidatorPtrOutputWithContext(ctx context.Context) RequestValidatorPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, in).(RequestValidatorPtrOutput)
+}
+
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*APIKeySourceInput)(nil)).Elem(), APIKeySource("HEADER"))
+	pulumi.RegisterInputType(reflect.TypeOf((*APIKeySourcePtrInput)(nil)).Elem(), APIKeySource("HEADER"))
+	pulumi.RegisterInputType(reflect.TypeOf((*IntegrationConnectionTypeInput)(nil)).Elem(), IntegrationConnectionType("INTERNET"))
+	pulumi.RegisterInputType(reflect.TypeOf((*IntegrationConnectionTypePtrInput)(nil)).Elem(), IntegrationConnectionType("INTERNET"))
+	pulumi.RegisterInputType(reflect.TypeOf((*IntegrationPassthroughBehaviorInput)(nil)).Elem(), IntegrationPassthroughBehavior("when_no_match"))
+	pulumi.RegisterInputType(reflect.TypeOf((*IntegrationPassthroughBehaviorPtrInput)(nil)).Elem(), IntegrationPassthroughBehavior("when_no_match"))
+	pulumi.RegisterInputType(reflect.TypeOf((*IntegrationTypeInput)(nil)).Elem(), IntegrationType("aws"))
+	pulumi.RegisterInputType(reflect.TypeOf((*IntegrationTypePtrInput)(nil)).Elem(), IntegrationType("aws"))
+	pulumi.RegisterInputType(reflect.TypeOf((*MethodInput)(nil)).Elem(), Method("ANY"))
+	pulumi.RegisterInputType(reflect.TypeOf((*MethodPtrInput)(nil)).Elem(), Method("ANY"))
+	pulumi.RegisterInputType(reflect.TypeOf((*RequestValidatorInput)(nil)).Elem(), RequestValidator("ALL"))
+	pulumi.RegisterInputType(reflect.TypeOf((*RequestValidatorPtrInput)(nil)).Elem(), RequestValidator("ALL"))
+	pulumi.RegisterOutputType(APIKeySourceOutput{})
+	pulumi.RegisterOutputType(APIKeySourcePtrOutput{})
+	pulumi.RegisterOutputType(IntegrationConnectionTypeOutput{})
+	pulumi.RegisterOutputType(IntegrationConnectionTypePtrOutput{})
+	pulumi.RegisterOutputType(IntegrationPassthroughBehaviorOutput{})
+	pulumi.RegisterOutputType(IntegrationPassthroughBehaviorPtrOutput{})
+	pulumi.RegisterOutputType(IntegrationTypeOutput{})
+	pulumi.RegisterOutputType(IntegrationTypePtrOutput{})
+	pulumi.RegisterOutputType(MethodOutput{})
+	pulumi.RegisterOutputType(MethodPtrOutput{})
+	pulumi.RegisterOutputType(RequestValidatorOutput{})
+	pulumi.RegisterOutputType(RequestValidatorPtrOutput{})
 }
