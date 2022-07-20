@@ -31,7 +31,6 @@ env:
   SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
   PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
   PUBLISH_REPO_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-  PUBLISH_REPO_URL: https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
   PUBLISH_JAVA: true
 jobs:
   publish_binary:
@@ -121,7 +120,7 @@ jobs:
           distribution: temurin
           java-version: ${{matrix.javaversion}}
       - name: Set PACKAGE_VERSION to Env
-        run: echo "PACKAGE_VERSION=v$(pulumictl get version --language generic)" >>
+        run: echo "PACKAGE_VERSION=$(pulumictl get version --language generic)" >>
           $GITHUB_ENV
       - name: Build SDK
         run: make build_${{ matrix.language }}_sdk
@@ -156,7 +155,7 @@ jobs:
         name: publish java package
         uses: gradle/gradle-build-action@9b814496b50909128c6a52622b416c5ffa04db49
         with:
-          arguments: publish
+          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
           build-root-directory: ./sdk/java
           gradle-version: 7.4.1
     strategy:
