@@ -17,35 +17,40 @@ import * as pulumi from "@pulumi/pulumi";
 import { RestAPI, RestAPIArgs } from "./restAPI";
 
 export class Provider implements pulumi.provider.Provider {
-    constructor(readonly version: string, readonly schema: string) { }
+  constructor(readonly version: string, readonly schema: string) {}
 
-    async construct(name: string, type: string, inputs: pulumi.Inputs,
-        options: pulumi.ComponentResourceOptions): Promise<pulumi.provider.ConstructResult> {
-
-        switch (type) {
-            case "aws-apigateway:index:RestAPI":
-                return await constructRestAPI(name, inputs, options);
-            default:
-                throw new Error(`unknown resource type ${type}`);
-        }
+  async construct(
+    name: string,
+    type: string,
+    inputs: pulumi.Inputs,
+    options: pulumi.ComponentResourceOptions
+  ): Promise<pulumi.provider.ConstructResult> {
+    switch (type) {
+      case "aws-apigateway:index:RestAPI":
+        return await constructRestAPI(name, inputs, options);
+      default:
+        throw new Error(`unknown resource type ${type}`);
     }
+  }
 }
 
-async function constructRestAPI(name: string, inputs: pulumi.Inputs,
-    options: pulumi.ComponentResourceOptions): Promise<pulumi.provider.ConstructResult> {
+async function constructRestAPI(
+  name: string,
+  inputs: pulumi.Inputs,
+  options: pulumi.ComponentResourceOptions
+): Promise<pulumi.provider.ConstructResult> {
+  // Create the component resource.
+  const restAPI = new RestAPI(name, inputs as RestAPIArgs, options);
 
-    // Create the component resource.
-    const restAPI = new RestAPI(name, inputs as RestAPIArgs, options);
-
-    // Return the component resource's URN and outputs as its state.
-    return {
-        urn: restAPI.urn,
-        state: {
-            url: restAPI.url,
-            api: restAPI.api,
-            deployment: restAPI.deployment,
-            stage: restAPI.stage,
-            apiPolicy: restAPI.apiPolicy,
-        },
-    };
+  // Return the component resource's URN and outputs as its state.
+  return {
+    urn: restAPI.urn,
+    state: {
+      url: restAPI.url,
+      api: restAPI.api,
+      deployment: restAPI.deployment,
+      stage: restAPI.stage,
+      apiPolicy: restAPI.apiPolicy,
+    },
+  };
 }
