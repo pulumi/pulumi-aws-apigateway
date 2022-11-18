@@ -14,7 +14,7 @@
 
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import * as awsxapigateway from "@pulumi/awsx/apigateway/api";
+import { createAPI } from "./apigateway/api";
 
 // TODO: A bit of a shame we have to copy all this here - since it is intended to match both of
 // what's in `schema.json` and what's used in `awsx`.  This is also purely for internal usage
@@ -159,7 +159,7 @@ export class RestAPI extends pulumi.ComponentResource {
     // TODO[pulumi/pulumi#7434]: Node.js does not yet deserialize `plain` inputs correctly,
     // so we need to `apply` here.
     const api = pulumi.output(args.routes).apply((routes) => {
-      return awsxapigateway.createAPI(this, name, {
+      return createAPI(this, name, {
         routes: routes,
         swaggerString: args.swaggerString,
         stageName: args.stageName,
