@@ -16,7 +16,7 @@ namespace Pulumi.AwsApiGateway
     /// and serves them or (3) an integration target such as an HTTP proxy or service integration.
     /// </summary>
     [AwsApiGatewayResourceType("aws-apigateway:index:RestAPI")]
-    public partial class RestAPI : Pulumi.ComponentResource
+    public partial class RestAPI : global::Pulumi.ComponentResource
     {
         /// <summary>
         /// The underlying RestAPI resource.
@@ -74,7 +74,7 @@ namespace Pulumi.AwsApiGateway
         }
     }
 
-    public sealed class RestAPIArgs : Pulumi.ResourceArgs
+    public sealed class RestAPIArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
@@ -144,5 +144,6 @@ namespace Pulumi.AwsApiGateway
         public RestAPIArgs()
         {
         }
+        public static new RestAPIArgs Empty => new RestAPIArgs();
     }
 }

@@ -74,7 +74,7 @@ namespace Pulumi.AwsApiGateway
         }
     }
 
-    internal sealed class AwsApiGatewayResourceTypeAttribute : Pulumi.ResourceTypeAttribute
+    internal sealed class AwsApiGatewayResourceTypeAttribute : global::Pulumi.ResourceTypeAttribute
     {
         public AwsApiGatewayResourceTypeAttribute(string type) : base(type, Utilities.Version)
         {

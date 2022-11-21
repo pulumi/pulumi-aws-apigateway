@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.AwsApiGateway.Inputs
 {
 
-    public sealed class RequiredParameterArgs : Pulumi.ResourceArgs
+    public sealed class RequiredParameterArgs : global::Pulumi.ResourceArgs
     {
         [Input("in")]
         public Input<string>? In { get; set; }
@@ -21,5 +21,6 @@ namespace Pulumi.AwsApiGateway.Inputs
         public RequiredParameterArgs()
         {
         }
+        public static new RequiredParameterArgs Empty => new RequiredParameterArgs();
     }
 }

@@ -5,8 +5,16 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
-export * from "./provider";
-export * from "./restAPI";
+export { ProviderArgs } from "./provider";
+export type Provider = import("./provider").Provider;
+export const Provider: typeof import("./provider").Provider = null as any;
+utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
+
+export { RestAPIArgs } from "./restAPI";
+export type RestAPI = import("./restAPI").RestAPI;
+export const RestAPI: typeof import("./restAPI").RestAPI = null as any;
+utilities.lazyLoad(exports, ["RestAPI"], () => require("./restAPI"));
+
 
 // Export enums:
 export * from "./types/enums";
@@ -17,9 +25,6 @@ import * as types from "./types";
 export {
     types,
 };
-
-// Import resources to register:
-import { RestAPI } from "./restAPI";
 
 const _module = {
     version: utilities.getVersion(),
@@ -33,9 +38,6 @@ const _module = {
     },
 };
 pulumi.runtime.registerResourceModule("aws-apigateway", "index", _module)
-
-import { Provider } from "./provider";
-
 pulumi.runtime.registerResourcePackage("aws-apigateway", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {
