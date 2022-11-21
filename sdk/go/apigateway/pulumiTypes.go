@@ -57,7 +57,7 @@ type Authorizer struct {
 // AuthorizerInput is an input type that accepts AuthorizerArgs and AuthorizerOutput values.
 // You can construct a concrete instance of `AuthorizerInput` via:
 //
-//          AuthorizerArgs{...}
+//	AuthorizerArgs{...}
 type AuthorizerInput interface {
 	pulumi.Input
 
@@ -123,7 +123,7 @@ func (i AuthorizerArgs) ToAuthorizerOutputWithContext(ctx context.Context) Autho
 // AuthorizerArrayInput is an input type that accepts AuthorizerArray and AuthorizerArrayOutput values.
 // You can construct a concrete instance of `AuthorizerArrayInput` via:
 //
-//          AuthorizerArray{ AuthorizerArgs{...} }
+//	AuthorizerArray{ AuthorizerArgs{...} }
 type AuthorizerArrayInput interface {
 	pulumi.Input
 
@@ -260,7 +260,7 @@ type RequiredParameter struct {
 // RequiredParameterInput is an input type that accepts RequiredParameterArgs and RequiredParameterOutput values.
 // You can construct a concrete instance of `RequiredParameterInput` via:
 //
-//          RequiredParameterArgs{...}
+//	RequiredParameterArgs{...}
 type RequiredParameterInput interface {
 	pulumi.Input
 
@@ -288,7 +288,7 @@ func (i RequiredParameterArgs) ToRequiredParameterOutputWithContext(ctx context.
 // RequiredParameterArrayInput is an input type that accepts RequiredParameterArray and RequiredParameterArrayOutput values.
 // You can construct a concrete instance of `RequiredParameterArrayInput` via:
 //
-//          RequiredParameterArray{ RequiredParameterArgs{...} }
+//	RequiredParameterArray{ RequiredParameterArgs{...} }
 type RequiredParameterArrayInput interface {
 	pulumi.Input
 
@@ -396,7 +396,7 @@ type Route struct {
 // RouteInput is an input type that accepts RouteArgs and RouteOutput values.
 // You can construct a concrete instance of `RouteInput` via:
 //
-//          RouteArgs{...}
+//	RouteArgs{...}
 type RouteInput interface {
 	pulumi.Input
 
@@ -460,7 +460,7 @@ func (i RouteArgs) ToRouteOutputWithContext(ctx context.Context) RouteOutput {
 // RouteArrayInput is an input type that accepts RouteArray and RouteArrayOutput values.
 // You can construct a concrete instance of `RouteArrayInput` via:
 //
-//          RouteArray{ RouteArgs{...} }
+//	RouteArray{ RouteArgs{...} }
 type RouteArrayInput interface {
 	pulumi.Input
 
@@ -602,7 +602,7 @@ type SwaggerGatewayResponse struct {
 // SwaggerGatewayResponseInput is an input type that accepts SwaggerGatewayResponseArgs and SwaggerGatewayResponseOutput values.
 // You can construct a concrete instance of `SwaggerGatewayResponseInput` via:
 //
-//          SwaggerGatewayResponseArgs{...}
+//	SwaggerGatewayResponseArgs{...}
 type SwaggerGatewayResponseInput interface {
 	pulumi.Input
 
@@ -631,7 +631,7 @@ func (i SwaggerGatewayResponseArgs) ToSwaggerGatewayResponseOutputWithContext(ct
 // SwaggerGatewayResponseMapInput is an input type that accepts SwaggerGatewayResponseMap and SwaggerGatewayResponseMapOutput values.
 // You can construct a concrete instance of `SwaggerGatewayResponseMapInput` via:
 //
-//          SwaggerGatewayResponseMap{ "key": SwaggerGatewayResponseArgs{...} }
+//	SwaggerGatewayResponseMap{ "key": SwaggerGatewayResponseArgs{...} }
 type SwaggerGatewayResponseMapInput interface {
 	pulumi.Input
 
@@ -776,7 +776,7 @@ type Target struct {
 // TargetInput is an input type that accepts TargetArgs and TargetOutput values.
 // You can construct a concrete instance of `TargetInput` via:
 //
-//          TargetArgs{...}
+//	TargetArgs{...}
 type TargetInput interface {
 	pulumi.Input
 
@@ -881,11 +881,11 @@ func (i TargetArgs) ToTargetPtrOutputWithContext(ctx context.Context) TargetPtrO
 // TargetPtrInput is an input type that accepts TargetArgs, TargetPtr and TargetPtrOutput values.
 // You can construct a concrete instance of `TargetPtrInput` via:
 //
-//          TargetArgs{...}
+//	        TargetArgs{...}
 //
-//  or:
+//	or:
 //
-//          nil
+//	        nil
 type TargetPtrInput interface {
 	pulumi.Input
 

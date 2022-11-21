@@ -139,7 +139,7 @@ func (o APIKeySourcePtrOutput) ToStringPtrOutputWithContext(ctx context.Context)
 // APIKeySourceInput is an input type that accepts APIKeySourceArgs and APIKeySourceOutput values.
 // You can construct a concrete instance of `APIKeySourceInput` via:
 //
-//          APIKeySourceArgs{...}
+//	APIKeySourceArgs{...}
 type APIKeySourceInput interface {
 	pulumi.Input
 
@@ -303,7 +303,7 @@ func (o IntegrationConnectionTypePtrOutput) ToStringPtrOutputWithContext(ctx con
 // IntegrationConnectionTypeInput is an input type that accepts IntegrationConnectionTypeArgs and IntegrationConnectionTypeOutput values.
 // You can construct a concrete instance of `IntegrationConnectionTypeInput` via:
 //
-//          IntegrationConnectionTypeArgs{...}
+//	IntegrationConnectionTypeArgs{...}
 type IntegrationConnectionTypeInput interface {
 	pulumi.Input
 
@@ -468,7 +468,7 @@ func (o IntegrationPassthroughBehaviorPtrOutput) ToStringPtrOutputWithContext(ct
 // IntegrationPassthroughBehaviorInput is an input type that accepts IntegrationPassthroughBehaviorArgs and IntegrationPassthroughBehaviorOutput values.
 // You can construct a concrete instance of `IntegrationPassthroughBehaviorInput` via:
 //
-//          IntegrationPassthroughBehaviorArgs{...}
+//	IntegrationPassthroughBehaviorArgs{...}
 type IntegrationPassthroughBehaviorInput interface {
 	pulumi.Input
 
@@ -635,7 +635,7 @@ func (o IntegrationTypePtrOutput) ToStringPtrOutputWithContext(ctx context.Conte
 // IntegrationTypeInput is an input type that accepts IntegrationTypeArgs and IntegrationTypeOutput values.
 // You can construct a concrete instance of `IntegrationTypeInput` via:
 //
-//          IntegrationTypeArgs{...}
+//	IntegrationTypeArgs{...}
 type IntegrationTypeInput interface {
 	pulumi.Input
 
@@ -805,7 +805,7 @@ func (o MethodPtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulum
 // MethodInput is an input type that accepts MethodArgs and MethodOutput values.
 // You can construct a concrete instance of `MethodInput` via:
 //
-//          MethodArgs{...}
+//	MethodArgs{...}
 type MethodInput interface {
 	pulumi.Input
 
@@ -970,7 +970,7 @@ func (o RequestValidatorPtrOutput) ToStringPtrOutputWithContext(ctx context.Cont
 // RequestValidatorInput is an input type that accepts RequestValidatorArgs and RequestValidatorOutput values.
 // You can construct a concrete instance of `RequestValidatorInput` via:
 //
-//          RequestValidatorArgs{...}
+//	RequestValidatorArgs{...}
 type RequestValidatorInput interface {
 	pulumi.Input
 
