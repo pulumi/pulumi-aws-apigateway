@@ -26,7 +26,7 @@ types:
         description: |
           The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
       eventHandler:
-        "$ref": "/aws/v5.4.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
         description: |
           A Lambda function which will handle the route for the given path and method.
       localPath:
@@ -297,7 +297,7 @@ types:
           - "token", for an authorizer with the caller identity embedded in an authorization token
           - "request", for an authorizer with the caller identity contained in request parameters
       handler:
-        "$ref": "/aws/v5.4.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
         description: |
           The authorizerHandler specifies information about the authorizing Lambda.
       identitySource:
@@ -389,7 +389,7 @@ resources:
           The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
           set to true on a route, and this is not defined the value will default to HEADER.
       staticRoutesBucket:
-        "$ref": "/aws/v5.4.0/schema.json#/resources/aws:s3%2Fbucket:Bucket"
+        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:s3%2Fbucket:Bucket"
         description: |
           Bucket to use for placing resources for static resources.  If not provided a default one will
           be created on your behalf if any `StaticRoute`s are provided.
@@ -407,19 +407,19 @@ resources:
         description: |
           The URL where the Rest API is exposed.
       api:
-        "$ref": "/aws/v5.4.0/schema.json#/resources/aws:apigateway%2FrestApi:RestApi"
+        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:apigateway%2FrestApi:RestApi"
         description: |
           The underlying RestAPI resource.
       deployment:
-        "$ref": "/aws/v5.4.0/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment"
+        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment"
         description: |
           The underlying Deployment resource.
       stage:
-        "$ref": "/aws/v5.4.0/schema.json#/resources/aws:apigateway%2Fstage:Stage"
+        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:apigateway%2Fstage:Stage"
         description: |
           The underlying Stage resource.
       apiPolicy:
-        "$ref": "/aws/v5.4.0/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy"
+        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy"
         description: |
           The underlying RestAPIPolicy resource.
     required:
@@ -446,9 +446,7 @@ language:
     generateExtraInputTypes: true
   nodejs:
     dependencies:
-      "@pulumi/aws": "^5.0.0"
-    devDependencies:
-      typescript: "^3.7.0"
+      "@pulumi/aws": "^5.4.0"
     respectSchemaVersion: true
   python:
     requires:
