@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.AwsApiGateway.Inputs
 {
 
-    public sealed class SwaggerGatewayResponseArgs : Pulumi.ResourceArgs
+    public sealed class SwaggerGatewayResponseArgs : global::Pulumi.ResourceArgs
     {
         [Input("responseParameters")]
         private InputMap<string>? _responseParameters;
@@ -34,5 +34,6 @@ namespace Pulumi.AwsApiGateway.Inputs
         public SwaggerGatewayResponseArgs()
         {
         }
+        public static new SwaggerGatewayResponseArgs Empty => new SwaggerGatewayResponseArgs();
     }
 }

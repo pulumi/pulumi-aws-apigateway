@@ -1,3 +1,3 @@
-// Package aws-apigateway exports types, functions, subpackages for provisioning aws-apigateway resources.
-//
+// Package apigateway exports types, functions, subpackages for provisioning apigateway resources.
+
 package apigateway

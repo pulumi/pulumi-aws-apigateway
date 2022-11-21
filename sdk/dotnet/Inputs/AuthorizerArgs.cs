@@ -13,7 +13,7 @@ namespace Pulumi.AwsApiGateway.Inputs
     /// <summary>
     /// LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
     /// </summary>
-    public sealed class AuthorizerArgs : Pulumi.ResourceArgs
+    public sealed class AuthorizerArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
@@ -119,5 +119,6 @@ namespace Pulumi.AwsApiGateway.Inputs
         public AuthorizerArgs()
         {
         }
+        public static new AuthorizerArgs Empty => new AuthorizerArgs();
     }
 }

@@ -10,7 +10,7 @@ using Pulumi.Serialization;
 namespace Pulumi.AwsApiGateway.Inputs
 {
 
-    public sealed class TargetArgs : Pulumi.ResourceArgs
+    public sealed class TargetArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
@@ -110,5 +110,6 @@ namespace Pulumi.AwsApiGateway.Inputs
         public TargetArgs()
         {
         }
+        public static new TargetArgs Empty => new TargetArgs();
     }
 }

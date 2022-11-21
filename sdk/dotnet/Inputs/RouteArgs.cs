@@ -15,7 +15,7 @@ namespace Pulumi.AwsApiGateway.Inputs
     /// have an incoming path that they match against.  However, destinations are determined by the kind
     /// of the route.
     /// </summary>
-    public sealed class RouteArgs : Pulumi.ResourceArgs
+    public sealed class RouteArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
         /// If true, an API key will be required for this route. The source for the API Key can be set at
@@ -119,5 +119,6 @@ namespace Pulumi.AwsApiGateway.Inputs
         public RouteArgs()
         {
         }
+        public static new RouteArgs Empty => new RouteArgs();
     }
 }
