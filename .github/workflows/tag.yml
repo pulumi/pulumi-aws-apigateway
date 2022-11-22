@@ -8,8 +8,12 @@ jobs:
     name: Dispatch Release Workflow
     runs-on: ubuntu-latest
     steps:
+      - id: format_version
+        # Replace the leading v
+        # Outputs must be in the form `var=` so we can access the value
+        run: echo "${{ github.ref_name }}" | sed "s/^v/version=/" >> $GITHUB_OUTPUT
       - name: Dispatch Release Workflow
         uses: benc-uk/workflow-dispatch@v1.2.2
         with:
           workflow: release-test.yaml
-          inputs: '{ "version": "${{ github.ref_name }}" }'
+          inputs: '{ "version": "${{ steps.format_version.outputs.version }}" }'

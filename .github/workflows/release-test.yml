@@ -161,16 +161,16 @@ jobs:
               exit 1
           fi
       - name: Mock Publish Python SDK
-        if: inputs.publishPython
+        if: ${{ inputs.publishPython && matrix.language == 'python' }}
         run: find sdk/python/bin/dist -type f
       - name: Mock Publish Node SDK
-        if: inputs.publishNpm
+        if: ${{ inputs.publishNpm && matrix.language == 'nodejs' }}
         run: find sdk/nodejs/bin -type f
       - name: Mock Publish Node SDK
-        if: inputs.publishNuget
+        if: ${{ inputs.publishNuget && matrix.language == 'dotnet' }}
         run: find sdk/dotnet/bin/Debug -type f
       - name: Mock Publish Java SDK
-        if: inputs.publishJava
+        if: ${{ inputs.publishJava && matrix.language == 'java' }}
         run: find sdk/java -type f
       # - if: ${{ matrix.language == 'python' && inputs.publishPython == 'true' }}
       #   name: Publish package to PyPI
