@@ -32,28 +32,24 @@ env:
   # THIS GITHUB_TOKEN IS A REQUIREMENT TO BE ABLE TO WRITE TO GH RELEASES
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # IF YOU NEED TO PUBLISH A NPM PACKAGE THEN ENSURE A NPM_TOKEN SECRET IS SET
-  # AND PUBLISH_NPM: TRUE. IF YOU WANT TO PUBLISH TO A PRIVATE NPM REGISTRY
+  # IF YOU WANT TO PUBLISH TO A PRIVATE NPM REGISTRY
   # THEN ENSURE THE NPM_REGISTRY_URL IS CHANGED
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  PUBLISH_NPM: true
   NPM_REGISTRY_URL: https://registry.npmjs.org
   # IF YOU NEED TO PUBLISH A NUGET PACKAGE THEN ENSURE AN NUGET_PUBLISH_KEY
-  # SECRET IS SET AND PUBLISH_NUGET: TRUE. IF YOU WANT TO PUBLISH TO AN ALTERNATIVE
+  # SECRET IS SET. IF YOU WANT TO PUBLISH TO AN ALTERNATIVE
   # NPM REGISTRY THEN ENSURE THE NPM_REGISTRY_URL IS CHANGED
   NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
   NUGET_FEED_URL: https://api.nuget.org/v3/index.json
-  PUBLISH_NUGET: true
-  # IF YOU NEED TO PUBLISH A PYPI PACKAGE THEN ENSURE AN PYPI_API_TOKEN
-  # SECRET IS SET AND PUBLISH_PYPI: TRUE. IF YOU WANT TO PUBLISH TO AN ALTERNATIVE
+  # ENSURE AN PYPI_API_TOKEN SECRET IS SET
+  # IF YOU WANT TO PUBLISH TO AN ALTERNATIVE
   # PYPI REGISTRY THEN ENSURE THE PYPI_REPOSITORY_URL IS SET. IF YOU ARE USING AN API_TOKEN THEN
   # YOU DO NOT NEED TO CHANGE THE PYPI_USERNAME (__token__) , IF YOU ARE USING PASSWORD AUTHENTICATION THEN YOU WILL
   # NEED TO CHANGE TO USE THE CORRECT PASSWORD
   PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
   PYPI_USERNAME: "pulumi"
   PYPI_REPOSITORY_URL: ""
-  PUBLISH_PYPI: true
-  # IF YOU NEED TO PUBLISH A JAVA PACKAGE THEN ENSURE PUBLISH_JAVA: TRUE.
   # YOU WILL NEED TO SPECIFY A STAGING SERVER AND ITS CREDENTIALS AS WELL AS THE
   # SIGNING INFORMATION FOR THE PACKAGE
   SIGNING_KEY: ${{ secrets.JAVA_SIGNING_KEY }}
@@ -61,7 +57,6 @@ env:
   SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
   PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
   PUBLISH_REPO_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-  PUBLISH_JAVA: true
 jobs:
   publish_binary:
     name: Publish Provider Binary
@@ -167,25 +162,25 @@ jobs:
       - name: Mock Publish Java SDK
         if: ${{ inputs.publishJava == 'true'}}
         run: find sdk/java -type f
-      # - if: ${{ matrix.language == 'python' && env.PUBLISH_PYPI == 'true' }}
+      # - if: ${{ matrix.language == 'python' && inputs.publishPython == 'true' }}
       #   name: Publish package to PyPI
       #   uses: pypa/gh-action-pypi-publish@release/v1
       #   with:
       #     user: ${{ env.PYPI_USERNAME }}
       #     password: ${{ env.PYPI_PASSWORD }}
       #     packages_dir: ${{github.workspace}}/sdk/python/bin/dist
-      # - if: ${{ matrix.language == 'nodejs' && env.PUBLISH_NPM == 'true' }}
+      # - if: ${{ matrix.language == 'nodejs' && inputs.publishNpm == 'true' }}
       #   uses: JS-DevTools/npm-publish@v1
       #   with:
       #     access: "public"
       #     token: ${{ env.NPM_TOKEN }}
       #     package: ${{github.workspace}}/sdk/nodejs/bin/package.json
-      # - if: ${{ matrix.language == 'dotnet' && env.PUBLISH_NUGET == 'true' }}
+      # - if: ${{ matrix.language == 'dotnet' && inputs.publishNuget == 'true' }}
       #   name: publish nuget package
       #   run: |
       #     dotnet nuget push ${{github.workspace}}/sdk/dotnet/bin/Debug/*.nupkg -s ${{ env.NUGET_FEED_URL }} -k ${{ env.NUGET_PUBLISH_KEY }}
       #     echo "done publishing packages"
-      # - if: ${{ matrix.language == 'java' && env.PUBLISH_JAVA == 'true' }}
+      # - if: ${{ matrix.language == 'java' && inputs.publishJava == 'true' }}
       #   name: publish java package
       #   uses: gradle/gradle-build-action@9b814496b50909128c6a52622b416c5ffa04db49
       #   with:
