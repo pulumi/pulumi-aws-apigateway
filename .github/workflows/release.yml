@@ -1,7 +1,5 @@
 name: Release provider & SDKs
 on:
-  repository_dispatch:
-    types: [release-test]
   workflow_dispatch:
     inputs:
       version:
