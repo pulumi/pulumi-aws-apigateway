@@ -80,7 +80,7 @@ jobs:
       fail-fast: true
       matrix:
         nodeversion:
-          - 14.x
+          - 18.x
   publish_sdk:
     name: Publish SDKs
     runs-on: ubuntu-latest
@@ -164,7 +164,7 @@ jobs:
         dotnetversion:
           - 3.1.301
         goversion:
-          - 1.17.x
+          - 1.19.x
         language:
           - nodejs
           - python
@@ -174,7 +174,7 @@ jobs:
         javaversion:
           - 11
         nodeversion:
-          - 14.x
+          - 18.x
         pythonversion:
           - "3.9"
   tag_sdk:
