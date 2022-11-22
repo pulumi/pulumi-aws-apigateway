@@ -15,5 +15,5 @@ jobs:
       - name: Dispatch Release Workflow
         uses: benc-uk/workflow-dispatch@v1.2.2
         with:
-          workflow: release-test.yaml
+          workflow: release-test.yml
           inputs: '{ "version": "${{ steps.format_version.outputs.version }}" }'
