@@ -1,4 +1,4 @@
-name: release
+name: Release provider & SDKs
 on:
   repository_dispatch:
     types: [release-test]
@@ -92,7 +92,7 @@ jobs:
       - name: Create Provider Binaries
         run: make dist VERSION=${{ inputs.version }}
       - name: Mock Upload
-        if: ${{ inputs.publishProvider == 'true'}}
+        if: inputs.publishProvider == true
         run: echo "Uploading..."
       # - name: Upload Provider Binaries
       #   run: aws s3 cp dist s3://get.pulumi.com/releases/plugins/ --recursive
@@ -161,16 +161,16 @@ jobs:
               exit 1
           fi
       - name: Mock Publish Python SDK
-        if: ${{ inputs.publishPython == 'true'}}
+        if: inputs.publishPython
         run: find sdk/python/bin/dist -type f
       - name: Mock Publish Node SDK
-        if: ${{ inputs.publishNpm == 'true'}}
+        if: inputs.publishNpm
         run: find sdk/nodejs/bin -type f
       - name: Mock Publish Node SDK
-        if: ${{ inputs.publishNuget == 'true'}}
+        if: inputs.publishNuget
         run: find sdk/dotnet/bin/Debug -type f
       - name: Mock Publish Java SDK
-        if: ${{ inputs.publishJava == 'true'}}
+        if: inputs.publishJava
         run: find sdk/java -type f
       # - if: ${{ matrix.language == 'python' && inputs.publishPython == 'true' }}
       #   name: Publish package to PyPI
