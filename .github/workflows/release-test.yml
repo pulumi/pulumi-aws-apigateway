@@ -28,6 +28,22 @@ on:
         description: "Publish Java SDK"
         default: true
         type: boolean
+      dotnetVersion:
+        description: Version of dotnet to install
+        default: "3.1.301"
+      goVersion:
+        description: Version of Go to install
+        default: "1.19.x"
+      javaVersion:
+        description: Version of Java to install
+        default: "11"
+      nodeVersion:
+        description: Version of Node.js to install
+        default: "18.x"
+      pythonVersion:
+        description: Version of Python to install
+        default: "3.9"
+
 env:
   # THIS GITHUB_TOKEN IS A REQUIREMENT TO BE ABLE TO WRITE TO GH RELEASES
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -67,7 +83,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: ${{matrix.nodeversion}}
+          node-version: ${{ inputs.nodeVersion }}
       - uses: MOZGIII/install-ldid-action@v1
         with:
           tag: v2.1.5-procursus2
@@ -97,43 +113,47 @@ jobs:
       #       dist/*.tar.gz
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
-    strategy:
-      fail-fast: true
-      matrix:
-        nodeversion:
-          - 18.x
   publish_sdk:
     name: Publish SDKs
     runs-on: ubuntu-latest
     needs: publish_binary
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - nodejs
+          - python
+          - dotnet
+          - go
+          - java
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: Install Go
         uses: actions/setup-go@v2
         with:
-          go-version: ${{ matrix.goversion }}
+          go-version: ${{ inputs.goVersion }}
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: ${{matrix.nodeversion}}
+          node-version: ${{ inputs.nodeVersion }}
           registry-url: ${{env.NPM_REGISTRY_URL}}
       - name: Setup DotNet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{matrix.dotnetverson}}
+          dotnet-version: ${{ inputs.dotnetverson }}
       - name: Setup Python
         uses: actions/setup-python@v1
         with:
-          python-version: ${{matrix.pythonversion}}
+          python-version: ${{ inputs.pythonVersion }}
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           cache: gradle
           distribution: temurin
-          java-version: ${{matrix.javaversion}}
+          java-version: ${{ inputs.javaVersion }}
       - name: Set PACKAGE_VERSION to Env
         env:
           PACKAGE_VERSION: ${{ inputs.version }}
@@ -191,22 +211,4 @@ jobs:
       #   name: Add SDK version tag
       #   run: git tag sdk/v$(pulumictl get version --language generic) && git push origin
       #     sdk/v$(pulumictl get version --language generic)
-    strategy:
-      fail-fast: false
-      matrix:
-        dotnetversion:
-          - 3.1.301
-        goversion:
-          - 1.19.x
-        language:
-          - nodejs
-          - python
-          - dotnet
-          - go
-          - java
-        javaversion:
-          - 11
-        nodeversion:
-          - 18.x
-        pythonversion:
-          - "3.9"
+
