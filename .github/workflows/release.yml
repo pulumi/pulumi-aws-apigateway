@@ -80,7 +80,7 @@ jobs:
       fail-fast: true
       matrix:
         nodeversion:
-          - 14.x
+          - 18.x
   publish_sdk:
     name: Publish SDKs
     runs-on: ubuntu-latest
@@ -158,13 +158,17 @@ jobs:
           arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
           build-root-directory: ./sdk/java
           gradle-version: 7.4.1
+      - if: ${{ matrix.language == 'go' }}
+        name: Add SDK version tag
+        run: git tag sdk/v$(pulumictl get version --language generic) && git push origin
+          sdk/v$(pulumictl get version --language generic)
     strategy:
       fail-fast: true
       matrix:
         dotnetversion:
           - 3.1.301
         goversion:
-          - 1.17.x
+          - 1.19.x
         language:
           - nodejs
           - python
@@ -174,23 +178,9 @@ jobs:
         javaversion:
           - 11
         nodeversion:
-          - 14.x
+          - 18.x
         pythonversion:
           - "3.9"
-  tag_sdk:
-    name: tag_sdk
-    needs: publish_sdk
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Install pulumictl
-        uses: jaxxstorm/action-install-gh-release@v1.2.0
-        with:
-          repo: pulumi/pulumictl
-      - name: Add SDK version tag
-        run: git tag sdk/v$(pulumictl get version --language generic) && git push origin
-          sdk/v$(pulumictl get version --language generic)
 name: release
 "on":
   push:
