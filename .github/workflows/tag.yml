@@ -8,8 +8,8 @@ jobs:
     name: Dispatch Release Workflow
     runs-on: ubuntu-latest
     steps:
-      - name: Invoke release workflow
-        uses: benc-uk/workflow-dispatch@v1
+      - name: Dispatch Release Workflow
+        uses: benc-uk/workflow-dispatch@v1.2.2
         with:
           workflow: release-test.yaml
           inputs: '{ "version": "${{ github.ref_name }}" }'
