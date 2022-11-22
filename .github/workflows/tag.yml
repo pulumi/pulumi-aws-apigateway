@@ -1,0 +1,15 @@
+name: release
+on:
+  push:
+    tags:
+      - v*.*.*
+jobs:
+  dispatch_publish:
+    name: Dispatch Release Workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Invoke release workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: release-test.yaml
+          inputs: '{ "version": "${{ github.ref_name }}" }'

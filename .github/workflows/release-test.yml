@@ -1,3 +1,33 @@
+name: release
+on:
+  repository_dispatch:
+    types: [release-test]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to be released"
+        type: string
+        required: true
+      publishProvider:
+        description: "Publish provider binaries (to GH & S3)"
+        default: true
+        type: boolean
+      publishNpm:
+        description: "Publish Node.js SDK"
+        default: true
+        type: boolean
+      publishNuget:
+        description: "Publish .NET SDK"
+        default: true
+        type: boolean
+      publishPython:
+        description: "Publish Python SDK"
+        default: true
+        type: boolean
+      publishJava:
+        description: "Publish Java SDK"
+        default: true
+        type: boolean
 env:
   # THIS GITHUB_TOKEN IS A REQUIREMENT TO BE ABLE TO WRITE TO GH RELEASES
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -39,8 +69,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Unshallow clone for tags
-        run: git fetch --prune --unshallow --tags
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
@@ -48,10 +76,6 @@ jobs:
       - uses: MOZGIII/install-ldid-action@v1
         with:
           tag: v2.1.5-procursus2
-      - name: Install pulumictl
-        uses: jaxxstorm/action-install-gh-release@v1.1.0
-        with:
-          repo: pulumi/pulumictl
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
       - name: Configure AWS Credentials
@@ -64,18 +88,20 @@ jobs:
           role-external-id: upload-pulumi-release
           role-session-name: uploader@githubActions
           role-to-assume: ${{ secrets.AWS_UPLOAD_ROLE_ARN }}
-      - run: make build_provider
       - name: Create Provider Binaries
-        run: make dist
-      - name: Upload Provider Binaries
-        run: aws s3 cp dist s3://get.pulumi.com/releases/plugins/ --recursive
-      - name: Create GH Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            dist/*.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
+        run: make dist VERSION=${{ inputs.version }}
+      - name: Mock Upload
+        if: ${{ inputs.publishProvider == 'true'}}
+        run: echo "Uploading..."
+      # - name: Upload Provider Binaries
+      #   run: aws s3 cp dist s3://get.pulumi.com/releases/plugins/ --recursive
+      # - name: Create GH Release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: |
+      #       dist/*.tar.gz
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
     strategy:
       fail-fast: true
       matrix:
@@ -88,16 +114,10 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Unshallow clone for tags
-        run: git fetch --prune --unshallow --tags
       - name: Install Go
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.goversion }}
-      - name: Install pulumictl
-        uses: jaxxstorm/action-install-gh-release@v1.1.0
-        with:
-          repo: pulumi/pulumictl
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
       - name: Setup Node
@@ -120,10 +140,12 @@ jobs:
           distribution: temurin
           java-version: ${{matrix.javaversion}}
       - name: Set PACKAGE_VERSION to Env
-        run: echo "PACKAGE_VERSION=$(pulumictl get version --language generic)" >>
+        env:
+          PACKAGE_VERSION: ${{ inputs.version }}
+        run: echo "PACKAGE_VERSION=$PACKAGE_VERSION" >>
           $GITHUB_ENV
       - name: Build SDK
-        run: make build_${{ matrix.language }}_sdk
+        run: make build_${{ matrix.language }}_sdk VERSION=${{ inputs.version }}
       - name: Check worktree clean
         run: |
           git update-index -q --refresh
@@ -133,35 +155,47 @@ jobs:
               git diff
               exit 1
           fi
-      - if: ${{ matrix.language == 'python' && env.PUBLISH_PYPI == 'true' }}
-        name: Publish package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: ${{ env.PYPI_USERNAME }}
-          password: ${{ env.PYPI_PASSWORD }}
-          packages_dir: ${{github.workspace}}/sdk/python/bin/dist
-      - if: ${{ matrix.language == 'nodejs' && env.PUBLISH_NPM == 'true' }}
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          access: "public"
-          token: ${{ env.NPM_TOKEN }}
-          package: ${{github.workspace}}/sdk/nodejs/bin/package.json
-      - if: ${{ matrix.language == 'dotnet' && env.PUBLISH_NUGET == 'true' }}
-        name: publish nuget package
-        run: |
-          dotnet nuget push ${{github.workspace}}/sdk/dotnet/bin/Debug/*.nupkg -s ${{ env.NUGET_FEED_URL }} -k ${{ env.NUGET_PUBLISH_KEY }}
-          echo "done publishing packages"
-      - if: ${{ matrix.language == 'java' && env.PUBLISH_JAVA == 'true' }}
-        name: publish java package
-        uses: gradle/gradle-build-action@9b814496b50909128c6a52622b416c5ffa04db49
-        with:
-          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
-          build-root-directory: ./sdk/java
-          gradle-version: 7.4.1
-      - if: ${{ matrix.language == 'go' }}
-        name: Add SDK version tag
-        run: git tag sdk/v$(pulumictl get version --language generic) && git push origin
-          sdk/v$(pulumictl get version --language generic)
+      - name: Mock Publish Python SDK
+        if: ${{ inputs.publishPython == 'true'}}
+        run: find sdk/python/bin/dist -type f
+      - name: Mock Publish Node SDK
+        if: ${{ inputs.publishNpm == 'true'}}
+        run: find sdk/nodejs/bin -type f
+      - name: Mock Publish Node SDK
+        if: ${{ inputs.publishNuget == 'true'}}
+        run: find sdk/dotnet/bin/Debug -type f
+      - name: Mock Publish Java SDK
+        if: ${{ inputs.publishJava == 'true'}}
+        run: find sdk/java -type f
+      # - if: ${{ matrix.language == 'python' && env.PUBLISH_PYPI == 'true' }}
+      #   name: Publish package to PyPI
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+      #   with:
+      #     user: ${{ env.PYPI_USERNAME }}
+      #     password: ${{ env.PYPI_PASSWORD }}
+      #     packages_dir: ${{github.workspace}}/sdk/python/bin/dist
+      # - if: ${{ matrix.language == 'nodejs' && env.PUBLISH_NPM == 'true' }}
+      #   uses: JS-DevTools/npm-publish@v1
+      #   with:
+      #     access: "public"
+      #     token: ${{ env.NPM_TOKEN }}
+      #     package: ${{github.workspace}}/sdk/nodejs/bin/package.json
+      # - if: ${{ matrix.language == 'dotnet' && env.PUBLISH_NUGET == 'true' }}
+      #   name: publish nuget package
+      #   run: |
+      #     dotnet nuget push ${{github.workspace}}/sdk/dotnet/bin/Debug/*.nupkg -s ${{ env.NUGET_FEED_URL }} -k ${{ env.NUGET_PUBLISH_KEY }}
+      #     echo "done publishing packages"
+      # - if: ${{ matrix.language == 'java' && env.PUBLISH_JAVA == 'true' }}
+      #   name: publish java package
+      #   uses: gradle/gradle-build-action@9b814496b50909128c6a52622b416c5ffa04db49
+      #   with:
+      #     arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
+      #     build-root-directory: ./sdk/java
+      #     gradle-version: 7.4.1
+      # - if: ${{ matrix.language == 'go' }}
+      #   name: Add SDK version tag
+      #   run: git tag sdk/v$(pulumictl get version --language generic) && git push origin
+      #     sdk/v$(pulumictl get version --language generic)
     strategy:
       fail-fast: false
       matrix:
@@ -181,10 +215,3 @@ jobs:
           - 18.x
         pythonversion:
           - "3.9"
-name: release
-"on":
-  push:
-    tags:
-      - v*.*.*
-      - '!v*.*.*-**'
-      - '!v0.x.x'

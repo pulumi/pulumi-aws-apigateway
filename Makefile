@@ -1,4 +1,4 @@
-VERSION         := $(shell pulumictl get version)
+VERSION ?= 0.0.1
 
 PACK            := aws-apigateway
 PROJECT         := github.com/pulumi/pulumi-${PACK}
@@ -13,12 +13,11 @@ JAVA_GEN_VERSION := v0.5.0
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
 
-generate:: gen_go_sdk gen_nodejs_sdk gen_python_sdk gen_dotnet_sdk gen_java_sdk
-
 build:: build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk build_go_sdk build_java_sdk
 
-install:: install_provider install_nodejs_sdk install_dotnet_sdk
+generate:: gen_go_sdk gen_nodejs_sdk gen_python_sdk gen_dotnet_sdk gen_java_sdk
 
+install:: install_provider install_nodejs_sdk install_dotnet_sdk
 
 # Provider
 
@@ -49,12 +48,11 @@ gen_dotnet_sdk::
 	rm -rf sdk/dotnet
 	cd provider/cmd/${CODEGEN} && go run . dotnet ../../../sdk/dotnet ${SCHEMA_PATH}
 
-build_dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
 build_dotnet_sdk:: gen_dotnet_sdk
 	cd sdk/dotnet/ && \
 		echo "module fake_dotnet_module // Exclude this directory from Go tools\n\ngo 1.17" > go.mod && \
-		echo "${DOTNET_VERSION}" >version.txt && \
-		dotnet build /p:Version=${DOTNET_VERSION}
+		echo "${VERSION}" >version.txt && \
+		dotnet build /p:Version=${VERSION}
 
 install_dotnet_sdk:: build_dotnet_sdk
 	rm -rf ${WORKING_DIR}/nuget
@@ -67,7 +65,6 @@ gen_nodejs_sdk::
 	rm -rf sdk/nodejs
 	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
 
-build_nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 build_nodejs_sdk:: gen_nodejs_sdk
 	cd sdk/nodejs/ && \
 		echo "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17" > go.mod && \
@@ -76,7 +73,7 @@ build_nodejs_sdk:: gen_nodejs_sdk
 		yarn run tsc && \
 		cp -R scripts/ bin && \
 		cp ../../README.md ../../LICENSE package.json yarn.lock ./bin/ && \
-		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
+		sed -i.bak -e "s/\$${VERSION}/v$(VERSION)/g" ./bin/package.json && \
 		rm ./bin/package.json.bak
 
 install_nodejs_sdk:: build_nodejs_sdk
@@ -90,13 +87,12 @@ gen_python_sdk::
 	cd provider/cmd/${CODEGEN} && go run . python ../../../sdk/python ${SCHEMA_PATH}
 	cp ${WORKING_DIR}/README.md sdk/python
 
-build_python_sdk:: PYPI_VERSION := $(shell pulumictl get version --language python)
 build_python_sdk:: gen_python_sdk
 	cd sdk/python/ && \
 		echo "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17" > go.mod && \
 		python3 setup.py clean --all 2>/dev/null && \
 		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
-		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
+		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
 		rm ./bin/setup.py.bak && \
 		cd ./bin && python3 setup.py build sdist
 
@@ -109,7 +105,7 @@ gen_java_sdk:: bin/pulumi-java-gen
 	rm -rf sdk/java
 	$(WORKING_DIR)/bin/$(JAVA_GEN) generate --schema ${SCHEMA_PATH} --out sdk/java --build gradle-nexus
 
-build_java_sdk:: PACKAGE_VERSION := $(shell pulumictl get version --language generic)
+build_java_sdk:: PACKAGE_VERSION := $(VERSION)
 build_java_sdk::
 	cd sdk/java/ && \
 		echo "module fake_java_module // Exclude this directory from Go tools\n\ngo 1.17" > go.mod && \
