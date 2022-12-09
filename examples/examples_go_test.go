@@ -20,9 +20,10 @@ func TestSimpleGo(t *testing.T) {
 
 func getGoBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions(t)
+	rootSdkPath, _ := filepath.Abs("../sdk")
 	baseGo := base.With(integration.ProgramTestOptions{
 		Dependencies: []string{
-			"github.com/pulumi/pulumi-aws-apigateway/sdk",
+			"github.com/pulumi/pulumi-aws-apigateway/sdk="+rootSdkPath,
 		},
 	})
 
