@@ -3,7 +3,6 @@
 package examples
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
@@ -11,19 +10,19 @@ import (
 )
 
 func getRegion(t *testing.T) string {
-	azureLocation := os.Getenv("AWS_REGION")
-	if azureLocation == "" {
-		azureLocation = "us-east-2"
-		fmt.Println("Defaulting region to 'us-east-2'. You can override using the AWS_REGION variable.")
+	envRegion := os.Getenv("AWS_REGION")
+	if envRegion == "" {
+		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
 	}
 
-	return azureLocation
+	return envRegion
 }
 
 func getBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	awsRegion := getRegion(t)
 	return integration.ProgramTestOptions{
-		ExpectRefreshChanges: true,
+		SkipRefresh: true,
+		Quick: true,
 		Config: map[string]string{
 			"aws:region": awsRegion,
 		},

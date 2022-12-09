@@ -82,6 +82,11 @@ jobs:
         with:
           tag: v2.1.5-procursus2
 
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
 
@@ -212,4 +217,3 @@ jobs:
       - name: Publish Go SDK
         if: ${{ inputs.publishGo && matrix.language == 'go' }}
         run: git tag sdk/v${{ inputs.version }} && git push origin sdk/v${{ inputs.version }}
-

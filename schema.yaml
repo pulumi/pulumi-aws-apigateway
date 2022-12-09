@@ -26,7 +26,7 @@ types:
         description: |
           The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
       eventHandler:
-        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+        "$ref": "/aws/v5.16.2/schema.json#/resources/aws:lambda%2Ffunction:Function"
         description: |
           A Lambda function which will handle the route for the given path and method.
       localPath:
@@ -43,10 +43,10 @@ types:
           `localPath` points to a directory, the content types for all files will be inferred.
       index:
         oneOf:
-        - type: string
-          plain: true
-        - type: boolean
-          plain: true
+          - type: string
+            plain: true
+          - type: boolean
+            plain: true
         plain: true
         description: |
           By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
@@ -97,7 +97,7 @@ types:
           By default, the route method auth type is set to `NONE`. If true, the auth type will be
           set to `AWS_IAM`.
     required:
-    - path
+      - path
     description: |
       A route that that APIGateway should accept and forward to some type of destination. All routes
       have an incoming path that they match against.  However, destinations are determined by the kind
@@ -109,23 +109,23 @@ types:
         "$ref": "#/types/aws-apigateway:index:IntegrationType"
         description: |
           Specifies an API method integration type. The valid value is one of the following:
-          
+
           * `aws`: for integrating the API method request with an AWS service action, including the Lambda
           function-invoking action. With the Lambda function-invoking action, this is referred to as
           the Lambda custom integration. With any other AWS service action, this is known as AWS
           integration.
-          
+
           * `aws_proxy`: for integrating the API method request with the Lambda function-invoking action
           with the client request passed through as-is. This integration is also referred to as the
           Lambda proxy integration.
-          
+
           * `http`: for integrating the API method request with an HTTP endpoint, including a private HTTP
           endpoint within a VPC. This integration is also referred to as the HTTP custom integration.
-          
+
           * `http_proxy`: for integrating the API method request with an HTTP endpoint, including a private
           HTTP endpoint within a VPC, with the client request passed through as-is. This is also
           referred to as the HTTP proxy integration.
-          
+
           * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
           without invoking any backend.
       httpMethod:
@@ -137,12 +137,12 @@ types:
         type: string
         description: |
           Specifies Uniform Resource Identifier (URI) of the integration endpoint.
-          
+
           For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
           according to the RFC-3986 specification, for either standard integration, where
           connectionType is not VPC_LINK, or private integration, where connectionType is VPC_LINK. For
           a private HTTP integration, the URI is not used for routing.
-          
+
           For AWS or AWS_PROXY integrations, the URI is of the form
           arn:aws:apigateway:{region}:{subdomain.service|service}:path|action/{service_api}. Here,
           {Region} is the API Gateway region (e.g., us-east-1); {service} is the name of the integrated
@@ -171,68 +171,68 @@ types:
         description: |
           Specifies how the method request body of an unmapped content type will be passed through the
           integration request to the back end without transformation.
-          
+
           The valid value is one of the following:
-          
+
           * `WHEN_NO_MATCH`: passes the method request body through the integration request to the back end
           without transformation when the method request content type does not match any content type
           associated with the mapping templates defined in the integration request.
-          
+
           * `WHEN_NO_TEMPLATES`: passes the method request body through the integration request to the back
           end without transformation when no mapping template is defined in the integration request. If
           a template is defined when this option is selected, the method request of an unmapped
           content-type will be rejected with an HTTP 415 Unsupported Media Type response.
-          
+
           * `NEVER`: rejects the method request with an HTTP 415 Unsupported Media Type response when
           either the method request content type does not match any content type associated with the
           mapping templates defined in the integration request or no mapping template is defined in the
           integration request.
-          
+
           Defaults to `WHEN_NO_MATCH` if unspecified.
     required:
-    - type
-    - uri
+      - type
+      - uri
   aws-apigateway:index:Method:
     type: string
     enum:
-    - value: ANY
-    - value: GET
-    - value: PUT
-    - value: POST
-    - value: DELETE
-    - value: PATCH
-    - value: OPTIONS
-    - value: HEAD
+      - value: ANY
+      - value: GET
+      - value: PUT
+      - value: POST
+      - value: DELETE
+      - value: PATCH
+      - value: OPTIONS
+      - value: HEAD
   aws-apigateway:index:RequestValidator:
     type: string
     enum:
-    - value: ALL
-    - value: PARAMS_ONLY
-    - value: BODY_ONLY
+      - value: ALL
+      - value: PARAMS_ONLY
+      - value: BODY_ONLY
   aws-apigateway:index:APIKeySource:
     type: string
     enum:
-    - value: HEADER
-    - value: AUTHORIZER
+      - value: HEADER
+      - value: AUTHORIZER
   aws-apigateway:index:IntegrationConnectionType:
     type: string
     enum:
-    - value: INTERNET
-    - value: VPC_LINK
+      - value: INTERNET
+      - value: VPC_LINK
   aws-apigateway:index:IntegrationType:
     type: string
     enum:
-    - value: aws
-    - value: aws_proxy
-    - value: http
-    - value: http_proxy
-    - value: mock
+      - value: aws
+      - value: aws_proxy
+      - value: http
+      - value: http_proxy
+      - value: mock
   aws-apigateway:index:IntegrationPassthroughBehavior:
     type: string
     enum:
-    - value: when_no_match
-    - value: when_no_templates
-    - value: never
+      - value: when_no_match
+      - value: when_no_templates
+      - value: never
   aws-apigateway:index:SwaggerGatewayResponse:
     type: object
     properties:
@@ -254,9 +254,9 @@ types:
       in:
         type: string
         enum:
-        - value: path
-        - value: query
-        - value: header
+          - value: path
+          - value: query
+          - value: header
   aws-apigateway:index:Authorizer:
     type: object
     properties:
@@ -275,8 +275,8 @@ types:
       parameterLocation:
         type: string
         enum:
-        - value: query
-        - value: header
+          - value: query
+          - value: header
         plain: true
         description: |
           Defines where in the request API Gateway should look for identity information. The value must
@@ -289,15 +289,15 @@ types:
       type:
         type: string
         enum:
-        - value: token
-        - value: request
+          - value: token
+          - value: request
         plain: true
         description: |
           The type of the authorizer. This value must be one of the following:
           - "token", for an authorizer with the caller identity embedded in an authorization token
           - "request", for an authorizer with the caller identity contained in request parameters
       handler:
-        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:lambda%2Ffunction:Function"
+        "$ref": "/aws/v5.16.2/schema.json#/resources/aws:lambda%2Ffunction:Function"
         description: |
           The authorizerHandler specifies information about the authorizing Lambda.
       identitySource:
@@ -346,7 +346,7 @@ types:
           scopes visit the AWS documentation -
           https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
     required:
-    - parameterName
+      - parameterName
     description: |
       LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
 resources:
@@ -389,7 +389,7 @@ resources:
           The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
           set to true on a route, and this is not defined the value will default to HEADER.
       staticRoutesBucket:
-        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:s3%2Fbucket:Bucket"
+        "$ref": "/aws/v5.16.2/schema.json#/resources/aws:s3%2Fbucket:Bucket"
         description: |
           Bucket to use for placing resources for static resources.  If not provided a default one will
           be created on your behalf if any `StaticRoute`s are provided.
@@ -407,26 +407,26 @@ resources:
         description: |
           The URL where the Rest API is exposed.
       api:
-        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:apigateway%2FrestApi:RestApi"
+        "$ref": "/aws/v5.16.2/schema.json#/resources/aws:apigateway%2FrestApi:RestApi"
         description: |
           The underlying RestAPI resource.
       deployment:
-        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment"
+        "$ref": "/aws/v5.16.2/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment"
         description: |
           The underlying Deployment resource.
       stage:
-        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:apigateway%2Fstage:Stage"
+        "$ref": "/aws/v5.16.2/schema.json#/resources/aws:apigateway%2Fstage:Stage"
         description: |
           The underlying Stage resource.
       apiPolicy:
-        "$ref": "/aws/v5.21.0/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy"
+        "$ref": "/aws/v5.16.2/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy"
         description: |
           The underlying RestAPIPolicy resource.
     required:
-    - url
-    - api
-    - deployment
-    - stage
+      - url
+      - api
+      - deployment
+      - stage
     description: |
       The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The 
       REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event 
@@ -434,7 +434,7 @@ resources:
       and serves them or (3) an integration target such as an HTTP proxy or service integration.
 language:
   csharp:
-    namespaces: 
+    namespaces:
       aws-apigateway: AwsApiGateway
     packageReferences:
       Pulumi: 3.*
@@ -446,13 +446,13 @@ language:
     generateExtraInputTypes: true
   nodejs:
     dependencies:
-      "@pulumi/aws": "^5.4.0"
+      "@pulumi/aws": "^5.16.2"
     respectSchemaVersion: true
   python:
     requires:
       pulumi: ">=3.0.0,<4.0.0"
-      pulumi-aws: ">=5.0.0,<6.0.0"
+      pulumi-aws: ">=5.16.2,<6.0.0"
     respectSchemaVersion: true
   java:
     packages:
-      "com.pulumi:aws": "5.4.0"
+      "com.pulumi:aws": "5.16.2"

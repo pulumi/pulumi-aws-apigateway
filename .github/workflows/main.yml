@@ -1,4 +1,5 @@
-name: Main
+name: Acceptance test
+
 on:
   workflow_dispatch: {}
   push:
@@ -6,10 +7,16 @@ on:
       - main
     paths-ignore:
       - "**.md"
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - CHANGELOG.md
 
 env:
   AWS_REGION: us-west-2
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PROVIDER: aws-apigateway
   PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
   PULUMI_API: https://api.pulumi-staging.io
   PULUMI_GO_DEP_ROOT: ${{ github.workspace }}/..
@@ -29,6 +36,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
@@ -40,9 +52,6 @@ jobs:
 
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
-
-      - name: Create Provider Binaries
-        run: make dist VERSION=${{ inputs.version }}
 
       - name: Set PACKAGE_VERSION to Env
         env:
@@ -62,6 +71,22 @@ jobs:
               git diff
               exit 1
           fi
+
+      - name: Install gotestfmt
+        uses: GoTestTools/gotestfmt-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: v2.4.0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: ${{ env.AWS_REGION }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-duration-seconds: 3600
+          role-session-name: ${{ env.PROVIDER }}@githubActions
+          role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
 
       - name: Run program tests
         run: make test
