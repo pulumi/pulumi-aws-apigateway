@@ -1,4 +1,4 @@
-name: Main
+name: Acceptance test
 
 on:
   workflow_dispatch: {}
@@ -35,6 +35,11 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
 
       - name: Setup Node
         uses: actions/setup-node@v1
