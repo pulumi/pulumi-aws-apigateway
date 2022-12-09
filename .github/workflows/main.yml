@@ -1,0 +1,67 @@
+name: Main
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+
+env:
+  AWS_REGION: us-west-2
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+  PULUMI_API: https://api.pulumi-staging.io
+  PULUMI_GO_DEP_ROOT: ${{ github.workspace }}/..
+  PULUMI_LOCAL_NUGET: ${{ github.workspace }}/nuget
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  DOTNET_VERSION: "3.1.301"
+  GO_VERSION: "1.19.x"
+  JAVA_VERSION: "11"
+  NODE_VERSION: "18.x"
+  PYTHON_VERSION: "3.9"
+
+jobs:
+  test:
+    name: Run program tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: MOZGIII/install-ldid-action@v1
+        with:
+          tag: v2.1.5-procursus2
+
+      - name: Install Pulumi CLI
+        uses: pulumi/action-install-pulumi-cli@v1.0.1
+
+      - name: Create Provider Binaries
+        run: make dist VERSION=${{ inputs.version }}
+
+      - name: Set PACKAGE_VERSION to Env
+        env:
+          PACKAGE_VERSION: ${{ inputs.version }}
+        run: echo "PACKAGE_VERSION=$PACKAGE_VERSION" >>
+          $GITHUB_ENV
+
+      - name: Build & Install Provider & SDKs
+        run: make install
+
+      - name: Check worktree clean
+        run: |
+          git update-index -q --refresh
+          if ! git diff-files --quiet; then
+              >&2 echo "error: working tree is not clean, aborting!"
+              git status
+              git diff
+              exit 1
+          fi
+
+      - name: Run program tests
+        run: make test
