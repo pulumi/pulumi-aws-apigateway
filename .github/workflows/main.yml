@@ -41,9 +41,6 @@ jobs:
       - name: Install Pulumi CLI
         uses: pulumi/action-install-pulumi-cli@v1.0.1
 
-      - name: Create Provider Binaries
-        run: make dist VERSION=${{ inputs.version }}
-
       - name: Set PACKAGE_VERSION to Env
         env:
           PACKAGE_VERSION: ${{ inputs.version }}
