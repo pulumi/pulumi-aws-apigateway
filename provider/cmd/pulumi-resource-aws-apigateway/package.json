@@ -1,6 +1,8 @@
 {
   "version": "${VERSION}",
-  "bin": "bin/index.js",
+  "bin": {
+    "pulumi-resource-aws-apigateway": "bin/index.js"
+  },
   "dependencies": {
     "@pulumi/aws": "5.16.2",
     "@pulumi/pulumi": "^3.34.1",
