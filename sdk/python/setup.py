@@ -39,12 +39,16 @@ def readme():
 
 setup(name='pulumi_aws_apigateway',
       version=VERSION,
+      description="Pulumi Amazon Web Services (AWS) API Gateway Components.",
       long_description=readme(),
       long_description_content_type='text/markdown',
       cmdclass={
           'install': InstallPluginCommand,
       },
       keywords='pulumi aws apigateway category/cloud kind/component',
+      project_urls={
+          'Repository': 'https://github.com/pulumi/pulumi-aws-apigateway'
+      },
       license='Apache-2.0',
       packages=find_packages(),
       package_data={

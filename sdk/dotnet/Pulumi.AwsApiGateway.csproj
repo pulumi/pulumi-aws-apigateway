@@ -4,10 +4,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Pulumi</Authors>
     <Company>Pulumi</Company>
-    <Description></Description>
+    <Description>Pulumi Amazon Web Services (AWS) API Gateway Components.</Description>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl></PackageProjectUrl>
-    <RepositoryUrl></RepositoryUrl>
+    <RepositoryUrl>https://github.com/pulumi/pulumi-aws-apigateway</RepositoryUrl>
     <PackageIcon>logo.png</PackageIcon>
 
     <TargetFramework>netcoreapp3.1</TargetFramework>

@@ -8,6 +8,7 @@
         "category/cloud",
         "kind/component"
     ],
+    "repository": "https://github.com/pulumi/pulumi-aws-apigateway",
     "license": "Apache-2.0",
     "scripts": {
         "build": "tsc",
