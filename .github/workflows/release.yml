@@ -60,6 +60,7 @@ env:
   SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
   PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
   PUBLISH_REPO_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+  PACKAGE_VERSION: ${{ inputs.version }}
   DOTNET_VERSION: "3.1.301"
   GO_VERSION: "1.19.x"
   JAVA_VERSION: "11"
@@ -164,12 +165,6 @@ jobs:
           cache: gradle
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Set PACKAGE_VERSION to Env
-        env:
-          PACKAGE_VERSION: ${{ inputs.version }}
-        run: echo "PACKAGE_VERSION=$PACKAGE_VERSION" >>
-          $GITHUB_ENV
 
       - name: Build SDK
         run: make build_${{ matrix.language }}_sdk VERSION=${{ inputs.version }}
