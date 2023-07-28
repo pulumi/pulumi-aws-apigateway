@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/blang/semver v3.5.1+incompatible
-	github.com/pulumi/pulumi-aws/sdk/v5 v5.21.0
+	github.com/pulumi/pulumi-aws/sdk/v6 v6.0.0-alpha.5
 	github.com/pulumi/pulumi/sdk/v3 v3.34.1
 )
 
