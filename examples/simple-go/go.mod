@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/pulumi/pulumi-aws-apigateway/sdk v1.0.0
-	github.com/pulumi/pulumi-aws/sdk/v5 v5.21.0
+	github.com/pulumi/pulumi-aws/sdk/v6 v6.0.0-alpha.5
 	github.com/pulumi/pulumi/sdk/v3 v3.49.0
 )
 
