@@ -31,7 +31,7 @@ build_provider::
 install_provider:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 install_provider:: build_provider
 	cd provider/cmd/${PROVIDER}/ && \
-        yarn run pkg . ${PKG_ARGS} --target node16 --output ../../../bin/${PROVIDER}
+        yarn run pkg . ${PKG_ARGS} --target node18 --output ../../../bin/${PROVIDER}
 
 
 # Go SDK
