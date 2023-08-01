@@ -456,5 +456,5 @@ language:
       pulumi-aws: "==6.0.0a5"
     respectSchemaVersion: true
   java:
-    packages:
+    dependencies:
       "com.pulumi:aws": "6.0.0-alpha.5+8163083e"
