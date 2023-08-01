@@ -440,7 +440,7 @@ language:
       aws-apigateway: AwsApiGateway
     packageReferences:
       Pulumi: 3.*
-      Pulumi.Aws: 6.0.0-alpha.5
+      Pulumi.Aws: 6.0.0-alpha.5+8163083e
     respectSchemaVersion: true
   go:
     importBasePath: github.com/pulumi/pulumi-aws-apigateway/sdk/go/apigateway
@@ -448,7 +448,7 @@ language:
     generateExtraInputTypes: true
   nodejs:
     dependencies:
-      "@pulumi/aws": "6.0.0-alpha.5"
+      "@pulumi/aws": "6.0.0-alpha.5+8163083e"
     respectSchemaVersion: true
   python:
     requires:
