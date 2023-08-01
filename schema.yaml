@@ -457,4 +457,4 @@ language:
     respectSchemaVersion: true
   java:
     packages:
-      "com.pulumi:aws": "6.0.0"
+      "com.pulumi:aws": "6.0.0-alpha.5+8163083e"
