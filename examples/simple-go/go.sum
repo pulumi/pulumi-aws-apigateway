@@ -117,8 +117,8 @@ github.com/pulumi/pulumi-aws-apigateway/sdk v1.0.0 h1:ykBWrzBRyqlwpvgB9tuHqzw+4z
 github.com/pulumi/pulumi-aws-apigateway/sdk v1.0.0/go.mod h1:qSJkt0gXM1sX5qMoKeZes3I4l2AvKcz8heVYbA8JGzw=
 github.com/pulumi/pulumi-aws/sdk/v5 v5.21.0 h1:GtNy/Vo1o9onyg3xW4Us271VyJWCjQF4I2KGBnPpcNc=
 github.com/pulumi/pulumi-aws/sdk/v5 v5.21.0/go.mod h1:Ro2eNbpP/uGWMMvtBDrVph+jdL/G6+IiGB6kj+kDRYM=
-github.com/pulumi/pulumi-aws/sdk/v6 v6.0.0-alpha.5 h1:rEw+V/krJQrHpTBkqgeSQi6xrknubZr2gSQowCQJmJE=
-github.com/pulumi/pulumi-aws/sdk/v6 v6.0.0-alpha.5/go.mod h1:AwVD7+Px8b+GxAi1a1TnVnWxs+Pa5wbiNkyABWjdM/k=
+github.com/pulumi/pulumi-aws/sdk/v6 v6.0.0-alpha.7 h1:MG92FIPkVo2dtat7CBXgxfy79i8b64+3O3d9VimFPCc=
+github.com/pulumi/pulumi-aws/sdk/v6 v6.0.0-alpha.7/go.mod h1:AwVD7+Px8b+GxAi1a1TnVnWxs+Pa5wbiNkyABWjdM/k=
 github.com/pulumi/pulumi/sdk/v3 v3.76.1 h1:ItfwcLvxAyX+Pl+BPgx+J5mhKF3/LWOMls/vneTXp9o=
 github.com/pulumi/pulumi/sdk/v3 v3.76.1/go.mod h1:HiE9Wf+DVrg8Em1D6bxRCdDMsNkj8//vLCST73xH2Hc=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
