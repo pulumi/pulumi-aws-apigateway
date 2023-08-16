@@ -38,6 +38,7 @@ def readme():
 
 
 setup(name='pulumi_aws_apigateway',
+      python_requires='>=3.7',
       version=VERSION,
       description="Pulumi Amazon Web Services (AWS) API Gateway Components.",
       long_description=readme(),

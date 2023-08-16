@@ -7,6 +7,7 @@ import (
 	"context"
 	"reflect"
 
+	"github.com/pulumi/pulumi-aws-apigateway/sdk/go/apigateway/internal"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/apigateway"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -38,6 +39,7 @@ func NewRestAPI(ctx *pulumi.Context,
 		args = &RestAPIArgs{}
 	}
 
+	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource RestAPI
 	err := ctx.RegisterRemoteComponentResource("aws-apigateway:index:RestAPI", name, args, &resource, opts...)
 	if err != nil {
