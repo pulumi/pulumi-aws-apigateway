@@ -30,7 +30,7 @@ public class RestAPI extends com.pulumi.resources.ComponentResource {
      * The underlying RestAPI resource.
      * 
      */
-    @Export(name="api", type=RestApi.class, parameters={})
+    @Export(name="api", refs={RestApi.class}, tree="[0]")
     private Output<RestApi> api;
 
     /**
@@ -44,7 +44,7 @@ public class RestAPI extends com.pulumi.resources.ComponentResource {
      * The underlying RestAPIPolicy resource.
      * 
      */
-    @Export(name="apiPolicy", type=RestApiPolicy.class, parameters={})
+    @Export(name="apiPolicy", refs={RestApiPolicy.class}, tree="[0]")
     private Output</* @Nullable */ RestApiPolicy> apiPolicy;
 
     /**
@@ -58,7 +58,7 @@ public class RestAPI extends com.pulumi.resources.ComponentResource {
      * The underlying Deployment resource.
      * 
      */
-    @Export(name="deployment", type=Deployment.class, parameters={})
+    @Export(name="deployment", refs={Deployment.class}, tree="[0]")
     private Output<Deployment> deployment;
 
     /**
@@ -72,7 +72,7 @@ public class RestAPI extends com.pulumi.resources.ComponentResource {
      * The underlying Stage resource.
      * 
      */
-    @Export(name="stage", type=Stage.class, parameters={})
+    @Export(name="stage", refs={Stage.class}, tree="[0]")
     private Output<Stage> stage;
 
     /**
@@ -86,7 +86,7 @@ public class RestAPI extends com.pulumi.resources.ComponentResource {
      * The URL where the Rest API is exposed.
      * 
      */
-    @Export(name="url", type=String.class, parameters={})
+    @Export(name="url", refs={String.class}, tree="[0]")
     private Output<String> url;
 
     /**
