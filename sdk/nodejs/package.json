@@ -15,7 +15,7 @@
         "install": "node scripts/install-pulumi-plugin.js resource aws-apigateway ${VERSION}"
     },
     "dependencies": {
-        "@pulumi/aws": "6.0.0-alpha.7+e5e6ddd9",
+        "@pulumi/aws": "6.0.0-alpha.8+ac036871",
         "@pulumi/pulumi": "^3.42.0"
     },
     "devDependencies": {
