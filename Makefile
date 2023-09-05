@@ -8,7 +8,7 @@ CODEGEN         := pulumi-gen-${PACK}
 VERSION_PATH    := provider/pkg/version.Version
 
 JAVA_GEN := pulumi-java-gen
-JAVA_GEN_VERSION := v0.9.5
+JAVA_GEN_VERSION := v0.9.7
 
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
