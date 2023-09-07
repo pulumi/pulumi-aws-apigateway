@@ -156,12 +156,12 @@ jobs:
           registry-url: ${{env.NPM_REGISTRY_URL}}
 
       - name: Setup DotNet
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Setup Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -191,11 +191,11 @@ jobs:
         with:
           user: ${{ env.PYPI_USERNAME }}
           password: ${{ env.PYPI_PASSWORD }}
-          packages_dir: ${{github.workspace}}/sdk/python/bin/dist
+          packages-dir: ${{github.workspace}}/sdk/python/bin/dist
 
       - name: Publish Node SDK
         if: ${{ inputs.publishNpm && matrix.language == 'nodejs' }}
-        uses: JS-DevTools/npm-publish@v1
+        uses: JS-DevTools/npm-publish@v2
         with:
           access: "public"
           token: ${{ env.NPM_TOKEN }}
@@ -209,11 +209,11 @@ jobs:
 
       - name: Publish Java SDK
         if: ${{ inputs.publishJava && matrix.language == 'java' }}
-        uses: gradle/gradle-build-action@9b814496b50909128c6a52622b416c5ffa04db49
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
           build-root-directory: ./sdk/java
-          gradle-version: 7.4.1
+          gradle-version: 8.3
 
       - name: Publish Go SDK
         if: ${{ inputs.publishGo && matrix.language == 'go' }}
