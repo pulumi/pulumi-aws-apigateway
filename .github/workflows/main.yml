@@ -22,8 +22,8 @@ env:
   PULUMI_GO_DEP_ROOT: ${{ github.workspace }}/..
   PULUMI_LOCAL_NUGET: ${{ github.workspace }}/nuget
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-  DOTNET_VERSION: "3.1.301"
-  GO_VERSION: "1.19.x"
+  DOTNET_VERSION: "6.x"
+  GO_VERSION: "1.20.x"
   JAVA_VERSION: "11"
   NODE_VERSION: "18.x"
   PYTHON_VERSION: "3.9"
@@ -34,15 +34,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -51,7 +51,7 @@ jobs:
           tag: v2.1.5-procursus2
 
       - name: Install Pulumi CLI
-        uses: pulumi/action-install-pulumi-cli@v1.0.1
+        uses: pulumi/actions@v4
 
       - name: Set PACKAGE_VERSION to Env
         env:
