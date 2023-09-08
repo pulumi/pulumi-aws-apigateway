@@ -99,7 +99,7 @@ build_python_sdk:: gen_python_sdk
 # Java SDK
 bin/pulumi-java-gen::
 	mkdir -p bin/
-	$(shell pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java)
+	pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
 
 gen_java_sdk:: bin/pulumi-java-gen
 	rm -rf sdk/java
