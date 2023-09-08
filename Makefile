@@ -106,7 +106,7 @@ gen_java_sdk:: bin/pulumi-java-gen
 	$(WORKING_DIR)/bin/$(JAVA_GEN) generate --schema ${SCHEMA_PATH} --out sdk/java --build gradle-nexus
 
 build_java_sdk:: PACKAGE_VERSION := $(VERSION)
-build_java_sdk:: gen_java_sdk
+build_java_sdk::
 	cd sdk/java/ && \
 		echo "module fake_java_module // Exclude this directory from Go tools\n\ngo 1.17" > go.mod && \
 		gradle --console=plain build
