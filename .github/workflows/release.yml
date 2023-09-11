@@ -66,6 +66,7 @@ env:
   JAVA_VERSION: "11"
   NODE_VERSION: "18.x"
   PYTHON_VERSION: "3.9"
+  IS_PRERELEASE: ${{ contains(github.ref_name,'-') }}
 jobs:
   publish_binary:
     name: Publish Provider Binary
@@ -115,6 +116,7 @@ jobs:
         with:
           files: |
             dist/*.tar.gz
+          prerelease: ${{ env.IS_PRERELEASE }}
         env:
           GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
 
