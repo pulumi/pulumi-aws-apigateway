@@ -62,13 +62,11 @@ install_dotnet_sdk:: build_dotnet_sdk
 # Node.js SDK
 
 gen_nodejs_sdk::
-	mv -v sdk/nodejs/scripts/ sdk/
 	rm -rf sdk/nodejs
 	# mkdir -p sdk/nodejs
 
 	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
 
-	mv -v sdk/scripts/ sdk/nodejs/
 
 build_nodejs_sdk:: gen_nodejs_sdk
 	cd sdk/nodejs/ && \
@@ -76,7 +74,6 @@ build_nodejs_sdk:: gen_nodejs_sdk
 		yarn install && \
 		yarn run tsc --version && \
 		yarn run tsc && \
-		cp -R scripts/ bin && \
 		cp ../../README.md ../../LICENSE package.json yarn.lock ./bin/ && \
 		sed -i.bak -e "s/\$${VERSION}/v$(VERSION)/g" ./bin/package.json && \
 		rm ./bin/package.json.bak
