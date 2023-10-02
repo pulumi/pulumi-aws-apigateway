@@ -7,7 +7,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-aws-apigateway/sdk/go/apigateway/internal"
+	"github.com/pulumi/pulumi-aws-apigateway/sdk/v2/go/apigateway/internal"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/apigateway"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

@@ -443,7 +443,7 @@ language:
       Pulumi.Aws: 6.*
     respectSchemaVersion: true
   go:
-    importBasePath: github.com/pulumi/pulumi-aws-apigateway/sdk/go/apigateway
+    importBasePath: github.com/pulumi/pulumi-aws-apigateway/sdk/v2/go/apigateway
     respectSchemaVersion: true
     generateExtraInputTypes: true
   nodejs:
