@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-aws-apigateway/sdk
+module github.com/pulumi/pulumi-aws-apigateway/sdk/v2
 
 go 1.20
 
