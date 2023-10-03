@@ -3,7 +3,7 @@ module simple-go
 go 1.19
 
 require (
-	github.com/pulumi/pulumi-aws-apigateway/sdk/v2 v2.0.0-alpha.1
+	github.com/pulumi/pulumi-aws-apigateway/sdk v1.0.0
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.0.4
 	github.com/pulumi/pulumi/sdk/v3 v3.76.1
 )
