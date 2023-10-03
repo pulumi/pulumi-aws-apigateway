@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/blang/semver"
-	"github.com/pulumi/pulumi-aws-apigateway/sdk/v2/go/apigateway/internal"
+	"github.com/pulumi/pulumi-aws-apigateway/sdk/v2/go/apigateway/utilities"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -50,7 +50,7 @@ func (p *pkg) ConstructProvider(ctx *pulumi.Context, name, typ, urn string) (pul
 }
 
 func init() {
-	version, err := internal.PkgVersion()
+	version, err := utilities.PkgVersion()
 	if err != nil {
 		version = semver.Version{Major: 1}
 	}

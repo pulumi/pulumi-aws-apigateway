@@ -446,6 +446,7 @@ language:
     importBasePath: github.com/pulumi/pulumi-aws-apigateway/sdk/v2/go/apigateway
     respectSchemaVersion: true
     generateExtraInputTypes: true
+    internalModuleName: utilities
   nodejs:
     dependencies:
       "@pulumi/aws": "^6.0.0"
@@ -457,4 +458,4 @@ language:
     respectSchemaVersion: true
   java:
     dependencies:
-      "com.pulumi:aws": "6.0.4"
+      "com.pulumi:aws": "6.3.0"
