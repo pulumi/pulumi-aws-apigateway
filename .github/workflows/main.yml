@@ -23,7 +23,7 @@ env:
   PULUMI_LOCAL_NUGET: ${{ github.workspace }}/nuget
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   DOTNET_VERSION: "6.x"
-  GO_VERSION: "1.20.x"
+  GO_VERSION: "1.21.x"
   JAVA_VERSION: "11"
   NODE_VERSION: "18.x"
   PYTHON_VERSION: "3.9"
