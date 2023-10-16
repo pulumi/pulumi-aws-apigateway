@@ -63,8 +63,6 @@ install_dotnet_sdk:: build_dotnet_sdk
 
 gen_nodejs_sdk::
 	rm -rf sdk/nodejs
-	# mkdir -p sdk/nodejs
-
 	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
 
 
