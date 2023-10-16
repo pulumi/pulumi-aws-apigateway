@@ -458,4 +458,4 @@ language:
     respectSchemaVersion: true
   java:
     dependencies:
-      "com.pulumi:aws": "6.3.0"
+      "com.pulumi:aws": "6.5.0"

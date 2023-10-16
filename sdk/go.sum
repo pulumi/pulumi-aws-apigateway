@@ -141,6 +141,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pulumi/pulumi-aws/sdk/v6 v6.0.4 h1:VSLvAi+/kZt0k+KjMZ9zd8/NJ5w3vsS0RUKX3vwFa1A=
 github.com/pulumi/pulumi-aws/sdk/v6 v6.0.4/go.mod h1:amR/FWXmTqZI5ZtR/5JASorWmOqAIif+FVBSBEZ0uOw=
+github.com/pulumi/pulumi-aws/sdk/v6 v6.5.0 h1:ouyCTAVyK7oeWPbAhWOd6mZQTIt3/56/Zc3OsLnvYLA=
+github.com/pulumi/pulumi-aws/sdk/v6 v6.5.0/go.mod h1:UeOesX8l9ntIiiKXdQue8/rQDAvSf7Spd5qf15qngcY=
 github.com/pulumi/pulumi/sdk/v3 v3.81.0 h1:d711GUpjZK1beNpIKFReC1LBmHXYE684sYWntJWQ4Q0=
 github.com/pulumi/pulumi/sdk/v3 v3.81.0/go.mod h1:RMilNNVMlmK1h4Nl/qylb9vzbgh4F3mufZoUOnPy98o=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
