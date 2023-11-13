@@ -89,4 +89,4 @@ jobs:
           role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
 
       - name: Run program tests
-        run: make test
+        run: make test test_provider
