@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from ._enums import *
 from ._inputs import *
@@ -45,20 +45,41 @@ class RestAPIArgs:
                
                Either `swaggerString` or `routes` must be specified.
         """
+        RestAPIArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            api_key_source=api_key_source,
+            gateway_responses=gateway_responses,
+            request_validator=request_validator,
+            routes=routes,
+            stage_name=stage_name,
+            static_routes_bucket=static_routes_bucket,
+            swagger_string=swagger_string,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             api_key_source: Optional['APIKeySource'] = None,
+             gateway_responses: Optional[Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']]] = None,
+             request_validator: Optional['RequestValidator'] = None,
+             routes: Optional[Sequence['RouteArgs']] = None,
+             stage_name: Optional[pulumi.Input[str]] = None,
+             static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
+             swagger_string: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if api_key_source is not None:
-            pulumi.set(__self__, "api_key_source", api_key_source)
+            _setter("api_key_source", api_key_source)
         if gateway_responses is not None:
-            pulumi.set(__self__, "gateway_responses", gateway_responses)
+            _setter("gateway_responses", gateway_responses)
         if request_validator is not None:
-            pulumi.set(__self__, "request_validator", request_validator)
+            _setter("request_validator", request_validator)
         if routes is not None:
-            pulumi.set(__self__, "routes", routes)
+            _setter("routes", routes)
         if stage_name is not None:
-            pulumi.set(__self__, "stage_name", stage_name)
+            _setter("stage_name", stage_name)
         if static_routes_bucket is not None:
-            pulumi.set(__self__, "static_routes_bucket", static_routes_bucket)
+            _setter("static_routes_bucket", static_routes_bucket)
         if swagger_string is not None:
-            pulumi.set(__self__, "swagger_string", swagger_string)
+            _setter("swagger_string", swagger_string)
 
     @property
     @pulumi.getter(name="apiKeySource")
@@ -218,6 +239,10 @@ class RestAPI(pulumi.ComponentResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            RestAPIArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
