@@ -7,10 +7,11 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-aws-apigateway/sdk/go/apigateway/internal"
-	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/apigateway"
-	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/s3"
+	"github.com/pulumi/pulumi-aws-apigateway/sdk/v2/go/apigateway/utilities"
+	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/apigateway"
+	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The
@@ -39,7 +40,7 @@ func NewRestAPI(ctx *pulumi.Context,
 		args = &RestAPIArgs{}
 	}
 
-	opts = internal.PkgResourceDefaultOpts(opts)
+	opts = utilities.PkgResourceDefaultOpts(opts)
 	var resource RestAPI
 	err := ctx.RegisterRemoteComponentResource("aws-apigateway:index:RestAPI", name, args, &resource, opts...)
 	if err != nil {
@@ -128,6 +129,12 @@ func (i *RestAPI) ToRestAPIOutputWithContext(ctx context.Context) RestAPIOutput 
 	return pulumi.ToOutputWithContext(ctx, i).(RestAPIOutput)
 }
 
+func (i *RestAPI) ToOutput(ctx context.Context) pulumix.Output[*RestAPI] {
+	return pulumix.Output[*RestAPI]{
+		OutputState: i.ToRestAPIOutputWithContext(ctx).OutputState,
+	}
+}
+
 type RestAPIOutput struct{ *pulumi.OutputState }
 
 func (RestAPIOutput) ElementType() reflect.Type {
@@ -140,6 +147,12 @@ func (o RestAPIOutput) ToRestAPIOutput() RestAPIOutput {
 
 func (o RestAPIOutput) ToRestAPIOutputWithContext(ctx context.Context) RestAPIOutput {
 	return o
+}
+
+func (o RestAPIOutput) ToOutput(ctx context.Context) pulumix.Output[*RestAPI] {
+	return pulumix.Output[*RestAPI]{
+		OutputState: o.OutputState,
+	}
 }
 
 // The underlying RestAPI resource.

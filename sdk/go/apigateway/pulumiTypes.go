@@ -7,12 +7,13 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/pulumi/pulumi-aws-apigateway/sdk/go/apigateway/internal"
-	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/lambda"
+	"github.com/pulumi/pulumi-aws-apigateway/sdk/v2/go/apigateway/utilities"
+	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/lambda"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
-var _ = internal.GetEnvOrDefault
+var _ = utilities.GetEnvOrDefault
 
 // LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
 type Authorizer struct {
@@ -123,6 +124,12 @@ func (i AuthorizerArgs) ToAuthorizerOutputWithContext(ctx context.Context) Autho
 	return pulumi.ToOutputWithContext(ctx, i).(AuthorizerOutput)
 }
 
+func (i AuthorizerArgs) ToOutput(ctx context.Context) pulumix.Output[Authorizer] {
+	return pulumix.Output[Authorizer]{
+		OutputState: i.ToAuthorizerOutputWithContext(ctx).OutputState,
+	}
+}
+
 // AuthorizerArrayInput is an input type that accepts AuthorizerArray and AuthorizerArrayOutput values.
 // You can construct a concrete instance of `AuthorizerArrayInput` via:
 //
@@ -148,6 +155,12 @@ func (i AuthorizerArray) ToAuthorizerArrayOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(AuthorizerArrayOutput)
 }
 
+func (i AuthorizerArray) ToOutput(ctx context.Context) pulumix.Output[[]Authorizer] {
+	return pulumix.Output[[]Authorizer]{
+		OutputState: i.ToAuthorizerArrayOutputWithContext(ctx).OutputState,
+	}
+}
+
 // LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
 type AuthorizerOutput struct{ *pulumi.OutputState }
 
@@ -161,6 +174,12 @@ func (o AuthorizerOutput) ToAuthorizerOutput() AuthorizerOutput {
 
 func (o AuthorizerOutput) ToAuthorizerOutputWithContext(ctx context.Context) AuthorizerOutput {
 	return o
+}
+
+func (o AuthorizerOutput) ToOutput(ctx context.Context) pulumix.Output[Authorizer] {
+	return pulumix.Output[Authorizer]{
+		OutputState: o.OutputState,
+	}
 }
 
 // Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
@@ -249,6 +268,12 @@ func (o AuthorizerArrayOutput) ToAuthorizerArrayOutputWithContext(ctx context.Co
 	return o
 }
 
+func (o AuthorizerArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]Authorizer] {
+	return pulumix.Output[[]Authorizer]{
+		OutputState: o.OutputState,
+	}
+}
+
 func (o AuthorizerArrayOutput) Index(i pulumi.IntInput) AuthorizerOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Authorizer {
 		return vs[0].([]Authorizer)[vs[1].(int)]
@@ -288,6 +313,12 @@ func (i RequiredParameterArgs) ToRequiredParameterOutputWithContext(ctx context.
 	return pulumi.ToOutputWithContext(ctx, i).(RequiredParameterOutput)
 }
 
+func (i RequiredParameterArgs) ToOutput(ctx context.Context) pulumix.Output[RequiredParameter] {
+	return pulumix.Output[RequiredParameter]{
+		OutputState: i.ToRequiredParameterOutputWithContext(ctx).OutputState,
+	}
+}
+
 // RequiredParameterArrayInput is an input type that accepts RequiredParameterArray and RequiredParameterArrayOutput values.
 // You can construct a concrete instance of `RequiredParameterArrayInput` via:
 //
@@ -313,6 +344,12 @@ func (i RequiredParameterArray) ToRequiredParameterArrayOutputWithContext(ctx co
 	return pulumi.ToOutputWithContext(ctx, i).(RequiredParameterArrayOutput)
 }
 
+func (i RequiredParameterArray) ToOutput(ctx context.Context) pulumix.Output[[]RequiredParameter] {
+	return pulumix.Output[[]RequiredParameter]{
+		OutputState: i.ToRequiredParameterArrayOutputWithContext(ctx).OutputState,
+	}
+}
+
 type RequiredParameterOutput struct{ *pulumi.OutputState }
 
 func (RequiredParameterOutput) ElementType() reflect.Type {
@@ -325,6 +362,12 @@ func (o RequiredParameterOutput) ToRequiredParameterOutput() RequiredParameterOu
 
 func (o RequiredParameterOutput) ToRequiredParameterOutputWithContext(ctx context.Context) RequiredParameterOutput {
 	return o
+}
+
+func (o RequiredParameterOutput) ToOutput(ctx context.Context) pulumix.Output[RequiredParameter] {
+	return pulumix.Output[RequiredParameter]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o RequiredParameterOutput) In() pulumi.StringPtrOutput {
@@ -347,6 +390,12 @@ func (o RequiredParameterArrayOutput) ToRequiredParameterArrayOutput() RequiredP
 
 func (o RequiredParameterArrayOutput) ToRequiredParameterArrayOutputWithContext(ctx context.Context) RequiredParameterArrayOutput {
 	return o
+}
+
+func (o RequiredParameterArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]RequiredParameter] {
+	return pulumix.Output[[]RequiredParameter]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o RequiredParameterArrayOutput) Index(i pulumi.IntInput) RequiredParameterOutput {
@@ -460,6 +509,12 @@ func (i RouteArgs) ToRouteOutputWithContext(ctx context.Context) RouteOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(RouteOutput)
 }
 
+func (i RouteArgs) ToOutput(ctx context.Context) pulumix.Output[Route] {
+	return pulumix.Output[Route]{
+		OutputState: i.ToRouteOutputWithContext(ctx).OutputState,
+	}
+}
+
 // RouteArrayInput is an input type that accepts RouteArray and RouteArrayOutput values.
 // You can construct a concrete instance of `RouteArrayInput` via:
 //
@@ -485,6 +540,12 @@ func (i RouteArray) ToRouteArrayOutputWithContext(ctx context.Context) RouteArra
 	return pulumi.ToOutputWithContext(ctx, i).(RouteArrayOutput)
 }
 
+func (i RouteArray) ToOutput(ctx context.Context) pulumix.Output[[]Route] {
+	return pulumix.Output[[]Route]{
+		OutputState: i.ToRouteArrayOutputWithContext(ctx).OutputState,
+	}
+}
+
 // A route that that APIGateway should accept and forward to some type of destination. All routes
 // have an incoming path that they match against.  However, destinations are determined by the kind
 // of the route.
@@ -500,6 +561,12 @@ func (o RouteOutput) ToRouteOutput() RouteOutput {
 
 func (o RouteOutput) ToRouteOutputWithContext(ctx context.Context) RouteOutput {
 	return o
+}
+
+func (o RouteOutput) ToOutput(ctx context.Context) pulumix.Output[Route] {
+	return pulumix.Output[Route]{
+		OutputState: o.OutputState,
+	}
 }
 
 // If true, an API key will be required for this route. The source for the API Key can be set at
@@ -590,6 +657,12 @@ func (o RouteArrayOutput) ToRouteArrayOutputWithContext(ctx context.Context) Rou
 	return o
 }
 
+func (o RouteArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]Route] {
+	return pulumix.Output[[]Route]{
+		OutputState: o.OutputState,
+	}
+}
+
 func (o RouteArrayOutput) Index(i pulumi.IntInput) RouteOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) Route {
 		return vs[0].([]Route)[vs[1].(int)]
@@ -631,6 +704,12 @@ func (i SwaggerGatewayResponseArgs) ToSwaggerGatewayResponseOutputWithContext(ct
 	return pulumi.ToOutputWithContext(ctx, i).(SwaggerGatewayResponseOutput)
 }
 
+func (i SwaggerGatewayResponseArgs) ToOutput(ctx context.Context) pulumix.Output[SwaggerGatewayResponse] {
+	return pulumix.Output[SwaggerGatewayResponse]{
+		OutputState: i.ToSwaggerGatewayResponseOutputWithContext(ctx).OutputState,
+	}
+}
+
 // SwaggerGatewayResponseMapInput is an input type that accepts SwaggerGatewayResponseMap and SwaggerGatewayResponseMapOutput values.
 // You can construct a concrete instance of `SwaggerGatewayResponseMapInput` via:
 //
@@ -656,6 +735,12 @@ func (i SwaggerGatewayResponseMap) ToSwaggerGatewayResponseMapOutputWithContext(
 	return pulumi.ToOutputWithContext(ctx, i).(SwaggerGatewayResponseMapOutput)
 }
 
+func (i SwaggerGatewayResponseMap) ToOutput(ctx context.Context) pulumix.Output[map[string]SwaggerGatewayResponse] {
+	return pulumix.Output[map[string]SwaggerGatewayResponse]{
+		OutputState: i.ToSwaggerGatewayResponseMapOutputWithContext(ctx).OutputState,
+	}
+}
+
 type SwaggerGatewayResponseOutput struct{ *pulumi.OutputState }
 
 func (SwaggerGatewayResponseOutput) ElementType() reflect.Type {
@@ -668,6 +753,12 @@ func (o SwaggerGatewayResponseOutput) ToSwaggerGatewayResponseOutput() SwaggerGa
 
 func (o SwaggerGatewayResponseOutput) ToSwaggerGatewayResponseOutputWithContext(ctx context.Context) SwaggerGatewayResponseOutput {
 	return o
+}
+
+func (o SwaggerGatewayResponseOutput) ToOutput(ctx context.Context) pulumix.Output[SwaggerGatewayResponse] {
+	return pulumix.Output[SwaggerGatewayResponse]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SwaggerGatewayResponseOutput) ResponseParameters() pulumi.StringMapOutput {
@@ -694,6 +785,12 @@ func (o SwaggerGatewayResponseMapOutput) ToSwaggerGatewayResponseMapOutput() Swa
 
 func (o SwaggerGatewayResponseMapOutput) ToSwaggerGatewayResponseMapOutputWithContext(ctx context.Context) SwaggerGatewayResponseMapOutput {
 	return o
+}
+
+func (o SwaggerGatewayResponseMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]SwaggerGatewayResponse] {
+	return pulumix.Output[map[string]SwaggerGatewayResponse]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o SwaggerGatewayResponseMapOutput) MapIndex(k pulumi.StringInput) SwaggerGatewayResponseOutput {
@@ -873,6 +970,12 @@ func (i TargetArgs) ToTargetOutputWithContext(ctx context.Context) TargetOutput 
 	return pulumi.ToOutputWithContext(ctx, i).(TargetOutput)
 }
 
+func (i TargetArgs) ToOutput(ctx context.Context) pulumix.Output[Target] {
+	return pulumix.Output[Target]{
+		OutputState: i.ToTargetOutputWithContext(ctx).OutputState,
+	}
+}
+
 func (i TargetArgs) ToTargetPtrOutput() TargetPtrOutput {
 	return i.ToTargetPtrOutputWithContext(context.Background())
 }
@@ -914,6 +1017,12 @@ func (i *targetPtrType) ToTargetPtrOutputWithContext(ctx context.Context) Target
 	return pulumi.ToOutputWithContext(ctx, i).(TargetPtrOutput)
 }
 
+func (i *targetPtrType) ToOutput(ctx context.Context) pulumix.Output[*Target] {
+	return pulumix.Output[*Target]{
+		OutputState: i.ToTargetPtrOutputWithContext(ctx).OutputState,
+	}
+}
+
 type TargetOutput struct{ *pulumi.OutputState }
 
 func (TargetOutput) ElementType() reflect.Type {
@@ -936,6 +1045,12 @@ func (o TargetOutput) ToTargetPtrOutputWithContext(ctx context.Context) TargetPt
 	return o.ApplyTWithContext(ctx, func(_ context.Context, v Target) *Target {
 		return &v
 	}).(TargetPtrOutput)
+}
+
+func (o TargetOutput) ToOutput(ctx context.Context) pulumix.Output[Target] {
+	return pulumix.Output[Target]{
+		OutputState: o.OutputState,
+	}
 }
 
 // The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
@@ -1039,6 +1154,12 @@ func (o TargetPtrOutput) ToTargetPtrOutput() TargetPtrOutput {
 
 func (o TargetPtrOutput) ToTargetPtrOutputWithContext(ctx context.Context) TargetPtrOutput {
 	return o
+}
+
+func (o TargetPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*Target] {
+	return pulumix.Output[*Target]{
+		OutputState: o.OutputState,
+	}
 }
 
 func (o TargetPtrOutput) Elem() TargetOutput {

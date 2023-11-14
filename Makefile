@@ -8,7 +8,7 @@ CODEGEN         := pulumi-gen-${PACK}
 VERSION_PATH    := provider/pkg/version.Version
 
 JAVA_GEN := pulumi-java-gen
-JAVA_GEN_VERSION := v0.9.5
+JAVA_GEN_VERSION := v0.9.7
 
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
@@ -23,16 +23,24 @@ install:: install_provider install_nodejs_sdk install_dotnet_sdk
 
 build_provider::
 	cd provider/cmd/${PROVIDER}/ && \
-        yarn install && \
-        yarn tsc && \
-        cp package.json ../../../schema.yaml ./bin && \
-        sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" bin/package.json
+		yarn install && \
+		yarn tsc && \
+		cp package.json ../../../schema.yaml ./bin && \
+		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" bin/package.json
 
 install_provider:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 install_provider:: build_provider
 	cd provider/cmd/${PROVIDER}/ && \
-        yarn run pkg . ${PKG_ARGS} --target node16 --output ../../../bin/${PROVIDER}
+		yarn run pkg . ${PKG_ARGS} --target node18 --output ../../../bin/${PROVIDER}
 
+.PHONY: test_provider
+test_provider: bin/gotestfmt
+test_provider: 
+	cd provider && PATH=$(WORKING_DIR)/bin:$(PATH) go test -v -json -tags=all -timeout 2h ./... | tee /tmp/gotest.log | gotestfmt
+
+bin/gotestfmt:
+	@mkdir -p bin
+	GOBIN="${WORKING_DIR}/bin" go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@v2.5.0
 
 # Go SDK
 
@@ -65,13 +73,13 @@ gen_nodejs_sdk::
 	rm -rf sdk/nodejs
 	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
 
+
 build_nodejs_sdk:: gen_nodejs_sdk
 	cd sdk/nodejs/ && \
 		echo "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17" > go.mod && \
 		yarn install && \
 		yarn run tsc --version && \
 		yarn run tsc && \
-		cp -R scripts/ bin && \
 		cp ../../README.md ../../LICENSE package.json yarn.lock ./bin/ && \
 		sed -i.bak -e "s/\$${VERSION}/v$(VERSION)/g" ./bin/package.json && \
 		rm ./bin/package.json.bak
@@ -99,14 +107,14 @@ build_python_sdk:: gen_python_sdk
 # Java SDK
 bin/pulumi-java-gen::
 	mkdir -p bin/
-	$(shell pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java)
+	pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
 
 gen_java_sdk:: bin/pulumi-java-gen
 	rm -rf sdk/java
 	$(WORKING_DIR)/bin/$(JAVA_GEN) generate --schema ${SCHEMA_PATH} --out sdk/java --build gradle-nexus
 
 build_java_sdk:: PACKAGE_VERSION := $(VERSION)
-build_java_sdk:: gen_java_sdk
+build_java_sdk::
 	cd sdk/java/ && \
 		echo "module fake_java_module // Exclude this directory from Go tools\n\ngo 1.17" > go.mod && \
 		gradle --console=plain build
@@ -115,11 +123,11 @@ build_java_sdk:: gen_java_sdk
 dist:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 dist:: build_provider
 	cd provider/cmd/${PROVIDER}/ && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-macos-x64 --output ../../../bin/darwin-amd64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-macos-arm64 --output ../../../bin/darwin-arm64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-x64 --output ../../../bin/linux-amd64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-arm64 --output ../../../bin/linux-arm64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-win-x64 --output ../../../bin/windows-amd64/${PROVIDER}.exe
+		yarn run pkg . ${PKG_ARGS} --target node16-macos-x64 --output ../../../bin/darwin-amd64/${PROVIDER} && \
+		yarn run pkg . ${PKG_ARGS} --target node16-macos-arm64 --output ../../../bin/darwin-arm64/${PROVIDER} && \
+		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-x64 --output ../../../bin/linux-amd64/${PROVIDER} && \
+		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-arm64 --output ../../../bin/linux-arm64/${PROVIDER} && \
+		yarn run pkg . ${PKG_ARGS} --target node16-win-x64 --output ../../../bin/windows-amd64/${PROVIDER}.exe
 	mkdir -p dist
 	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-amd64.tar.gz README.md LICENSE -C bin/linux-amd64/ .
 	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-arm64.tar.gz README.md LICENSE -C bin/linux-arm64/ .

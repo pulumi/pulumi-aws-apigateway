@@ -11,11 +11,10 @@
     "repository": "https://github.com/pulumi/pulumi-aws-apigateway",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "tsc",
-        "install": "node scripts/install-pulumi-plugin.js resource aws-apigateway ${VERSION}"
+        "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/aws": "^5.16.2",
+        "@pulumi/aws": "^6.0.0",
         "@pulumi/pulumi": "^3.42.0"
     },
     "devDependencies": {
