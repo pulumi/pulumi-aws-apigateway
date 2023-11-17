@@ -11,7 +11,6 @@ import (
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/apigateway"
 	"github.com/pulumi/pulumi-aws/sdk/v6/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 // The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The
@@ -137,12 +136,6 @@ func (i *RestAPI) ToRestAPIOutputWithContext(ctx context.Context) RestAPIOutput 
 	return pulumi.ToOutputWithContext(ctx, i).(RestAPIOutput)
 }
 
-func (i *RestAPI) ToOutput(ctx context.Context) pulumix.Output[*RestAPI] {
-	return pulumix.Output[*RestAPI]{
-		OutputState: i.ToRestAPIOutputWithContext(ctx).OutputState,
-	}
-}
-
 type RestAPIOutput struct{ *pulumi.OutputState }
 
 func (RestAPIOutput) ElementType() reflect.Type {
@@ -155,12 +148,6 @@ func (o RestAPIOutput) ToRestAPIOutput() RestAPIOutput {
 
 func (o RestAPIOutput) ToRestAPIOutputWithContext(ctx context.Context) RestAPIOutput {
 	return o
-}
-
-func (o RestAPIOutput) ToOutput(ctx context.Context) pulumix.Output[*RestAPI] {
-	return pulumix.Output[*RestAPI]{
-		OutputState: o.OutputState,
-	}
 }
 
 // The underlying RestAPI resource.

@@ -78,12 +78,6 @@ func (o APIKeySourceOutput) ToAPIKeySourcePtrOutputWithContext(ctx context.Conte
 	}).(APIKeySourcePtrOutput)
 }
 
-func (o APIKeySourceOutput) ToOutput(ctx context.Context) pulumix.Output[APIKeySource] {
-	return pulumix.Output[APIKeySource]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o APIKeySourceOutput) ToStringOutput() pulumi.StringOutput {
 	return o.ToStringOutputWithContext(context.Background())
 }
@@ -117,12 +111,6 @@ func (o APIKeySourcePtrOutput) ToAPIKeySourcePtrOutput() APIKeySourcePtrOutput {
 
 func (o APIKeySourcePtrOutput) ToAPIKeySourcePtrOutputWithContext(ctx context.Context) APIKeySourcePtrOutput {
 	return o
-}
-
-func (o APIKeySourcePtrOutput) ToOutput(ctx context.Context) pulumix.Output[*APIKeySource] {
-	return pulumix.Output[*APIKeySource]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o APIKeySourcePtrOutput) Elem() APIKeySourceOutput {
@@ -260,12 +248,6 @@ func (o IntegrationConnectionTypeOutput) ToIntegrationConnectionTypePtrOutputWit
 	}).(IntegrationConnectionTypePtrOutput)
 }
 
-func (o IntegrationConnectionTypeOutput) ToOutput(ctx context.Context) pulumix.Output[IntegrationConnectionType] {
-	return pulumix.Output[IntegrationConnectionType]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o IntegrationConnectionTypeOutput) ToStringOutput() pulumi.StringOutput {
 	return o.ToStringOutputWithContext(context.Background())
 }
@@ -299,12 +281,6 @@ func (o IntegrationConnectionTypePtrOutput) ToIntegrationConnectionTypePtrOutput
 
 func (o IntegrationConnectionTypePtrOutput) ToIntegrationConnectionTypePtrOutputWithContext(ctx context.Context) IntegrationConnectionTypePtrOutput {
 	return o
-}
-
-func (o IntegrationConnectionTypePtrOutput) ToOutput(ctx context.Context) pulumix.Output[*IntegrationConnectionType] {
-	return pulumix.Output[*IntegrationConnectionType]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o IntegrationConnectionTypePtrOutput) Elem() IntegrationConnectionTypeOutput {
@@ -443,12 +419,6 @@ func (o IntegrationPassthroughBehaviorOutput) ToIntegrationPassthroughBehaviorPt
 	}).(IntegrationPassthroughBehaviorPtrOutput)
 }
 
-func (o IntegrationPassthroughBehaviorOutput) ToOutput(ctx context.Context) pulumix.Output[IntegrationPassthroughBehavior] {
-	return pulumix.Output[IntegrationPassthroughBehavior]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o IntegrationPassthroughBehaviorOutput) ToStringOutput() pulumi.StringOutput {
 	return o.ToStringOutputWithContext(context.Background())
 }
@@ -482,12 +452,6 @@ func (o IntegrationPassthroughBehaviorPtrOutput) ToIntegrationPassthroughBehavio
 
 func (o IntegrationPassthroughBehaviorPtrOutput) ToIntegrationPassthroughBehaviorPtrOutputWithContext(ctx context.Context) IntegrationPassthroughBehaviorPtrOutput {
 	return o
-}
-
-func (o IntegrationPassthroughBehaviorPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*IntegrationPassthroughBehavior] {
-	return pulumix.Output[*IntegrationPassthroughBehavior]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o IntegrationPassthroughBehaviorPtrOutput) Elem() IntegrationPassthroughBehaviorOutput {
@@ -628,12 +592,6 @@ func (o IntegrationTypeOutput) ToIntegrationTypePtrOutputWithContext(ctx context
 	}).(IntegrationTypePtrOutput)
 }
 
-func (o IntegrationTypeOutput) ToOutput(ctx context.Context) pulumix.Output[IntegrationType] {
-	return pulumix.Output[IntegrationType]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o IntegrationTypeOutput) ToStringOutput() pulumi.StringOutput {
 	return o.ToStringOutputWithContext(context.Background())
 }
@@ -667,12 +625,6 @@ func (o IntegrationTypePtrOutput) ToIntegrationTypePtrOutput() IntegrationTypePt
 
 func (o IntegrationTypePtrOutput) ToIntegrationTypePtrOutputWithContext(ctx context.Context) IntegrationTypePtrOutput {
 	return o
-}
-
-func (o IntegrationTypePtrOutput) ToOutput(ctx context.Context) pulumix.Output[*IntegrationType] {
-	return pulumix.Output[*IntegrationType]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o IntegrationTypePtrOutput) Elem() IntegrationTypeOutput {
@@ -816,12 +768,6 @@ func (o MethodOutput) ToMethodPtrOutputWithContext(ctx context.Context) MethodPt
 	}).(MethodPtrOutput)
 }
 
-func (o MethodOutput) ToOutput(ctx context.Context) pulumix.Output[Method] {
-	return pulumix.Output[Method]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o MethodOutput) ToStringOutput() pulumi.StringOutput {
 	return o.ToStringOutputWithContext(context.Background())
 }
@@ -855,12 +801,6 @@ func (o MethodPtrOutput) ToMethodPtrOutput() MethodPtrOutput {
 
 func (o MethodPtrOutput) ToMethodPtrOutputWithContext(ctx context.Context) MethodPtrOutput {
 	return o
-}
-
-func (o MethodPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*Method] {
-	return pulumix.Output[*Method]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o MethodPtrOutput) Elem() MethodOutput {
@@ -999,12 +939,6 @@ func (o RequestValidatorOutput) ToRequestValidatorPtrOutputWithContext(ctx conte
 	}).(RequestValidatorPtrOutput)
 }
 
-func (o RequestValidatorOutput) ToOutput(ctx context.Context) pulumix.Output[RequestValidator] {
-	return pulumix.Output[RequestValidator]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o RequestValidatorOutput) ToStringOutput() pulumi.StringOutput {
 	return o.ToStringOutputWithContext(context.Background())
 }
@@ -1038,12 +972,6 @@ func (o RequestValidatorPtrOutput) ToRequestValidatorPtrOutput() RequestValidato
 
 func (o RequestValidatorPtrOutput) ToRequestValidatorPtrOutputWithContext(ctx context.Context) RequestValidatorPtrOutput {
 	return o
-}
-
-func (o RequestValidatorPtrOutput) ToOutput(ctx context.Context) pulumix.Output[*RequestValidator] {
-	return pulumix.Output[*RequestValidator]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o RequestValidatorPtrOutput) Elem() RequestValidatorOutput {
