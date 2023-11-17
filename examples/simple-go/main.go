@@ -54,6 +54,7 @@ func main() {
 
 		getMethod := apigateway.MethodGET
 		restAPI, err := apigateway.NewRestAPI(ctx, "api", &apigateway.RestAPIArgs{
+			BinaryMediaTypes: []string{"application/json"},
 			Routes: []apigateway.RouteArgs{
 				apigateway.RouteArgs{
 					Path:         "/",
