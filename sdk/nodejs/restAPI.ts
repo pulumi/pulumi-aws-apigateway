@@ -63,6 +63,7 @@ export class RestAPI extends pulumi.ComponentResource {
         opts = opts || {};
         if (!opts.id) {
             resourceInputs["apiKeySource"] = args ? args.apiKeySource : undefined;
+            resourceInputs["binaryMediaTypes"] = args ? args.binaryMediaTypes : undefined;
             resourceInputs["gatewayResponses"] = args ? args.gatewayResponses : undefined;
             resourceInputs["requestValidator"] = args ? args.requestValidator : undefined;
             resourceInputs["routes"] = args ? args.routes : undefined;
@@ -95,6 +96,12 @@ export interface RestAPIArgs {
      * set to true on a route, and this is not defined the value will default to HEADER.
      */
     apiKeySource?: enums.APIKeySource;
+    /**
+     * List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+     * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
+     * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+     */
+    binaryMediaTypes?: pulumi.Input<string>[];
     /**
      * Define custom gateway responses for the API. This can be used to properly enable
      * CORS for Lambda Authorizers.

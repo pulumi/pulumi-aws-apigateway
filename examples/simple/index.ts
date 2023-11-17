@@ -19,6 +19,7 @@ const api = new apigateway.RestAPI("api", {
       eventHandler: f,
     },
   ],
+  binaryMediaTypes: ["application/json"]
 });
 
 // TODO: re-enable once we establish why `api.api.id` is coming back as undefined

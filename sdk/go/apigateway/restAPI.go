@@ -53,6 +53,10 @@ type restAPIArgs struct {
 	// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
 	// set to true on a route, and this is not defined the value will default to HEADER.
 	ApiKeySource *APIKeySource `pulumi:"apiKeySource"`
+	// List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
+	// If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+	// If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+	BinaryMediaTypes []string `pulumi:"binaryMediaTypes"`
 	// Define custom gateway responses for the API. This can be used to properly enable
 	// CORS for Lambda Authorizers.
 	GatewayResponses map[string]SwaggerGatewayResponse `pulumi:"gatewayResponses"`
@@ -82,6 +86,10 @@ type RestAPIArgs struct {
 	// The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
 	// set to true on a route, and this is not defined the value will default to HEADER.
 	ApiKeySource *APIKeySource
+	// List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
+	// If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+	// If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+	BinaryMediaTypes []pulumi.StringInput
 	// Define custom gateway responses for the API. This can be used to properly enable
 	// CORS for Lambda Authorizers.
 	GatewayResponses map[string]SwaggerGatewayResponseInput

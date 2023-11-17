@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from ._enums import *
 from ._inputs import *
@@ -18,6 +18,7 @@ __all__ = ['RestAPIArgs', 'RestAPI']
 class RestAPIArgs:
     def __init__(__self__, *,
                  api_key_source: Optional['APIKeySource'] = None,
+                 binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence['RouteArgs']] = None,
@@ -28,6 +29,9 @@ class RestAPIArgs:
         The set of arguments for constructing a RestAPI resource.
         :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
                set to true on a route, and this is not defined the value will default to HEADER.
+        :param Sequence[pulumi.Input[str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+               If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
+               If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
         :param Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
                CORS for Lambda Authorizers.
         :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
@@ -45,20 +49,45 @@ class RestAPIArgs:
                
                Either `swaggerString` or `routes` must be specified.
         """
+        RestAPIArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            api_key_source=api_key_source,
+            binary_media_types=binary_media_types,
+            gateway_responses=gateway_responses,
+            request_validator=request_validator,
+            routes=routes,
+            stage_name=stage_name,
+            static_routes_bucket=static_routes_bucket,
+            swagger_string=swagger_string,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             api_key_source: Optional['APIKeySource'] = None,
+             binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
+             gateway_responses: Optional[Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']]] = None,
+             request_validator: Optional['RequestValidator'] = None,
+             routes: Optional[Sequence['RouteArgs']] = None,
+             stage_name: Optional[pulumi.Input[str]] = None,
+             static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
+             swagger_string: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if api_key_source is not None:
-            pulumi.set(__self__, "api_key_source", api_key_source)
+            _setter("api_key_source", api_key_source)
+        if binary_media_types is not None:
+            _setter("binary_media_types", binary_media_types)
         if gateway_responses is not None:
-            pulumi.set(__self__, "gateway_responses", gateway_responses)
+            _setter("gateway_responses", gateway_responses)
         if request_validator is not None:
-            pulumi.set(__self__, "request_validator", request_validator)
+            _setter("request_validator", request_validator)
         if routes is not None:
-            pulumi.set(__self__, "routes", routes)
+            _setter("routes", routes)
         if stage_name is not None:
-            pulumi.set(__self__, "stage_name", stage_name)
+            _setter("stage_name", stage_name)
         if static_routes_bucket is not None:
-            pulumi.set(__self__, "static_routes_bucket", static_routes_bucket)
+            _setter("static_routes_bucket", static_routes_bucket)
         if swagger_string is not None:
-            pulumi.set(__self__, "swagger_string", swagger_string)
+            _setter("swagger_string", swagger_string)
 
     @property
     @pulumi.getter(name="apiKeySource")
@@ -72,6 +101,20 @@ class RestAPIArgs:
     @api_key_source.setter
     def api_key_source(self, value: Optional['APIKeySource']):
         pulumi.set(self, "api_key_source", value)
+
+    @property
+    @pulumi.getter(name="binaryMediaTypes")
+    def binary_media_types(self) -> Optional[Sequence[pulumi.Input[str]]]:
+        """
+        List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+        If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
+        If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+        """
+        return pulumi.get(self, "binary_media_types")
+
+    @binary_media_types.setter
+    def binary_media_types(self, value: Optional[Sequence[pulumi.Input[str]]]):
+        pulumi.set(self, "binary_media_types", value)
 
     @property
     @pulumi.getter(name="gatewayResponses")
@@ -162,6 +205,7 @@ class RestAPI(pulumi.ComponentResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  api_key_source: Optional['APIKeySource'] = None,
+                 binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence[pulumi.InputType['RouteArgs']]] = None,
@@ -179,6 +223,9 @@ class RestAPI(pulumi.ComponentResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
                set to true on a route, and this is not defined the value will default to HEADER.
+        :param Sequence[pulumi.Input[str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+               If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
+               If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
         :param Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
                CORS for Lambda Authorizers.
         :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
@@ -218,12 +265,17 @@ class RestAPI(pulumi.ComponentResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
+            kwargs = kwargs or {}
+            def _setter(key, value):
+                kwargs[key] = value
+            RestAPIArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  api_key_source: Optional['APIKeySource'] = None,
+                 binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence[pulumi.InputType['RouteArgs']]] = None,
@@ -242,6 +294,7 @@ class RestAPI(pulumi.ComponentResource):
             __props__ = RestAPIArgs.__new__(RestAPIArgs)
 
             __props__.__dict__["api_key_source"] = api_key_source
+            __props__.__dict__["binary_media_types"] = binary_media_types
             __props__.__dict__["gateway_responses"] = gateway_responses
             __props__.__dict__["request_validator"] = request_validator
             __props__.__dict__["routes"] = routes

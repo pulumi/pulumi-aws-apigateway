@@ -83,6 +83,20 @@ namespace Pulumi.AwsApiGateway
         [Input("apiKeySource")]
         public Pulumi.AwsApiGateway.APIKeySource? ApiKeySource { get; set; }
 
+        [Input("binaryMediaTypes")]
+        private List<Input<string>>? _binaryMediaTypes;
+
+        /// <summary>
+        /// List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+        /// If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
+        /// If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+        /// </summary>
+        public List<Input<string>> BinaryMediaTypes
+        {
+            get => _binaryMediaTypes ?? (_binaryMediaTypes = new List<Input<string>>());
+            set => _binaryMediaTypes = value;
+        }
+
         [Input("gatewayResponses")]
         private Dictionary<string, Input<Inputs.SwaggerGatewayResponseArgs>>? _gatewayResponses;
 

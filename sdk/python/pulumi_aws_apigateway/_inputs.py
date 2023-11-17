@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from ._enums import *
 import pulumi_aws
@@ -65,27 +65,56 @@ class AuthorizerArgs:
                - "token", for an authorizer with the caller identity embedded in an authorization token
                - "request", for an authorizer with the caller identity contained in request parameters
         """
-        pulumi.set(__self__, "parameter_name", parameter_name)
+        AuthorizerArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            parameter_name=parameter_name,
+            auth_type=auth_type,
+            authorizer_name=authorizer_name,
+            authorizer_result_ttl_in_seconds=authorizer_result_ttl_in_seconds,
+            handler=handler,
+            identity_source=identity_source,
+            identity_validation_expression=identity_validation_expression,
+            methods_to_authorize=methods_to_authorize,
+            parameter_location=parameter_location,
+            provider_arns=provider_arns,
+            type=type,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             parameter_name: str,
+             auth_type: Optional[str] = None,
+             authorizer_name: Optional[str] = None,
+             authorizer_result_ttl_in_seconds: Optional[float] = None,
+             handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
+             identity_source: Optional[Sequence[str]] = None,
+             identity_validation_expression: Optional[str] = None,
+             methods_to_authorize: Optional[Sequence[str]] = None,
+             parameter_location: Optional[str] = None,
+             provider_arns: Optional[Sequence[pulumi.Input[str]]] = None,
+             type: Optional[str] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
+        _setter("parameter_name", parameter_name)
         if auth_type is not None:
-            pulumi.set(__self__, "auth_type", auth_type)
+            _setter("auth_type", auth_type)
         if authorizer_name is not None:
-            pulumi.set(__self__, "authorizer_name", authorizer_name)
+            _setter("authorizer_name", authorizer_name)
         if authorizer_result_ttl_in_seconds is not None:
-            pulumi.set(__self__, "authorizer_result_ttl_in_seconds", authorizer_result_ttl_in_seconds)
+            _setter("authorizer_result_ttl_in_seconds", authorizer_result_ttl_in_seconds)
         if handler is not None:
-            pulumi.set(__self__, "handler", handler)
+            _setter("handler", handler)
         if identity_source is not None:
-            pulumi.set(__self__, "identity_source", identity_source)
+            _setter("identity_source", identity_source)
         if identity_validation_expression is not None:
-            pulumi.set(__self__, "identity_validation_expression", identity_validation_expression)
+            _setter("identity_validation_expression", identity_validation_expression)
         if methods_to_authorize is not None:
-            pulumi.set(__self__, "methods_to_authorize", methods_to_authorize)
+            _setter("methods_to_authorize", methods_to_authorize)
         if parameter_location is not None:
-            pulumi.set(__self__, "parameter_location", parameter_location)
+            _setter("parameter_location", parameter_location)
         if provider_arns is not None:
-            pulumi.set(__self__, "provider_arns", provider_arns)
+            _setter("provider_arns", provider_arns)
         if type is not None:
-            pulumi.set(__self__, "type", type)
+            _setter("type", type)
 
     @property
     @pulumi.getter(name="parameterName")
@@ -242,10 +271,21 @@ class RequiredParameterArgs:
     def __init__(__self__, *,
                  in_: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None):
+        RequiredParameterArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            in_=in_,
+            name=name,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             in_: Optional[pulumi.Input[str]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if in_ is not None:
-            pulumi.set(__self__, "in_", in_)
+            _setter("in_", in_)
         if name is not None:
-            pulumi.set(__self__, "name", name)
+            _setter("name", name)
 
     @property
     @pulumi.getter(name="in")
@@ -310,31 +350,64 @@ class RouteArgs:
                gateway will validate these before sending traffic to the event handler.
         :param pulumi.Input['TargetArgs'] target: The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
         """
-        pulumi.set(__self__, "path", path)
+        RouteArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            path=path,
+            api_key_required=api_key_required,
+            authorizers=authorizers,
+            content_type=content_type,
+            data=data,
+            event_handler=event_handler,
+            iam_auth_enabled=iam_auth_enabled,
+            index=index,
+            local_path=local_path,
+            method=method,
+            request_validator=request_validator,
+            required_parameters=required_parameters,
+            target=target,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             path: str,
+             api_key_required: Optional[bool] = None,
+             authorizers: Optional[Sequence['AuthorizerArgs']] = None,
+             content_type: Optional[str] = None,
+             data: Optional[Any] = None,
+             event_handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
+             iam_auth_enabled: Optional[bool] = None,
+             index: Optional[Union[str, bool]] = None,
+             local_path: Optional[str] = None,
+             method: Optional['Method'] = None,
+             request_validator: Optional['RequestValidator'] = None,
+             required_parameters: Optional[Sequence['RequiredParameterArgs']] = None,
+             target: Optional[pulumi.Input['TargetArgs']] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
+        _setter("path", path)
         if api_key_required is not None:
-            pulumi.set(__self__, "api_key_required", api_key_required)
+            _setter("api_key_required", api_key_required)
         if authorizers is not None:
-            pulumi.set(__self__, "authorizers", authorizers)
+            _setter("authorizers", authorizers)
         if content_type is not None:
-            pulumi.set(__self__, "content_type", content_type)
+            _setter("content_type", content_type)
         if data is not None:
-            pulumi.set(__self__, "data", data)
+            _setter("data", data)
         if event_handler is not None:
-            pulumi.set(__self__, "event_handler", event_handler)
+            _setter("event_handler", event_handler)
         if iam_auth_enabled is not None:
-            pulumi.set(__self__, "iam_auth_enabled", iam_auth_enabled)
+            _setter("iam_auth_enabled", iam_auth_enabled)
         if index is not None:
-            pulumi.set(__self__, "index", index)
+            _setter("index", index)
         if local_path is not None:
-            pulumi.set(__self__, "local_path", local_path)
+            _setter("local_path", local_path)
         if method is not None:
-            pulumi.set(__self__, "method", method)
+            _setter("method", method)
         if request_validator is not None:
-            pulumi.set(__self__, "request_validator", request_validator)
+            _setter("request_validator", request_validator)
         if required_parameters is not None:
-            pulumi.set(__self__, "required_parameters", required_parameters)
+            _setter("required_parameters", required_parameters)
         if target is not None:
-            pulumi.set(__self__, "target", target)
+            _setter("target", target)
 
     @property
     @pulumi.getter
@@ -508,12 +581,25 @@ class SwaggerGatewayResponseArgs:
                  response_parameters: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  response_templates: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  status_code: Optional[pulumi.Input[float]] = None):
+        SwaggerGatewayResponseArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            response_parameters=response_parameters,
+            response_templates=response_templates,
+            status_code=status_code,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             response_parameters: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             response_templates: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+             status_code: Optional[pulumi.Input[float]] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
         if response_parameters is not None:
-            pulumi.set(__self__, "response_parameters", response_parameters)
+            _setter("response_parameters", response_parameters)
         if response_templates is not None:
-            pulumi.set(__self__, "response_templates", response_templates)
+            _setter("response_templates", response_templates)
         if status_code is not None:
-            pulumi.set(__self__, "status_code", status_code)
+            _setter("status_code", status_code)
 
     @property
     @pulumi.getter(name="responseParameters")
@@ -619,16 +705,35 @@ class TargetArgs:
                
                Defaults to `WHEN_NO_MATCH` if unspecified.
         """
-        pulumi.set(__self__, "type", type)
-        pulumi.set(__self__, "uri", uri)
+        TargetArgs._configure(
+            lambda key, value: pulumi.set(__self__, key, value),
+            type=type,
+            uri=uri,
+            connection_id=connection_id,
+            connection_type=connection_type,
+            http_method=http_method,
+            passthrough_behaviour=passthrough_behaviour,
+        )
+    @staticmethod
+    def _configure(
+             _setter: Callable[[Any, Any], None],
+             type: pulumi.Input['IntegrationType'],
+             uri: pulumi.Input[str],
+             connection_id: Optional[pulumi.Input[str]] = None,
+             connection_type: Optional[pulumi.Input['IntegrationConnectionType']] = None,
+             http_method: Optional[pulumi.Input[str]] = None,
+             passthrough_behaviour: Optional[pulumi.Input['IntegrationPassthroughBehavior']] = None,
+             opts: Optional[pulumi.ResourceOptions]=None):
+        _setter("type", type)
+        _setter("uri", uri)
         if connection_id is not None:
-            pulumi.set(__self__, "connection_id", connection_id)
+            _setter("connection_id", connection_id)
         if connection_type is not None:
-            pulumi.set(__self__, "connection_type", connection_type)
+            _setter("connection_type", connection_type)
         if http_method is not None:
-            pulumi.set(__self__, "http_method", 'ANY')
+            _setter("http_method", 'ANY')
         if passthrough_behaviour is not None:
-            pulumi.set(__self__, "passthrough_behaviour", passthrough_behaviour)
+            _setter("passthrough_behaviour", passthrough_behaviour)
 
     @property
     @pulumi.getter
