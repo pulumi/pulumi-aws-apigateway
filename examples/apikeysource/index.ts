@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as apigateway from "@pulumi/aws-apigateway";
 import * as data from "./data";
@@ -35,4 +36,13 @@ const api = new apigateway.RestAPI("authorizer-api", {
   }],
 }, { version: "" });
 
-export const apiKeySource = api.api.apiKeySource;
+
+// TODO[pulumi/pulumi-aws-apigateway#111]: The `api` output is (incorrectly) a string not an object
+// so we cannot read it's output.  Workaround this by looking up the API by name.
+var apiRead: any = {};
+if (!pulumi.runtime.isDryRun()) {
+  apiRead = aws.apigateway.getRestApiOutput({
+    name: api.url.apply(_ => "authorizer-api"),
+  });
+}
+export const apiKeySource = apiRead.apiKeySource;
