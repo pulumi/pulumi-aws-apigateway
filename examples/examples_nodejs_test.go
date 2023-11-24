@@ -24,8 +24,7 @@ func TestSimpleTs(t *testing.T) {
 func TestAccApiKeySource(t *testing.T) {
 	test := getBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			Dir:     path.Join(getCwd(t), "./apikeysource"),
-			Verbose: true,
+			Dir: path.Join(getCwd(t), "./apikeysource"),
 			EditDirs: []integration.EditDir{
 				{
 					Dir:      "./apikeysource/step2",
