@@ -40,6 +40,25 @@ public final class RestAPIArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
+     * List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
+     * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+     * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+     * 
+     */
+    @Import(name="binaryMediaTypes")
+    private @Nullable List<String> binaryMediaTypes;
+
+    /**
+     * @return List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
+     * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+     * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+     * 
+     */
+    public Optional<List<String>> binaryMediaTypes() {
+        return Optional.ofNullable(this.binaryMediaTypes);
+    }
+
+    /**
      * Define custom gateway responses for the API. This can be used to properly enable
      * CORS for Lambda Authorizers.
      * 
@@ -153,6 +172,7 @@ public final class RestAPIArgs extends com.pulumi.resources.ResourceArgs {
 
     private RestAPIArgs(RestAPIArgs $) {
         this.apiKeySource = $.apiKeySource;
+        this.binaryMediaTypes = $.binaryMediaTypes;
         this.gatewayResponses = $.gatewayResponses;
         this.requestValidator = $.requestValidator;
         this.routes = $.routes;
@@ -189,6 +209,31 @@ public final class RestAPIArgs extends com.pulumi.resources.ResourceArgs {
         public Builder apiKeySource(@Nullable APIKeySource apiKeySource) {
             $.apiKeySource = apiKeySource;
             return this;
+        }
+
+        /**
+         * @param binaryMediaTypes List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
+         * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+         * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder binaryMediaTypes(@Nullable List<String> binaryMediaTypes) {
+            $.binaryMediaTypes = binaryMediaTypes;
+            return this;
+        }
+
+        /**
+         * @param binaryMediaTypes List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
+         * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+         * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder binaryMediaTypes(String... binaryMediaTypes) {
+            return binaryMediaTypes(List.of(binaryMediaTypes));
         }
 
         /**

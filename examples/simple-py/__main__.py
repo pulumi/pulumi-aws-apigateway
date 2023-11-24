@@ -40,6 +40,8 @@ api = apigateway.RestAPI('api', routes=[
     apigateway.RouteArgs(path="/", method="GET", event_handler=f),
     apigateway.RouteArgs(path="/www", method="GET", local_path="www", index=False),
     apigateway.RouteArgs(path="/integration", target=apigateway.TargetArgs(uri="https://www.google.com", type="http_proxy"))
-])
+],
+    binary_media_types=["application/json"]
+    )
 
 pulumi.export('url', api.url)

@@ -395,6 +395,13 @@ export interface APIArgs {
   gatewayResponses?: Record<string, SwaggerGatewayResponse>;
 
   /**
+   * List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+   * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
+   * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+   */
+  binaryMediaTypes?: string[];
+
+  /**
    * Additional optional args that can be passed along to the aws.apigateway.RestApi created by the
    * awsx.apigateway.API.
    */
@@ -651,7 +658,7 @@ export function createAPI(
     {
       ...args.restApiArgs,
       name: ifUndefined(restApiArgs.name, title),
-      binaryMediaTypes: ifUndefined(restApiArgs.binaryMediaTypes, ["*/*"]),
+      binaryMediaTypes: ifUndefined(args.binaryMediaTypes, ["*/*"]),
       body: swaggerString,
     },
     { parent }
