@@ -22,7 +22,10 @@ func getBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	awsRegion := getRegion(t)
 	return integration.ProgramTestOptions{
 		SkipRefresh: true,
-		Quick: true,
+		Quick:       true,
+		Dependencies: []string{
+			"@pulumi/aws-apigateway",
+		},
 		Config: map[string]string{
 			"aws:region": awsRegion,
 		},

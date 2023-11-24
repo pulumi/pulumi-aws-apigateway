@@ -660,6 +660,9 @@ export function createAPI(
       name: ifUndefined(restApiArgs.name, title),
       binaryMediaTypes: ifUndefined(args.binaryMediaTypes, ["*/*"]),
       body: swaggerString,
+      // We pass this in directly, because setting it in the Swagger doesn't cause
+      // it to take affect, it must be passed directly to the RestAPI constructor as well.
+      apiKeySource: args.apiKeySource,
     },
     { parent }
   );
