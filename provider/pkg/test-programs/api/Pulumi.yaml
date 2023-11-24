@@ -48,8 +48,6 @@ resources:
   api:
     type: aws-apigateway:index:RestAPI
     properties:
-      binaryMediaTypes:
-        - "*/*"
       routes:
         - path: "/"
           method: GET

@@ -27,7 +27,7 @@ func e2eTest(dir string, opts ...providertest.Option) *providertest.ProviderTest
 
 	opts = append(opts,
 		providertest.WithProviderName("aws-apigateway"),
-		providertest.WithBaselineVersion("2.0.1"),
+		providertest.WithBaselineVersion("1.0.1"),
 		providertest.WithSkippedUpgradeTestMode(
 			providertest.UpgradeTestMode_Quick,
 			"Quick mode is only supported for providers written in Go at the moment"),
