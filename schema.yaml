@@ -193,7 +193,6 @@ types:
           Defaults to `WHEN_NO_MATCH` if unspecified.
     required:
       - type
-      - uri
   aws-apigateway:index:Method:
     type: string
     enum:

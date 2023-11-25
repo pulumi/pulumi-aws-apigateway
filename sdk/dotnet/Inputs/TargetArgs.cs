@@ -104,8 +104,8 @@ namespace Pulumi.AwsApiGateway.Inputs
         /// arn:aws:apigateway:us-west-2:s3:action/GetObject&amp;Bucket={bucket}&amp;Key={key} or
         /// arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
         /// </summary>
-        [Input("uri", required: true)]
-        public Input<string> Uri { get; set; } = null!;
+        [Input("uri")]
+        public Input<string>? Uri { get; set; }
 
         public TargetArgs()
         {
