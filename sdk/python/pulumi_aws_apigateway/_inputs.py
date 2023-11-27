@@ -547,11 +547,11 @@ class SwaggerGatewayResponseArgs:
 class TargetArgs:
     def __init__(__self__, *,
                  type: pulumi.Input['IntegrationType'],
-                 uri: pulumi.Input[str],
                  connection_id: Optional[pulumi.Input[str]] = None,
                  connection_type: Optional[pulumi.Input['IntegrationConnectionType']] = None,
                  http_method: Optional[pulumi.Input[str]] = None,
-                 passthrough_behaviour: Optional[pulumi.Input['IntegrationPassthroughBehavior']] = None):
+                 passthrough_behaviour: Optional[pulumi.Input['IntegrationPassthroughBehavior']] = None,
+                 uri: Optional[pulumi.Input[str]] = None):
         """
         :param pulumi.Input['IntegrationType'] type: Specifies an API method integration type. The valid value is one of the following:
                
@@ -573,25 +573,6 @@ class TargetArgs:
                
                * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
                without invoking any backend.
-        :param pulumi.Input[str] uri: Specifies Uniform Resource Identifier (URI) of the integration endpoint.
-               
-               For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
-               according to the RFC-3986 specification, for either standard integration, where
-               connectionType is not VPC_LINK, or private integration, where connectionType is VPC_LINK. For
-               a private HTTP integration, the URI is not used for routing.
-               
-               For AWS or AWS_PROXY integrations, the URI is of the form
-               arn:aws:apigateway:{region}:{subdomain.service|service}:path|action/{service_api}. Here,
-               {Region} is the API Gateway region (e.g., us-east-1); {service} is the name of the integrated
-               AWS service (e.g., s3); and {subdomain} is a designated subdomain supported by certain AWS
-               service for fast host-name lookup. action can be used for an AWS service action-based API,
-               using an Action={name}&{p1}={v1}&p2={v2}... query string. The ensuing {service_api} refers to
-               a supported action {name} plus any required input parameters. Alternatively, path can be used
-               for an AWS service path-based API. The ensuing service_api refers to the path to an AWS
-               service resource, including the region of the integrated AWS service, if applicable. For
-               example, for integration with the S3 API of GetObject, the uri can be either
-               arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
-               arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
         :param pulumi.Input[str] connection_id: The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
                otherwise.
         :param pulumi.Input['IntegrationConnectionType'] connection_type: The type of the network connection to the integration endpoint. The valid value is `INTERNET`
@@ -618,9 +599,27 @@ class TargetArgs:
                integration request.
                
                Defaults to `WHEN_NO_MATCH` if unspecified.
+        :param pulumi.Input[str] uri: Specifies Uniform Resource Identifier (URI) of the integration endpoint.
+               
+               For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
+               according to the RFC-3986 specification, for either standard integration, where
+               connectionType is not VPC_LINK, or private integration, where connectionType is VPC_LINK. For
+               a private HTTP integration, the URI is not used for routing.
+               
+               For AWS or AWS_PROXY integrations, the URI is of the form
+               arn:aws:apigateway:{region}:{subdomain.service|service}:path|action/{service_api}. Here,
+               {Region} is the API Gateway region (e.g., us-east-1); {service} is the name of the integrated
+               AWS service (e.g., s3); and {subdomain} is a designated subdomain supported by certain AWS
+               service for fast host-name lookup. action can be used for an AWS service action-based API,
+               using an Action={name}&{p1}={v1}&p2={v2}... query string. The ensuing {service_api} refers to
+               a supported action {name} plus any required input parameters. Alternatively, path can be used
+               for an AWS service path-based API. The ensuing service_api refers to the path to an AWS
+               service resource, including the region of the integrated AWS service, if applicable. For
+               example, for integration with the S3 API of GetObject, the uri can be either
+               arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
+               arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
         """
         pulumi.set(__self__, "type", type)
-        pulumi.set(__self__, "uri", uri)
         if connection_id is not None:
             pulumi.set(__self__, "connection_id", connection_id)
         if connection_type is not None:
@@ -629,6 +628,8 @@ class TargetArgs:
             pulumi.set(__self__, "http_method", 'ANY')
         if passthrough_behaviour is not None:
             pulumi.set(__self__, "passthrough_behaviour", passthrough_behaviour)
+        if uri is not None:
+            pulumi.set(__self__, "uri", uri)
 
     @property
     @pulumi.getter
@@ -660,36 +661,6 @@ class TargetArgs:
     @type.setter
     def type(self, value: pulumi.Input['IntegrationType']):
         pulumi.set(self, "type", value)
-
-    @property
-    @pulumi.getter
-    def uri(self) -> pulumi.Input[str]:
-        """
-        Specifies Uniform Resource Identifier (URI) of the integration endpoint.
-
-        For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
-        according to the RFC-3986 specification, for either standard integration, where
-        connectionType is not VPC_LINK, or private integration, where connectionType is VPC_LINK. For
-        a private HTTP integration, the URI is not used for routing.
-
-        For AWS or AWS_PROXY integrations, the URI is of the form
-        arn:aws:apigateway:{region}:{subdomain.service|service}:path|action/{service_api}. Here,
-        {Region} is the API Gateway region (e.g., us-east-1); {service} is the name of the integrated
-        AWS service (e.g., s3); and {subdomain} is a designated subdomain supported by certain AWS
-        service for fast host-name lookup. action can be used for an AWS service action-based API,
-        using an Action={name}&{p1}={v1}&p2={v2}... query string. The ensuing {service_api} refers to
-        a supported action {name} plus any required input parameters. Alternatively, path can be used
-        for an AWS service path-based API. The ensuing service_api refers to the path to an AWS
-        service resource, including the region of the integrated AWS service, if applicable. For
-        example, for integration with the S3 API of GetObject, the uri can be either
-        arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
-        arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
-        """
-        return pulumi.get(self, "uri")
-
-    @uri.setter
-    def uri(self, value: pulumi.Input[str]):
-        pulumi.set(self, "uri", value)
 
     @property
     @pulumi.getter(name="connectionId")
@@ -760,5 +731,35 @@ class TargetArgs:
     @passthrough_behaviour.setter
     def passthrough_behaviour(self, value: Optional[pulumi.Input['IntegrationPassthroughBehavior']]):
         pulumi.set(self, "passthrough_behaviour", value)
+
+    @property
+    @pulumi.getter
+    def uri(self) -> Optional[pulumi.Input[str]]:
+        """
+        Specifies Uniform Resource Identifier (URI) of the integration endpoint.
+
+        For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
+        according to the RFC-3986 specification, for either standard integration, where
+        connectionType is not VPC_LINK, or private integration, where connectionType is VPC_LINK. For
+        a private HTTP integration, the URI is not used for routing.
+
+        For AWS or AWS_PROXY integrations, the URI is of the form
+        arn:aws:apigateway:{region}:{subdomain.service|service}:path|action/{service_api}. Here,
+        {Region} is the API Gateway region (e.g., us-east-1); {service} is the name of the integrated
+        AWS service (e.g., s3); and {subdomain} is a designated subdomain supported by certain AWS
+        service for fast host-name lookup. action can be used for an AWS service action-based API,
+        using an Action={name}&{p1}={v1}&p2={v2}... query string. The ensuing {service_api} refers to
+        a supported action {name} plus any required input parameters. Alternatively, path can be used
+        for an AWS service path-based API. The ensuing service_api refers to the path to an AWS
+        service resource, including the region of the integrated AWS service, if applicable. For
+        example, for integration with the S3 API of GetObject, the uri can be either
+        arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
+        arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
+        """
+        return pulumi.get(self, "uri")
+
+    @uri.setter
+    def uri(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "uri", value)
 
 

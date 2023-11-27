@@ -773,7 +773,7 @@ type Target struct {
 	// example, for integration with the S3 API of GetObject, the uri can be either
 	// arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
 	// arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
-	Uri string `pulumi:"uri"`
+	Uri *string `pulumi:"uri"`
 }
 
 // TargetInput is an input type that accepts TargetArgs and TargetOutput values.
@@ -858,7 +858,7 @@ type TargetArgs struct {
 	// example, for integration with the S3 API of GetObject, the uri can be either
 	// arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
 	// arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
-	Uri pulumi.StringInput `pulumi:"uri"`
+	Uri pulumi.StringPtrInput `pulumi:"uri"`
 }
 
 func (TargetArgs) ElementType() reflect.Type {
@@ -1023,8 +1023,8 @@ func (o TargetOutput) Type() IntegrationTypeOutput {
 // example, for integration with the S3 API of GetObject, the uri can be either
 // arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
 // arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
-func (o TargetOutput) Uri() pulumi.StringOutput {
-	return o.ApplyT(func(v Target) string { return v.Uri }).(pulumi.StringOutput)
+func (o TargetOutput) Uri() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v Target) *string { return v.Uri }).(pulumi.StringPtrOutput)
 }
 
 type TargetPtrOutput struct{ *pulumi.OutputState }
@@ -1166,7 +1166,7 @@ func (o TargetPtrOutput) Uri() pulumi.StringPtrOutput {
 		if v == nil {
 			return nil
 		}
-		return &v.Uri
+		return v.Uri
 	}).(pulumi.StringPtrOutput)
 }
 

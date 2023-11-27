@@ -238,5 +238,5 @@ export interface TargetArgs {
      * arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
      * arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
      */
-    uri: pulumi.Input<string>;
+    uri?: pulumi.Input<string>;
 }
