@@ -29,8 +29,8 @@ class RestAPIArgs:
         The set of arguments for constructing a RestAPI resource.
         :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
                set to true on a route, and this is not defined the value will default to HEADER.
-        :param Sequence[pulumi.Input[str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
-               If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+        :param Sequence[pulumi.Input[str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+               If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
                If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
         :param Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
                CORS for Lambda Authorizers.
@@ -83,8 +83,8 @@ class RestAPIArgs:
     @pulumi.getter(name="binaryMediaTypes")
     def binary_media_types(self) -> Optional[Sequence[pulumi.Input[str]]]:
         """
-        List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
-        If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+        List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+        If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
         If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
         """
         return pulumi.get(self, "binary_media_types")
@@ -200,8 +200,8 @@ class RestAPI(pulumi.ComponentResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
                set to true on a route, and this is not defined the value will default to HEADER.
-        :param Sequence[pulumi.Input[str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
-               If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+        :param Sequence[pulumi.Input[str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+               If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
                If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
         :param Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
                CORS for Lambda Authorizers.
