@@ -35,7 +35,7 @@ install_provider:: build_provider
 
 .PHONY: test_provider
 test_provider: bin/gotestfmt
-test_provider: 
+test_provider:
 	cd provider && PATH=$(WORKING_DIR)/bin:$(PATH) go test -v -json -tags=all -timeout 2h ./... | tee /tmp/gotest.log | gotestfmt
 
 bin/gotestfmt:
@@ -95,14 +95,17 @@ gen_python_sdk::
 	cd provider/cmd/${CODEGEN} && go run . python ../../../sdk/python ${SCHEMA_PATH}
 	cp ${WORKING_DIR}/README.md sdk/python
 
+build_python_sdk:: PYPI_VERSION = $(shell pulumictl convert-version -l python -v "$(VERSION)")
 build_python_sdk:: gen_python_sdk
 	cd sdk/python/ && \
 		echo "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17" > go.mod && \
-		python3 setup.py clean --all 2>/dev/null && \
 		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
-		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
-		rm ./bin/setup.py.bak && \
-		cd ./bin && python3 setup.py build sdist
+		sed -i.bak -e 's/^  version = .*/  version = "$(PYPI_VERSION)"/g' ./bin/pyproject.toml && \
+		rm ./bin/pyproject.toml.bak && \
+		python3 -m venv venv && \
+		./venv/bin/python -m pip install build && \
+		cd ./bin && \
+		../venv/bin/python -m build .
 
 # Java SDK
 bin/pulumi-java-gen::
