@@ -404,12 +404,12 @@ resources:
           CORS for Lambda Authorizers.
       binaryMediaTypes:
         type: array
-        items:
+        items: 
           type: string
         plain: true
         description: |
-          List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
-          If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
+          List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
+          If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
           If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
     properties:
       url:
@@ -438,9 +438,9 @@ resources:
       - deployment
       - stage
     description: |
-      The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The
-      REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event
-      hander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket
+      The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The 
+      REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event 
+      hander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket 
       and serves them or (3) an integration target such as an HTTP proxy or service integration.
 language:
   csharp:
