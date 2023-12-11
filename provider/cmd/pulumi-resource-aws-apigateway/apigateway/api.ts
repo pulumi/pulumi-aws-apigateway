@@ -817,7 +817,6 @@ function createSwaggerSpec(
     swagger: "2.0",
     info: { title: name, version: "1.0" },
     paths: {},
-    "x-amazon-apigateway-binary-media-types": ["*/*"],
     // Map paths the user doesn't have access to as 404.
     // http://docs.aws.amazon.com/apigateway/latest/developerguide/supported-gateway-response-types.html
     "x-amazon-apigateway-gateway-responses":
