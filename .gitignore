@@ -28,3 +28,6 @@ sdk/java/gradlew.bat
 .vscode
 
 sdk/python/venv
+
+go.work
+go.work.sum
