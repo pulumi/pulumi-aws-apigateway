@@ -49,6 +49,7 @@ func TestSimpleWithManualSwaggerSpecAndBinaryMediaType(t *testing.T) {
 		"simple",
 		providertest.WithConfig("useSwaggerSpec", "true"),
 		providertest.WithConfig("useBinaryMediaType", "true"),
+		providertest.WithConfig("aws:region", "us-west-1"),
 	).Run(t)
 }
 

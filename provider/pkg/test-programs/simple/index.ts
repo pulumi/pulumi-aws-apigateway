@@ -5,8 +5,8 @@ import * as pulumi from "@pulumi/pulumi";
 
 const config = new pulumi.Config()
 
-const useSwaggerSpec = config.getBoolean("useSwaggerSpec")
-const useBinaryMediaType = config.getBoolean("useBinaryMediaType")
+const useSwaggerSpec = config.getBoolean("useSwaggerSpec") || true;
+const useBinaryMediaType = config.getBoolean("useBinaryMediaType") || true;
 
 const role = new aws.iam.Role("role", {
   assumeRolePolicy: aws.iam.assumeRolePolicyForPrincipal({ Service: "lambda.amazonaws.com" }),
@@ -29,26 +29,28 @@ const api = new apigateway.RestAPI("api", {
       eventHandler: lambda,
     },
   ],
-  swaggerString: useSwaggerSpec ? `{
-    "swagger": "2.0",
-    "info": {
-      "title": "myAPI",
-      "version": "1.0"
+  swaggerString: useSwaggerSpec ? pulumi.interpolate`{
+    "swagger" : "2.0",
+    "info" : {
+      "version" : "1.0",
+      "title" : "api"
     },
-    "paths": {
-      "/": {
-        "get": {
-          "responses": {
-            "200": {
-              "description": "200 response"
-            }
+    "schemes" : [ "https" ],
+    "paths" : {
+      "/" : {
+        "get" : {
+          "responses" : { },
+          "x-amazon-apigateway-integration" : {
+            "type" : "aws_proxy",
+            "httpMethod" : "POST",
+            "uri" : "${lambda.invokeArn}",
+            "passthroughBehavior" : "when_no_match"
           }
         }
       }
     }
   }` : undefined,
   binaryMediaTypes: useBinaryMediaType ? ["application/json"] : undefined
-});
-
+}, {dependsOn: [lambda]});
 
 export const url = api.url;
