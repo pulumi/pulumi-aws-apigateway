@@ -5,8 +5,8 @@ import * as pulumi from "@pulumi/pulumi";
 
 const config = new pulumi.Config()
 
-const useSwaggerSpec = config.getBoolean("useSwaggerSpec") || true;
-const useBinaryMediaType = config.getBoolean("useBinaryMediaType") || true;
+const useSwaggerSpec = config.getBoolean("useSwaggerSpec") || false;
+const useBinaryMediaType = config.getBoolean("useBinaryMediaType") || false;
 
 const role = new aws.iam.Role("role", {
   assumeRolePolicy: aws.iam.assumeRolePolicyForPrincipal({ Service: "lambda.amazonaws.com" }),
