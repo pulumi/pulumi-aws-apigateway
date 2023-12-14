@@ -611,7 +611,7 @@ export function createAPI(
   let title: pulumi.Output<string>;
   let staticRoutesBucket: aws.s3.Bucket | undefined;
   let apiPolicy: aws.apigateway.RestApiPolicy | undefined;
-  let binaryMediaTypesList: string[] = args.binaryMediaTypes !== undefined ? args.binaryMediaTypes : ["*/*"];
+  let binaryMediaTypesList: string[] = args.binaryMediaTypes ?? ["*/*"];
   if (args.swaggerString) {
     const swaggerSpec = pulumi.output(args.swaggerString).apply((s) => {
       const spec = JSON.parse(s);
@@ -816,7 +816,7 @@ function createSwaggerSpec(
   apikeySource = apikeySource || "HEADER";
 
   // Set up the initial swagger spec.
-  let swagger: SwaggerSpec = {
+  const swagger: SwaggerSpec = {
     swagger: "2.0",
     info: { title: name, version: "1.0" },
     paths: {},
@@ -1363,8 +1363,8 @@ function addStaticRouteToSwaggerSpec(
       directory.index === false
         ? undefined
         : typeof directory.index === "string"
-        ? directory.index
-        : "index.html";
+          ? directory.index
+          : "index.html";
 
     const indexPath =
       indexFile === undefined ? undefined : fspath.join(startDir, indexFile);
@@ -1444,9 +1444,8 @@ function addStaticRouteToSwaggerSpec(
   ): SwaggerOperation {
     const region = getRegion(bucket);
 
-    const uri = pulumi.interpolate`arn:aws:apigateway:${region}:s3:path/${
-      bucket.bucket
-    }/${objectKey}${pathParameter ? `/{${pathParameter}}` : ``}`;
+    const uri = pulumi.interpolate`arn:aws:apigateway:${region}:s3:path/${bucket.bucket
+      }/${objectKey}${pathParameter ? `/{${pathParameter}}` : ``}`;
 
     const result: SwaggerOperation = {
       responses: {
