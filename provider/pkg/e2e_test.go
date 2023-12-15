@@ -20,20 +20,21 @@ func TestApi(t *testing.T) {
 
 func TestBinaryMediaTypesNoInput(t *testing.T) {
 	e2eTest("binaryMediaTypesNoInput", providertest.WithProviderName("aws-apigateway"),
-		providertest.WithBaselineVersion("2.1.0"),
+		,
 		providertest.WithSkippedUpgradeTestMode(
 			providertest.UpgradeTestMode_Quick,
 			"Quick mode is only supported for providers written in Go at the moment")).Run(t)
 }
 
 func TestSimpleNoBinaryMediaType(t *testing.T) {
-	e2eTest("simple").Run(t)
+	e2eTest("simple", providertest.WithBaselineVersion("2.1.0")).Run(t)
 }
 
 func TestSimpleWithBinaryMediaType(t *testing.T) {
 	e2eTest(
 		"simple",
 		providertest.WithConfig("useBinaryMediaType", "true"),
+		providertest.WithBaselineVersion("2.1.0")
 	).Run(t)
 }
 
@@ -41,6 +42,7 @@ func TestSimpleWithManualSwaggerSpec(t *testing.T) {
 	e2eTest(
 		"simple",
 		providertest.WithConfig("useSwaggerSpec", "true"),
+		providertest.WithBaselineVersion("2.1.0")
 	).Run(t)
 }
 
@@ -49,7 +51,7 @@ func TestSimpleWithManualSwaggerSpecAndBinaryMediaType(t *testing.T) {
 		"simple",
 		providertest.WithConfig("useSwaggerSpec", "true"),
 		providertest.WithConfig("useBinaryMediaType", "true"),
-		providertest.WithConfig("aws:region", "us-west-1"),
+		providertest.WithBaselineVersion("2.1.0")
 	).Run(t)
 }
 
