@@ -45,18 +45,22 @@ func TestAccApiKeySource(t *testing.T) {
 func TestBinaryMediaTypesRetained(t *testing.T) {
 	test := pulumitest.NewPulumiTest(t, "binary-media-types")
 	test.InstallStack("my-stack")
+
 	test.SetConfig("additionalRoute", "false")
 	res := test.Up()
+	require.Equal(t, 1, res.Outputs["numRoutes"].Value)
 	require.Equal(
 		t,
-		auto.OutputValue{Value: []interface{}{"application/json"}},
+		auto.OutputValue{Value: []interface{}{}},
 		res.Outputs["binaryMediaTypes"],
 	)
+
 	test.SetConfig("additionalRoute", "true")
 	res = test.Up()
+	require.Equal(t, 2, res.Outputs["numRoutes"].Value)
 	require.Equal(
 		t,
-		auto.OutputValue{Value: []interface{}{"application/json"}},
+		auto.OutputValue{Value: []interface{}{}},
 		res.Outputs["binaryMediaTypes"],
 	)
 }

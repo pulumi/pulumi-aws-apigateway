@@ -31,7 +31,8 @@ if (additionalRoute) {
 
 const api = new apigateway.RestAPI("api", {
   routes: routes,
-  binaryMediaTypes: ["application/json"]
+  binaryMediaTypes: []
 });
 
+export const numRoutes = routes.length
 export const binaryMediaTypes = api.api.binaryMediaTypes
