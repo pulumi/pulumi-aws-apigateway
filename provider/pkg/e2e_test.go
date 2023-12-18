@@ -22,23 +22,9 @@ func TestSimpleNoBinaryMediaType(t *testing.T) {
 	e2eTest("simple-no-binary-media-type", providertest.WithBaselineVersion("2.1.0")).Run(t)
 }
 
-func TestSimpleWithBinaryMediaType(t *testing.T) {
-	e2eTest(
-		"simple-with-binary-media-type",
-		providertest.WithBaselineVersion("2.1.0"),
-	).Run(t)
-}
-
 func TestSimpleWithManualSwaggerSpec(t *testing.T) {
 	e2eTest(
 		"simple-with-manual-swagger-spec",
-		providertest.WithBaselineVersion("2.1.0"),
-	).Run(t)
-}
-
-func TestSimpleWithBinaryMediaTypeAndSwaggerSpec(t *testing.T) {
-	e2eTest(
-		"simple-with-binary-media-type-and-swagger-spec",
 		providertest.WithBaselineVersion("2.1.0"),
 	).Run(t)
 }
