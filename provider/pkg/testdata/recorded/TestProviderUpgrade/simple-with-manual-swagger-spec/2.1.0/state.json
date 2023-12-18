@@ -1,0 +1,445 @@
+{
+    "version": 3,
+    "deployment": {
+        "manifest": {
+            "time": "2023-12-18T16:07:44.500431Z",
+            "magic": "060e346e56b968da7d1109b35f68fe9dadf011be9df57433ba381dc14e492284",
+            "version": "v3.95.0"
+        },
+        "secrets_providers": {
+            "type": "passphrase",
+            "state": {
+                "salt": "v1:LQxK/yXgAlU=:v1:BiJmJqdMj4SpofOK:WKPjfBhPzdHdf0rujYv/8qmECAr4pw=="
+            }
+        },
+        "resources": [
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:pulumi:Stack::simple-with-manual-swagger-spec-p-it-piers-mbpl-simple-wit-70e7fe5c",
+                "custom": false,
+                "type": "pulumi:pulumi:Stack",
+                "outputs": {
+                    "url": "https://zhafqxyy5k.execute-api.us-west-1.amazonaws.com/stage/"
+                },
+                "created": "2023-12-18T16:07:17.372369Z",
+                "modified": "2023-12-18T16:07:17.372369Z",
+                "sourcePosition": "project:///node_modules/@pulumi/runtime/stack.ts#36,23"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:aws::default_6_14_0",
+                "custom": true,
+                "id": "14cf552a-e49f-48b3-8cfc-0d8ddbc70f5f",
+                "type": "pulumi:providers:aws",
+                "inputs": {
+                    "region": "us-west-1",
+                    "skipCredentialsValidation": "false",
+                    "skipMetadataApiCheck": "true",
+                    "skipRegionValidation": "true",
+                    "version": "6.14.0"
+                },
+                "outputs": {
+                    "region": "us-west-1",
+                    "skipCredentialsValidation": "false",
+                    "skipMetadataApiCheck": "true",
+                    "skipRegionValidation": "true",
+                    "version": "6.14.0"
+                },
+                "created": "2023-12-18T16:07:19.272815Z",
+                "modified": "2023-12-18T16:07:19.272815Z"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:iam/role:Role::role",
+                "custom": true,
+                "id": "role-6bcbb31",
+                "type": "aws:iam/role:Role",
+                "inputs": {
+                    "__defaults": [
+                        "forceDetachPolicies",
+                        "maxSessionDuration",
+                        "name",
+                        "path"
+                    ],
+                    "assumeRolePolicy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Sid\":\"AllowAssumeRole\"}],\"Version\":\"2012-10-17\"}",
+                    "forceDetachPolicies": false,
+                    "maxSessionDuration": 3600,
+                    "name": "role-6bcbb31",
+                    "path": "/"
+                },
+                "outputs": {
+                    "arn": "arn:aws:iam::052848974346:role/role-6bcbb31",
+                    "assumeRolePolicy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Sid\":\"AllowAssumeRole\"}],\"Version\":\"2012-10-17\"}",
+                    "createDate": "2023-12-18T16:07:20Z",
+                    "description": "",
+                    "forceDetachPolicies": false,
+                    "id": "role-6bcbb31",
+                    "inlinePolicies": [],
+                    "managedPolicyArns": [],
+                    "maxSessionDuration": 3600,
+                    "name": "role-6bcbb31",
+                    "namePrefix": "",
+                    "path": "/",
+                    "permissionsBoundary": "",
+                    "tags": {},
+                    "tagsAll": {
+                        "4dabf18193072939515e22adb298388d": "1b47061264138c4ac30d75fd1eb44270",
+                        "ciphertext": "v1:jzfkC0Axpt+JJIvZ:5zWjuLDhYEW2wQrfyAgFr93X"
+                    },
+                    "uniqueId": "AROAQYTQLLIFAFCDW2TUI"
+                },
+                "parent": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:pulumi:Stack::simple-with-manual-swagger-spec-p-it-piers-mbpl-simple-wit-70e7fe5c",
+                "provider": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:aws::default_6_14_0::14cf552a-e49f-48b3-8cfc-0d8ddbc70f5f",
+                "propertyDependencies": {
+                    "assumeRolePolicy": null
+                },
+                "additionalSecretOutputs": [
+                    "tagsAll"
+                ],
+                "created": "2023-12-18T16:07:20.910422Z",
+                "modified": "2023-12-18T16:07:20.910422Z",
+                "sourcePosition": "project:///index.ts#6,14"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:lambda/function:Function::lambda",
+                "custom": true,
+                "id": "lambda-2555155",
+                "type": "aws:lambda/function:Function",
+                "inputs": {
+                    "__defaults": [
+                        "memorySize",
+                        "name",
+                        "packageType",
+                        "publish",
+                        "reservedConcurrentExecutions",
+                        "skipDestroy",
+                        "timeout"
+                    ],
+                    "code": {
+                        "4dabf18193072939515e22adb298388d": "0def7320c3a5731c473e5ecbe6d01bc7",
+                        "assets": {
+                            ".": {
+                                "4dabf18193072939515e22adb298388d": "0def7320c3a5731c473e5ecbe6d01bc7",
+                                "hash": "0c901337a713465950055e8def05c6f9dcc22316ce4e927d526f65c18e0bdf9d",
+                                "path": "./handler"
+                            }
+                        },
+                        "hash": "0c901337a713465950055e8def05c6f9dcc22316ce4e927d526f65c18e0bdf9d"
+                    },
+                    "handler": "handler.handler",
+                    "memorySize": 128,
+                    "name": "lambda-2555155",
+                    "packageType": "Zip",
+                    "publish": false,
+                    "reservedConcurrentExecutions": -1,
+                    "role": "arn:aws:iam::052848974346:role/role-6bcbb31",
+                    "runtime": "python3.8",
+                    "skipDestroy": false,
+                    "timeout": 3
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":600000000000,\"delete\":600000000000,\"update\":600000000000}}",
+                    "architectures": [
+                        "x86_64"
+                    ],
+                    "arn": "arn:aws:lambda:us-west-1:052848974346:function:lambda-2555155",
+                    "code": {
+                        "4dabf18193072939515e22adb298388d": "0def7320c3a5731c473e5ecbe6d01bc7",
+                        "assets": {
+                            ".": {
+                                "4dabf18193072939515e22adb298388d": "0def7320c3a5731c473e5ecbe6d01bc7",
+                                "hash": "0c901337a713465950055e8def05c6f9dcc22316ce4e927d526f65c18e0bdf9d",
+                                "path": "./handler"
+                            }
+                        },
+                        "hash": "0c901337a713465950055e8def05c6f9dcc22316ce4e927d526f65c18e0bdf9d"
+                    },
+                    "codeSigningConfigArn": "",
+                    "deadLetterConfig": null,
+                    "description": "",
+                    "environment": null,
+                    "ephemeralStorage": {
+                        "size": 512
+                    },
+                    "fileSystemConfig": null,
+                    "handler": "handler.handler",
+                    "id": "lambda-2555155",
+                    "imageConfig": null,
+                    "imageUri": "",
+                    "invokeArn": "arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:052848974346:function:lambda-2555155/invocations",
+                    "kmsKeyArn": "",
+                    "lastModified": "2023-12-18T16:07:31.225+0000",
+                    "layers": [],
+                    "memorySize": 128,
+                    "name": "lambda-2555155",
+                    "packageType": "Zip",
+                    "publish": false,
+                    "qualifiedArn": "arn:aws:lambda:us-west-1:052848974346:function:lambda-2555155:$LATEST",
+                    "qualifiedInvokeArn": "arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:052848974346:function:lambda-2555155:$LATEST/invocations",
+                    "reservedConcurrentExecutions": -1,
+                    "role": "arn:aws:iam::052848974346:role/role-6bcbb31",
+                    "runtime": "python3.8",
+                    "signingJobArn": "",
+                    "signingProfileVersionArn": "",
+                    "skipDestroy": false,
+                    "snapStart": null,
+                    "sourceCodeHash": "zE4B/J36TrO7dleqlVY/OfsiYePWF4bWpHgXkOXMqZw=",
+                    "sourceCodeSize": 249,
+                    "tags": {},
+                    "tagsAll": {
+                        "4dabf18193072939515e22adb298388d": "1b47061264138c4ac30d75fd1eb44270",
+                        "ciphertext": "v1:7ebXnzDdE9eOGQX+:beG35611iA2xX897efto+3L/"
+                    },
+                    "timeout": 3,
+                    "tracingConfig": {
+                        "mode": "PassThrough"
+                    },
+                    "version": "$LATEST",
+                    "vpcConfig": null
+                },
+                "parent": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:pulumi:Stack::simple-with-manual-swagger-spec-p-it-piers-mbpl-simple-wit-70e7fe5c",
+                "dependencies": [
+                    "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:iam/role:Role::role"
+                ],
+                "provider": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:aws::default_6_14_0::14cf552a-e49f-48b3-8cfc-0d8ddbc70f5f",
+                "propertyDependencies": {
+                    "code": null,
+                    "handler": null,
+                    "role": [
+                        "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:iam/role:Role::role"
+                    ],
+                    "runtime": null
+                },
+                "additionalSecretOutputs": [
+                    "tagsAll"
+                ],
+                "created": "2023-12-18T16:07:37.28179Z",
+                "modified": "2023-12-18T16:07:37.28179Z",
+                "sourcePosition": "project:///index.ts#10,16"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:aws-apigateway::default_2_1_0",
+                "custom": true,
+                "id": "b193acd0-c089-49a6-a447-694533f6f80d",
+                "type": "pulumi:providers:aws-apigateway",
+                "inputs": {
+                    "version": "2.1.0"
+                },
+                "outputs": {
+                    "version": "2.1.0"
+                },
+                "created": "2023-12-18T16:07:37.779684Z",
+                "modified": "2023-12-18T16:07:37.779684Z"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI::api",
+                "custom": false,
+                "type": "aws-apigateway:index:RestAPI",
+                "outputs": {
+                    "api": {
+                        "4dabf18193072939515e22adb298388d": "5cf8f73096256a8f31e491e813e4eb8e",
+                        "id": "zhafqxyy5k",
+                        "packageVersion": "",
+                        "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api"
+                    },
+                    "deployment": {
+                        "4dabf18193072939515e22adb298388d": "5cf8f73096256a8f31e491e813e4eb8e",
+                        "id": "gruez2",
+                        "packageVersion": "",
+                        "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api"
+                    },
+                    "stage": {
+                        "4dabf18193072939515e22adb298388d": "5cf8f73096256a8f31e491e813e4eb8e",
+                        "id": "ags-zhafqxyy5k-stage",
+                        "packageVersion": "",
+                        "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/stage:Stage::api"
+                    },
+                    "url": "https://zhafqxyy5k.execute-api.us-west-1.amazonaws.com/stage/"
+                },
+                "parent": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:pulumi:Stack::simple-with-manual-swagger-spec-p-it-piers-mbpl-simple-wit-70e7fe5c",
+                "dependencies": [
+                    "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:lambda/function:Function::lambda"
+                ],
+                "created": "2023-12-18T16:07:37.857202Z",
+                "modified": "2023-12-18T16:07:37.857202Z"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:aws::default_6_0_4",
+                "custom": true,
+                "id": "185b9cc5-0a00-4030-a48d-8ada634012ec",
+                "type": "pulumi:providers:aws",
+                "inputs": {
+                    "region": "us-west-1",
+                    "skipCredentialsValidation": "false",
+                    "skipMetadataApiCheck": "true",
+                    "skipRegionValidation": "true",
+                    "version": "6.0.4"
+                },
+                "outputs": {
+                    "region": "us-west-1",
+                    "skipCredentialsValidation": "false",
+                    "skipMetadataApiCheck": "true",
+                    "skipRegionValidation": "true",
+                    "version": "6.0.4"
+                },
+                "created": "2023-12-18T16:07:40.147556Z",
+                "modified": "2023-12-18T16:07:40.147556Z"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api",
+                "custom": true,
+                "id": "zhafqxyy5k",
+                "type": "aws:apigateway/restApi:RestApi",
+                "inputs": {
+                    "__defaults": [
+                        "putRestApiMode"
+                    ],
+                    "binaryMediaTypes": [
+                        "*/*"
+                    ],
+                    "body": "{\"swagger\":\"2.0\",\"info\":{\"version\":\"1.0\",\"title\":\"api\"},\"schemes\":[\"https\"],\"paths\":{\"/\":{\"get\":{\"responses\":{},\"x-amazon-apigateway-integration\":{\"type\":\"aws_proxy\",\"httpMethod\":\"POST\",\"uri\":\"arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:052848974346:function:lambda-2555155/invocations\",\"passthroughBehavior\":\"when_no_match\"}}}}}",
+                    "name": "api",
+                    "putRestApiMode": "overwrite"
+                },
+                "outputs": {
+                    "apiKeySource": "HEADER",
+                    "arn": "arn:aws:apigateway:us-west-1::/restapis/zhafqxyy5k",
+                    "binaryMediaTypes": [
+                        "*/*"
+                    ],
+                    "body": "{\"swagger\":\"2.0\",\"info\":{\"version\":\"1.0\",\"title\":\"api\"},\"schemes\":[\"https\"],\"paths\":{\"/\":{\"get\":{\"responses\":{},\"x-amazon-apigateway-integration\":{\"type\":\"aws_proxy\",\"httpMethod\":\"POST\",\"uri\":\"arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:052848974346:function:lambda-2555155/invocations\",\"passthroughBehavior\":\"when_no_match\"}}}}}",
+                    "createdDate": "2023-12-18T16:07:41Z",
+                    "description": "",
+                    "disableExecuteApiEndpoint": false,
+                    "endpointConfiguration": {
+                        "types": "EDGE",
+                        "vpcEndpointIds": []
+                    },
+                    "executionArn": "arn:aws:execute-api:us-west-1:052848974346:zhafqxyy5k",
+                    "id": "zhafqxyy5k",
+                    "minimumCompressionSize": "",
+                    "name": "api",
+                    "policy": "",
+                    "rootResourceId": "h95mum7wuc",
+                    "tags": {},
+                    "tagsAll": {}
+                },
+                "parent": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI::api",
+                "dependencies": [
+                    "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:lambda/function:Function::lambda"
+                ],
+                "provider": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:aws::default_6_0_4::185b9cc5-0a00-4030-a48d-8ada634012ec",
+                "propertyDependencies": {
+                    "binaryMediaTypes": null,
+                    "body": [
+                        "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:lambda/function:Function::lambda"
+                    ],
+                    "name": [
+                        "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:lambda/function:Function::lambda"
+                    ]
+                },
+                "created": "2023-12-18T16:07:43.246909Z",
+                "modified": "2023-12-18T16:07:43.246909Z"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api",
+                "custom": true,
+                "id": "gruez2",
+                "type": "aws:apigateway/deployment:Deployment",
+                "inputs": {
+                    "__defaults": [],
+                    "restApi": "zhafqxyy5k",
+                    "stageName": "",
+                    "variables": {
+                        "__defaults": [],
+                        "version": "2c85a6b1"
+                    }
+                },
+                "outputs": {
+                    "createdDate": "2023-12-18T16:07:43Z",
+                    "description": "",
+                    "executionArn": "arn:aws:execute-api:us-west-1:052848974346:zhafqxyy5k/",
+                    "id": "gruez2",
+                    "invokeUrl": "https://zhafqxyy5k.execute-api.us-west-1.amazonaws.com/",
+                    "restApi": "zhafqxyy5k",
+                    "variables": {
+                        "version": "2c85a6b1"
+                    }
+                },
+                "parent": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI::api",
+                "dependencies": [
+                    "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api",
+                    "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:lambda/function:Function::lambda"
+                ],
+                "provider": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:aws::default_6_0_4::185b9cc5-0a00-4030-a48d-8ada634012ec",
+                "propertyDependencies": {
+                    "restApi": [
+                        "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api"
+                    ],
+                    "stageName": null,
+                    "variables": [
+                        "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api",
+                        "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws:lambda/function:Function::lambda"
+                    ]
+                },
+                "created": "2023-12-18T16:07:43.799358Z",
+                "modified": "2023-12-18T16:07:43.799358Z"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/stage:Stage::api",
+                "custom": true,
+                "id": "ags-zhafqxyy5k-stage",
+                "type": "aws:apigateway/stage:Stage",
+                "inputs": {
+                    "__defaults": [],
+                    "deployment": "gruez2",
+                    "restApi": "zhafqxyy5k",
+                    "stageName": "stage"
+                },
+                "outputs": {
+                    "accessLogSettings": null,
+                    "arn": "arn:aws:apigateway:us-west-1::/restapis/zhafqxyy5k/stages/stage",
+                    "cacheClusterEnabled": false,
+                    "cacheClusterSize": "",
+                    "canarySettings": null,
+                    "clientCertificateId": "",
+                    "deployment": "gruez2",
+                    "description": "",
+                    "documentationVersion": "",
+                    "executionArn": "arn:aws:execute-api:us-west-1:052848974346:zhafqxyy5k/stage",
+                    "id": "ags-zhafqxyy5k-stage",
+                    "invokeUrl": "https://zhafqxyy5k.execute-api.us-west-1.amazonaws.com/stage",
+                    "restApi": "zhafqxyy5k",
+                    "stageName": "stage",
+                    "tags": {},
+                    "tagsAll": {},
+                    "variables": {},
+                    "webAclArn": "",
+                    "xrayTracingEnabled": false
+                },
+                "parent": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI::api",
+                "dependencies": [
+                    "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api",
+                    "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api"
+                ],
+                "provider": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:aws::default_6_0_4::185b9cc5-0a00-4030-a48d-8ada634012ec",
+                "propertyDependencies": {
+                    "deployment": [
+                        "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api"
+                    ],
+                    "restApi": [
+                        "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api"
+                    ],
+                    "stageName": null
+                },
+                "created": "2023-12-18T16:07:44.398609Z",
+                "modified": "2023-12-18T16:07:44.398609Z"
+            },
+            {
+                "urn": "urn:pulumi:p-it-piers-mbpl-simple-wit-70e7fe5c::simple-with-manual-swagger-spec::pulumi:providers:pulumi::default",
+                "custom": true,
+                "id": "fef8919f-cd23-4ad4-8472-e22f7fd5832f",
+                "type": "pulumi:providers:pulumi",
+                "created": "2023-12-18T16:07:44.50039Z",
+                "modified": "2023-12-18T16:07:44.50039Z"
+            }
+        ]
+    }
+}
