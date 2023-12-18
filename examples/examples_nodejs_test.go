@@ -49,14 +49,14 @@ func TestBinaryMediaTypesRetained(t *testing.T) {
 	res := test.Up()
 	require.Equal(
 		t,
-		auto.OutputValue{Value: []string{"application/json"}},
+		auto.OutputValue{Value: []interface{}{"application/json"}},
 		res.Outputs["binaryMediaTypes"],
 	)
 	test.SetConfig("additionalRoute", "true")
 	res = test.Up()
 	require.Equal(
 		t,
-		auto.OutputValue{Value: []string{"application/json"}},
+		auto.OutputValue{Value: []interface{}{"application/json"}},
 		res.Outputs["binaryMediaTypes"],
 	)
 }
