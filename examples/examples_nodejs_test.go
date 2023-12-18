@@ -9,6 +9,7 @@ import (
 
 	"github.com/pulumi/providertest/pulumitest"
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
+	"github.com/pulumi/pulumi/sdk/v3/go/auto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -46,10 +47,18 @@ func TestBinaryMediaTypesRetained(t *testing.T) {
 	test.InstallStack("my-stack")
 	test.SetConfig("additionalRoute", "false")
 	res := test.Up()
-	require.Equal(t, res.Outputs["binaryMediaTypes"], []string{"application/json"})
+	require.Equal(
+		t,
+		auto.OutputValue{Value: []string{"application/json"}},
+		res.Outputs["binaryMediaTypes"],
+	)
 	test.SetConfig("additionalRoute", "true")
 	res = test.Up()
-	require.Equal(t, res.Outputs["binaryMediaTypes"], []string{"application/json"})
+	require.Equal(
+		t,
+		auto.OutputValue{Value: []string{"application/json"}},
+		res.Outputs["binaryMediaTypes"],
+	)
 }
 
 func getJSBaseOptions(t *testing.T) integration.ProgramTestOptions {
