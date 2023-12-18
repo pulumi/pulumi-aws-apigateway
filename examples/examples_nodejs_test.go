@@ -48,7 +48,7 @@ func TestBinaryMediaTypesRetained(t *testing.T) {
 
 	test.SetConfig("additionalRoute", "false")
 	res := test.Up()
-	require.Equal(t, 1, res.Outputs["numRoutes"].Value)
+	require.EqualValues(t, 1, res.Outputs["numRoutes"].Value)
 	require.Equal(
 		t,
 		auto.OutputValue{Value: []interface{}{}},
@@ -57,7 +57,7 @@ func TestBinaryMediaTypesRetained(t *testing.T) {
 
 	test.SetConfig("additionalRoute", "true")
 	res = test.Up()
-	require.Equal(t, 2, res.Outputs["numRoutes"].Value)
+	require.EqualValues(t, 2, res.Outputs["numRoutes"].Value)
 	require.Equal(
 		t,
 		auto.OutputValue{Value: []interface{}{}},
