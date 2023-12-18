@@ -51,6 +51,6 @@ const api = new apigateway.RestAPI("api", {
     }
   }` : undefined,
   binaryMediaTypes: useBinaryMediaType ? ["application/json"] : undefined
-}, {dependsOn: [lambda]});
+}, { dependsOn: [lambda] });
 
 export const url = api.url;

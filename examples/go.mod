@@ -2,7 +2,10 @@ module github.com/pulumi/pulumi-aws-apigateway/examples
 
 go 1.19
 
-require github.com/pulumi/pulumi/pkg/v3 v3.94.2
+require (
+	github.com/pulumi/pulumi/pkg/v3 v3.94.2
+	github.com/pulumi/providertest v0.0.5
+)
 
 require (
 	cloud.google.com/go v0.110.4 // indirect
