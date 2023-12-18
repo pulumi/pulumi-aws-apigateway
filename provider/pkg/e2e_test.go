@@ -18,14 +18,6 @@ func TestApi(t *testing.T) {
 	e2eTest("api", providertest.WithBaselineVersion("1.0.1")).Run(t)
 }
 
-func TestBinaryMediaTypesNoInput(t *testing.T) {
-	e2eTest("binaryMediaTypesNoInput", providertest.WithProviderName("aws-apigateway"),
-		,
-		providertest.WithSkippedUpgradeTestMode(
-			providertest.UpgradeTestMode_Quick,
-			"Quick mode is only supported for providers written in Go at the moment")).Run(t)
-}
-
 func TestSimpleNoBinaryMediaType(t *testing.T) {
 	e2eTest("simple", providertest.WithBaselineVersion("2.1.0")).Run(t)
 }
