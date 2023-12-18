@@ -3,11 +3,6 @@ import * as aws from "@pulumi/aws";
 
 import * as pulumi from "@pulumi/pulumi";
 
-const config = new pulumi.Config()
-
-const useSwaggerSpec = config.getBoolean("useSwaggerSpec") || false;
-const useBinaryMediaType = config.getBoolean("useBinaryMediaType") || false;
-
 const role = new aws.iam.Role("role", {
   assumeRolePolicy: aws.iam.assumeRolePolicyForPrincipal({ Service: "lambda.amazonaws.com" }),
 });
@@ -22,14 +17,7 @@ const lambda = new aws.lambda.Function("lambda", {
 });
 
 const api = new apigateway.RestAPI("api", {
-  routes: useSwaggerSpec ? undefined : [
-    {
-      path: "/",
-      method: "GET",
-      eventHandler: lambda,
-    },
-  ],
-  swaggerString: useSwaggerSpec ? pulumi.interpolate`{
+  swaggerString: pulumi.interpolate`{
     "swagger" : "2.0",
     "info" : {
       "version" : "1.0",
@@ -49,8 +37,7 @@ const api = new apigateway.RestAPI("api", {
         }
       }
     }
-  }` : undefined,
-  binaryMediaTypes: useBinaryMediaType ? ["application/json"] : undefined
+  }`
 }, { dependsOn: [lambda] });
 
 export const url = api.url;
