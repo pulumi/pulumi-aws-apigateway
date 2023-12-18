@@ -1,0 +1,11 @@
+{
+    "name": "simple",
+    "devDependencies": {
+        "@types/node": "^18.0.0"
+    },
+    "dependencies": {
+        "@pulumi/aws": "^6.0.0",
+        "@pulumi/aws-apigateway": "^2.0.0",
+        "@pulumi/pulumi": "^3.3.1"
+    }
+}
