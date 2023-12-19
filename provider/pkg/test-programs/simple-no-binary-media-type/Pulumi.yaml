@@ -1,0 +1,5 @@
+name: simple-no-binary-media-type
+runtime: nodejs
+description: A simple apigateway example
+config:
+  aws:region: us-west-2
