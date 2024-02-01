@@ -211,7 +211,7 @@ jobs:
 
       - name: Publish Java SDK
         if: ${{ inputs.publishJava && matrix.language == 'java' }}
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
           build-root-directory: ./sdk/java
