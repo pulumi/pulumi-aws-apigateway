@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 )
 
 type APIKeySource string
@@ -137,10 +136,11 @@ func (o APIKeySourcePtrOutput) ToStringPtrOutputWithContext(ctx context.Context)
 	}).(pulumi.StringPtrOutput)
 }
 
-// APIKeySourceInput is an input type that accepts APIKeySourceArgs and APIKeySourceOutput values.
-// You can construct a concrete instance of `APIKeySourceInput` via:
+// APIKeySourceInput is an input type that accepts values of the APIKeySource enum
+// A concrete instance of `APIKeySourceInput` can be one of the following:
 //
-//	APIKeySourceArgs{...}
+//	APIKeySourceHEADER
+//	APIKeySourceAUTHORIZER
 type APIKeySourceInput interface {
 	pulumi.Input
 
@@ -173,12 +173,6 @@ func (in *apikeySourcePtr) ToAPIKeySourcePtrOutput() APIKeySourcePtrOutput {
 
 func (in *apikeySourcePtr) ToAPIKeySourcePtrOutputWithContext(ctx context.Context) APIKeySourcePtrOutput {
 	return pulumi.ToOutputWithContext(ctx, in).(APIKeySourcePtrOutput)
-}
-
-func (in *apikeySourcePtr) ToOutput(ctx context.Context) pulumix.Output[*APIKeySource] {
-	return pulumix.Output[*APIKeySource]{
-		OutputState: in.ToAPIKeySourcePtrOutputWithContext(ctx).OutputState,
-	}
 }
 
 type IntegrationConnectionType string
@@ -307,10 +301,11 @@ func (o IntegrationConnectionTypePtrOutput) ToStringPtrOutputWithContext(ctx con
 	}).(pulumi.StringPtrOutput)
 }
 
-// IntegrationConnectionTypeInput is an input type that accepts IntegrationConnectionTypeArgs and IntegrationConnectionTypeOutput values.
-// You can construct a concrete instance of `IntegrationConnectionTypeInput` via:
+// IntegrationConnectionTypeInput is an input type that accepts values of the IntegrationConnectionType enum
+// A concrete instance of `IntegrationConnectionTypeInput` can be one of the following:
 //
-//	IntegrationConnectionTypeArgs{...}
+//	IntegrationConnectionTypeINTERNET
+//	IntegrationConnectionType_VPC_LINK
 type IntegrationConnectionTypeInput interface {
 	pulumi.Input
 
@@ -343,12 +338,6 @@ func (in *integrationConnectionTypePtr) ToIntegrationConnectionTypePtrOutput() I
 
 func (in *integrationConnectionTypePtr) ToIntegrationConnectionTypePtrOutputWithContext(ctx context.Context) IntegrationConnectionTypePtrOutput {
 	return pulumi.ToOutputWithContext(ctx, in).(IntegrationConnectionTypePtrOutput)
-}
-
-func (in *integrationConnectionTypePtr) ToOutput(ctx context.Context) pulumix.Output[*IntegrationConnectionType] {
-	return pulumix.Output[*IntegrationConnectionType]{
-		OutputState: in.ToIntegrationConnectionTypePtrOutputWithContext(ctx).OutputState,
-	}
 }
 
 type IntegrationPassthroughBehavior string
@@ -478,10 +467,12 @@ func (o IntegrationPassthroughBehaviorPtrOutput) ToStringPtrOutputWithContext(ct
 	}).(pulumi.StringPtrOutput)
 }
 
-// IntegrationPassthroughBehaviorInput is an input type that accepts IntegrationPassthroughBehaviorArgs and IntegrationPassthroughBehaviorOutput values.
-// You can construct a concrete instance of `IntegrationPassthroughBehaviorInput` via:
+// IntegrationPassthroughBehaviorInput is an input type that accepts values of the IntegrationPassthroughBehavior enum
+// A concrete instance of `IntegrationPassthroughBehaviorInput` can be one of the following:
 //
-//	IntegrationPassthroughBehaviorArgs{...}
+//	IntegrationPassthroughBehavior_When_no_match
+//	IntegrationPassthroughBehavior_When_no_templates
+//	IntegrationPassthroughBehaviorNever
 type IntegrationPassthroughBehaviorInput interface {
 	pulumi.Input
 
@@ -514,12 +505,6 @@ func (in *integrationPassthroughBehaviorPtr) ToIntegrationPassthroughBehaviorPtr
 
 func (in *integrationPassthroughBehaviorPtr) ToIntegrationPassthroughBehaviorPtrOutputWithContext(ctx context.Context) IntegrationPassthroughBehaviorPtrOutput {
 	return pulumi.ToOutputWithContext(ctx, in).(IntegrationPassthroughBehaviorPtrOutput)
-}
-
-func (in *integrationPassthroughBehaviorPtr) ToOutput(ctx context.Context) pulumix.Output[*IntegrationPassthroughBehavior] {
-	return pulumix.Output[*IntegrationPassthroughBehavior]{
-		OutputState: in.ToIntegrationPassthroughBehaviorPtrOutputWithContext(ctx).OutputState,
-	}
 }
 
 type IntegrationType string
@@ -651,10 +636,14 @@ func (o IntegrationTypePtrOutput) ToStringPtrOutputWithContext(ctx context.Conte
 	}).(pulumi.StringPtrOutput)
 }
 
-// IntegrationTypeInput is an input type that accepts IntegrationTypeArgs and IntegrationTypeOutput values.
-// You can construct a concrete instance of `IntegrationTypeInput` via:
+// IntegrationTypeInput is an input type that accepts values of the IntegrationType enum
+// A concrete instance of `IntegrationTypeInput` can be one of the following:
 //
-//	IntegrationTypeArgs{...}
+//	IntegrationTypeAws
+//	IntegrationType_Aws_proxy
+//	IntegrationTypeHttp
+//	IntegrationType_Http_proxy
+//	IntegrationTypeMock
 type IntegrationTypeInput interface {
 	pulumi.Input
 
@@ -687,12 +676,6 @@ func (in *integrationTypePtr) ToIntegrationTypePtrOutput() IntegrationTypePtrOut
 
 func (in *integrationTypePtr) ToIntegrationTypePtrOutputWithContext(ctx context.Context) IntegrationTypePtrOutput {
 	return pulumi.ToOutputWithContext(ctx, in).(IntegrationTypePtrOutput)
-}
-
-func (in *integrationTypePtr) ToOutput(ctx context.Context) pulumix.Output[*IntegrationType] {
-	return pulumix.Output[*IntegrationType]{
-		OutputState: in.ToIntegrationTypePtrOutputWithContext(ctx).OutputState,
-	}
 }
 
 type Method string
@@ -827,10 +810,17 @@ func (o MethodPtrOutput) ToStringPtrOutputWithContext(ctx context.Context) pulum
 	}).(pulumi.StringPtrOutput)
 }
 
-// MethodInput is an input type that accepts MethodArgs and MethodOutput values.
-// You can construct a concrete instance of `MethodInput` via:
+// MethodInput is an input type that accepts values of the Method enum
+// A concrete instance of `MethodInput` can be one of the following:
 //
-//	MethodArgs{...}
+//	MethodANY
+//	MethodGET
+//	MethodPUT
+//	MethodPOST
+//	MethodDELETE
+//	MethodPATCH
+//	MethodOPTIONS
+//	MethodHEAD
 type MethodInput interface {
 	pulumi.Input
 
@@ -863,12 +853,6 @@ func (in *methodPtr) ToMethodPtrOutput() MethodPtrOutput {
 
 func (in *methodPtr) ToMethodPtrOutputWithContext(ctx context.Context) MethodPtrOutput {
 	return pulumi.ToOutputWithContext(ctx, in).(MethodPtrOutput)
-}
-
-func (in *methodPtr) ToOutput(ctx context.Context) pulumix.Output[*Method] {
-	return pulumix.Output[*Method]{
-		OutputState: in.ToMethodPtrOutputWithContext(ctx).OutputState,
-	}
 }
 
 type RequestValidator string
@@ -998,10 +982,12 @@ func (o RequestValidatorPtrOutput) ToStringPtrOutputWithContext(ctx context.Cont
 	}).(pulumi.StringPtrOutput)
 }
 
-// RequestValidatorInput is an input type that accepts RequestValidatorArgs and RequestValidatorOutput values.
-// You can construct a concrete instance of `RequestValidatorInput` via:
+// RequestValidatorInput is an input type that accepts values of the RequestValidator enum
+// A concrete instance of `RequestValidatorInput` can be one of the following:
 //
-//	RequestValidatorArgs{...}
+//	RequestValidatorALL
+//	RequestValidator_PARAMS_ONLY
+//	RequestValidator_BODY_ONLY
 type RequestValidatorInput interface {
 	pulumi.Input
 
@@ -1034,12 +1020,6 @@ func (in *requestValidatorPtr) ToRequestValidatorPtrOutput() RequestValidatorPtr
 
 func (in *requestValidatorPtr) ToRequestValidatorPtrOutputWithContext(ctx context.Context) RequestValidatorPtrOutput {
 	return pulumi.ToOutputWithContext(ctx, in).(RequestValidatorPtrOutput)
-}
-
-func (in *requestValidatorPtr) ToOutput(ctx context.Context) pulumix.Output[*RequestValidator] {
-	return pulumix.Output[*RequestValidator]{
-		OutputState: in.ToRequestValidatorPtrOutputWithContext(ctx).OutputState,
-	}
 }
 
 func init() {
