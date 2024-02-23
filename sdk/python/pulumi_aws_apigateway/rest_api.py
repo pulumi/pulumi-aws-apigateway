@@ -19,6 +19,7 @@ class RestAPIArgs:
     def __init__(__self__, *,
                  api_key_source: Optional['APIKeySource'] = None,
                  binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
+                 disable_execute_api_endpoint: Optional[pulumi.Input[bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence['RouteArgs']] = None,
@@ -32,6 +33,9 @@ class RestAPIArgs:
         :param Sequence[pulumi.Input[str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
                If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
                If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+        :param pulumi.Input[bool] disable_execute_api_endpoint: Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+               your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+               clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
         :param Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
                CORS for Lambda Authorizers.
         :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
@@ -53,6 +57,8 @@ class RestAPIArgs:
             pulumi.set(__self__, "api_key_source", api_key_source)
         if binary_media_types is not None:
             pulumi.set(__self__, "binary_media_types", binary_media_types)
+        if disable_execute_api_endpoint is not None:
+            pulumi.set(__self__, "disable_execute_api_endpoint", disable_execute_api_endpoint)
         if gateway_responses is not None:
             pulumi.set(__self__, "gateway_responses", gateway_responses)
         if request_validator is not None:
@@ -92,6 +98,20 @@ class RestAPIArgs:
     @binary_media_types.setter
     def binary_media_types(self, value: Optional[Sequence[pulumi.Input[str]]]):
         pulumi.set(self, "binary_media_types", value)
+
+    @property
+    @pulumi.getter(name="disableExecuteApiEndpoint")
+    def disable_execute_api_endpoint(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+        your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+        clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+        """
+        return pulumi.get(self, "disable_execute_api_endpoint")
+
+    @disable_execute_api_endpoint.setter
+    def disable_execute_api_endpoint(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "disable_execute_api_endpoint", value)
 
     @property
     @pulumi.getter(name="gatewayResponses")
@@ -183,6 +203,7 @@ class RestAPI(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  api_key_source: Optional['APIKeySource'] = None,
                  binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
+                 disable_execute_api_endpoint: Optional[pulumi.Input[bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence[pulumi.InputType['RouteArgs']]] = None,
@@ -203,6 +224,9 @@ class RestAPI(pulumi.ComponentResource):
         :param Sequence[pulumi.Input[str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
                If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
                If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
+        :param pulumi.Input[bool] disable_execute_api_endpoint: Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+               your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+               clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
         :param Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
                CORS for Lambda Authorizers.
         :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
@@ -249,6 +273,7 @@ class RestAPI(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  api_key_source: Optional['APIKeySource'] = None,
                  binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
+                 disable_execute_api_endpoint: Optional[pulumi.Input[bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence[pulumi.InputType['RouteArgs']]] = None,
@@ -268,6 +293,7 @@ class RestAPI(pulumi.ComponentResource):
 
             __props__.__dict__["api_key_source"] = api_key_source
             __props__.__dict__["binary_media_types"] = binary_media_types
+            __props__.__dict__["disable_execute_api_endpoint"] = disable_execute_api_endpoint
             __props__.__dict__["gateway_responses"] = gateway_responses
             __props__.__dict__["request_validator"] = request_validator
             __props__.__dict__["routes"] = routes

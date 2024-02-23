@@ -58,12 +58,13 @@ func main() {
 				pulumi.String("application/json"),
 			},
 			Routes: []apigateway.RouteArgs{
-				apigateway.RouteArgs{
+				{
 					Path:         "/",
 					Method:       &getMethod,
 					EventHandler: f,
 				},
 			},
+			DisableExecuteApiEndpoint: pulumi.Bool(true),
 		})
 		if err != nil {
 			return err

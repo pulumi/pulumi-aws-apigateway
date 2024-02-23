@@ -3,10 +3,12 @@ module simple-go
 go 1.21
 
 require (
-	github.com/pulumi/pulumi-aws-apigateway/sdk/v2 v2.0.0
+	github.com/pulumi/pulumi-aws-apigateway/sdk/v2 v2.2.1
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.5.0
 	github.com/pulumi/pulumi/sdk/v3 v3.94.2
 )
+
+replace github.com/pulumi/pulumi-aws-apigateway/sdk/v2 => ../../sdk/
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
