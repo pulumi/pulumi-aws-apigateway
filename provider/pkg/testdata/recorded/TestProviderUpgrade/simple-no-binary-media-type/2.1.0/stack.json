@@ -1,0 +1,488 @@
+{
+  "version": 3,
+  "deployment": {
+    "manifest": {
+      "time": "2023-12-19T09:25:34.123216Z",
+      "magic": "060e346e56b968da7d1109b35f68fe9dadf011be9df57433ba381dc14e492284",
+      "version": "v3.95.0"
+    },
+    "secrets_providers": {
+      "type": "passphrase",
+      "state": {
+        "salt": "v1:I/98PEGA60w=:v1:j75yx9T9SQeeNpkL:r5o1wqpD4DyGYAYBZGaxfCcE8rdWOQ=="
+      }
+    },
+    "resources": [
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::pulumi:pulumi:Stack::simple-no-binary-media-type-test",
+        "custom": false,
+        "type": "pulumi:pulumi:Stack",
+        "outputs": {
+          "url": "https://wyvv3uj04g.execute-api.us-west-2.amazonaws.com/stage/"
+        },
+        "created": "2023-12-19T09:25:05.321961Z",
+        "modified": "2023-12-19T09:25:05.321961Z",
+        "sourcePosition": "project:///node_modules/@pulumi/runtime/stack.ts#36,23"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws::default_6_14_0",
+        "custom": true,
+        "id": "0eae5d8c-2435-4a31-8d34-4f39cca3f70a",
+        "type": "pulumi:providers:aws",
+        "inputs": {
+          "region": "us-west-2",
+          "skipCredentialsValidation": "false",
+          "skipMetadataApiCheck": "true",
+          "skipRegionValidation": "true",
+          "version": "6.14.0"
+        },
+        "outputs": {
+          "region": "us-west-2",
+          "skipCredentialsValidation": "false",
+          "skipMetadataApiCheck": "true",
+          "skipRegionValidation": "true",
+          "version": "6.14.0"
+        },
+        "created": "2023-12-19T09:25:07.592565Z",
+        "modified": "2023-12-19T09:25:07.592565Z"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::aws:iam/role:Role::role",
+        "custom": true,
+        "id": "role-a585f86",
+        "type": "aws:iam/role:Role",
+        "inputs": {
+          "__defaults": [
+            "forceDetachPolicies",
+            "maxSessionDuration",
+            "name",
+            "path"
+          ],
+          "assumeRolePolicy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Sid\":\"AllowAssumeRole\"}],\"Version\":\"2012-10-17\"}",
+          "forceDetachPolicies": false,
+          "maxSessionDuration": 3600,
+          "name": "role-a585f86",
+          "path": "/"
+        },
+        "outputs": {
+          "arn": "arn:aws:iam::052848974346:role/role-a585f86",
+          "assumeRolePolicy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Sid\":\"AllowAssumeRole\"}],\"Version\":\"2012-10-17\"}",
+          "createDate": "2023-12-19T09:25:08Z",
+          "description": "",
+          "forceDetachPolicies": false,
+          "id": "role-a585f86",
+          "inlinePolicies": [],
+          "managedPolicyArns": [],
+          "maxSessionDuration": 3600,
+          "name": "role-a585f86",
+          "namePrefix": "",
+          "path": "/",
+          "permissionsBoundary": "",
+          "tags": {},
+          "tagsAll": {
+            "4dabf18193072939515e22adb298388d": "1b47061264138c4ac30d75fd1eb44270",
+            "ciphertext": "v1:HuwFivqTvGRNB9es:L6r2GRxsKZ7e0PDsaaZDXjsi"
+          },
+          "uniqueId": "AROAQYTQLLIFBBNA7NQME"
+        },
+        "parent": "urn:pulumi:test::simple-no-binary-media-type::pulumi:pulumi:Stack::simple-no-binary-media-type-test",
+        "provider": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws::default_6_14_0::0eae5d8c-2435-4a31-8d34-4f39cca3f70a",
+        "propertyDependencies": {
+          "assumeRolePolicy": null
+        },
+        "additionalSecretOutputs": [
+          "tagsAll"
+        ],
+        "created": "2023-12-19T09:25:09.292809Z",
+        "modified": "2023-12-19T09:25:09.292809Z",
+        "sourcePosition": "project:///index.ts#6,14"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::aws:lambda/function:Function::lambda",
+        "custom": true,
+        "id": "lambda-f3dbae3",
+        "type": "aws:lambda/function:Function",
+        "inputs": {
+          "__defaults": [
+            "memorySize",
+            "name",
+            "packageType",
+            "publish",
+            "reservedConcurrentExecutions",
+            "skipDestroy",
+            "timeout"
+          ],
+          "code": {
+            "4dabf18193072939515e22adb298388d": "0def7320c3a5731c473e5ecbe6d01bc7",
+            "assets": {
+              ".": {
+                "4dabf18193072939515e22adb298388d": "0def7320c3a5731c473e5ecbe6d01bc7",
+                "hash": "0c901337a713465950055e8def05c6f9dcc22316ce4e927d526f65c18e0bdf9d",
+                "path": "./handler"
+              }
+            },
+            "hash": "0c901337a713465950055e8def05c6f9dcc22316ce4e927d526f65c18e0bdf9d"
+          },
+          "handler": "handler.handler",
+          "memorySize": 128,
+          "name": "lambda-f3dbae3",
+          "packageType": "Zip",
+          "publish": false,
+          "reservedConcurrentExecutions": -1,
+          "role": "arn:aws:iam::052848974346:role/role-a585f86",
+          "runtime": "python3.8",
+          "skipDestroy": false,
+          "timeout": 3
+        },
+        "outputs": {
+          "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":600000000000,\"delete\":600000000000,\"update\":600000000000}}",
+          "architectures": [
+            "x86_64"
+          ],
+          "arn": "arn:aws:lambda:us-west-2:052848974346:function:lambda-f3dbae3",
+          "code": {
+            "4dabf18193072939515e22adb298388d": "0def7320c3a5731c473e5ecbe6d01bc7",
+            "assets": {
+              ".": {
+                "4dabf18193072939515e22adb298388d": "0def7320c3a5731c473e5ecbe6d01bc7",
+                "hash": "0c901337a713465950055e8def05c6f9dcc22316ce4e927d526f65c18e0bdf9d",
+                "path": "./handler"
+              }
+            },
+            "hash": "0c901337a713465950055e8def05c6f9dcc22316ce4e927d526f65c18e0bdf9d"
+          },
+          "codeSigningConfigArn": "",
+          "deadLetterConfig": null,
+          "description": "",
+          "environment": null,
+          "ephemeralStorage": {
+            "size": 512
+          },
+          "fileSystemConfig": null,
+          "handler": "handler.handler",
+          "id": "lambda-f3dbae3",
+          "imageConfig": null,
+          "imageUri": "",
+          "invokeArn": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:052848974346:function:lambda-f3dbae3/invocations",
+          "kmsKeyArn": "",
+          "lastModified": "2023-12-19T09:25:18.700+0000",
+          "layers": [],
+          "memorySize": 128,
+          "name": "lambda-f3dbae3",
+          "packageType": "Zip",
+          "publish": false,
+          "qualifiedArn": "arn:aws:lambda:us-west-2:052848974346:function:lambda-f3dbae3:$LATEST",
+          "qualifiedInvokeArn": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:052848974346:function:lambda-f3dbae3:$LATEST/invocations",
+          "reservedConcurrentExecutions": -1,
+          "role": "arn:aws:iam::052848974346:role/role-a585f86",
+          "runtime": "python3.8",
+          "signingJobArn": "",
+          "signingProfileVersionArn": "",
+          "skipDestroy": false,
+          "snapStart": null,
+          "sourceCodeHash": "zE4B/J36TrO7dleqlVY/OfsiYePWF4bWpHgXkOXMqZw=",
+          "sourceCodeSize": 249,
+          "tags": {},
+          "tagsAll": {
+            "4dabf18193072939515e22adb298388d": "1b47061264138c4ac30d75fd1eb44270",
+            "ciphertext": "v1:kPDhgw8Kmcjiz6qK:hWbhlBqjvT80e+kRP2JJmtZb"
+          },
+          "timeout": 3,
+          "tracingConfig": {
+            "mode": "PassThrough"
+          },
+          "version": "$LATEST",
+          "vpcConfig": null
+        },
+        "parent": "urn:pulumi:test::simple-no-binary-media-type::pulumi:pulumi:Stack::simple-no-binary-media-type-test",
+        "dependencies": [
+          "urn:pulumi:test::simple-no-binary-media-type::aws:iam/role:Role::role"
+        ],
+        "provider": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws::default_6_14_0::0eae5d8c-2435-4a31-8d34-4f39cca3f70a",
+        "propertyDependencies": {
+          "code": null,
+          "handler": null,
+          "role": [
+            "urn:pulumi:test::simple-no-binary-media-type::aws:iam/role:Role::role"
+          ],
+          "runtime": null
+        },
+        "additionalSecretOutputs": [
+          "tagsAll"
+        ],
+        "created": "2023-12-19T09:25:25.455449Z",
+        "modified": "2023-12-19T09:25:25.455449Z",
+        "sourcePosition": "project:///index.ts#10,16"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws-apigateway::default_2_1_0",
+        "custom": true,
+        "id": "550ca788-ce03-4b6e-abc3-5fd58cd4edba",
+        "type": "pulumi:providers:aws-apigateway",
+        "inputs": {
+          "version": "2.1.0"
+        },
+        "outputs": {
+          "version": "2.1.0"
+        },
+        "created": "2023-12-19T09:25:25.942516Z",
+        "modified": "2023-12-19T09:25:25.942516Z"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:pulumi::default",
+        "custom": true,
+        "id": "075c21ee-6f30-4332-b34a-8fa28fff2047",
+        "type": "pulumi:providers:pulumi",
+        "created": "2023-12-19T09:25:26.039286Z",
+        "modified": "2023-12-19T09:25:26.039286Z"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI::api",
+        "custom": false,
+        "type": "aws-apigateway:index:RestAPI",
+        "outputs": {
+          "api": {
+            "4dabf18193072939515e22adb298388d": "5cf8f73096256a8f31e491e813e4eb8e",
+            "id": "wyvv3uj04g",
+            "packageVersion": "",
+            "urn": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api"
+          },
+          "deployment": {
+            "4dabf18193072939515e22adb298388d": "5cf8f73096256a8f31e491e813e4eb8e",
+            "id": "a2s3mc",
+            "packageVersion": "",
+            "urn": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api"
+          },
+          "stage": {
+            "4dabf18193072939515e22adb298388d": "5cf8f73096256a8f31e491e813e4eb8e",
+            "id": "ags-wyvv3uj04g-stage",
+            "packageVersion": "",
+            "urn": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/stage:Stage::api"
+          },
+          "url": "https://wyvv3uj04g.execute-api.us-west-2.amazonaws.com/stage/"
+        },
+        "parent": "urn:pulumi:test::simple-no-binary-media-type::pulumi:pulumi:Stack::simple-no-binary-media-type-test",
+        "dependencies": [
+          "urn:pulumi:test::simple-no-binary-media-type::aws:lambda/function:Function::lambda"
+        ],
+        "created": "2023-12-19T09:25:26.042587Z",
+        "modified": "2023-12-19T09:25:26.042587Z"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws::default_6_0_4",
+        "custom": true,
+        "id": "768dc080-1b79-4d87-a0b8-a79bf100ccae",
+        "type": "pulumi:providers:aws",
+        "inputs": {
+          "region": "us-west-2",
+          "skipCredentialsValidation": "false",
+          "skipMetadataApiCheck": "true",
+          "skipRegionValidation": "true",
+          "version": "6.0.4"
+        },
+        "outputs": {
+          "region": "us-west-2",
+          "skipCredentialsValidation": "false",
+          "skipMetadataApiCheck": "true",
+          "skipRegionValidation": "true",
+          "version": "6.0.4"
+        },
+        "created": "2023-12-19T09:25:28.330111Z",
+        "modified": "2023-12-19T09:25:28.330111Z"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api",
+        "custom": true,
+        "id": "wyvv3uj04g",
+        "type": "aws:apigateway/restApi:RestApi",
+        "inputs": {
+          "__defaults": [
+            "putRestApiMode"
+          ],
+          "binaryMediaTypes": [
+            "*/*"
+          ],
+          "body": "{\"swagger\":\"2.0\",\"info\":{\"title\":\"api\",\"version\":\"1.0\"},\"paths\":{\"/\":{\"get\":{\"x-amazon-apigateway-integration\":{\"uri\":\"arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:052848974346:function:lambda-f3dbae3/invocations\",\"passthroughBehavior\":\"when_no_match\",\"httpMethod\":\"POST\",\"type\":\"aws_proxy\"}}}},\"x-amazon-apigateway-binary-media-types\":[\"*/*\"],\"x-amazon-apigateway-gateway-responses\":{\"MISSING_AUTHENTICATION_TOKEN\":{\"statusCode\":404,\"responseTemplates\":{\"application/json\":\"{\\\"message\\\": \\\"404 Not found\\\" }\"}},\"ACCESS_DENIED\":{\"statusCode\":404,\"responseTemplates\":{\"application/json\":\"{\\\"message\\\": \\\"404 Not found\\\" }\"}}},\"x-amazon-apigateway-api-key-source\":\"HEADER\"}",
+          "name": "api",
+          "putRestApiMode": "overwrite"
+        },
+        "outputs": {
+          "apiKeySource": "HEADER",
+          "arn": "arn:aws:apigateway:us-west-2::/restapis/wyvv3uj04g",
+          "binaryMediaTypes": [
+            "*/*"
+          ],
+          "body": "{\"swagger\":\"2.0\",\"info\":{\"title\":\"api\",\"version\":\"1.0\"},\"paths\":{\"/\":{\"get\":{\"x-amazon-apigateway-integration\":{\"uri\":\"arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:052848974346:function:lambda-f3dbae3/invocations\",\"passthroughBehavior\":\"when_no_match\",\"httpMethod\":\"POST\",\"type\":\"aws_proxy\"}}}},\"x-amazon-apigateway-binary-media-types\":[\"*/*\"],\"x-amazon-apigateway-gateway-responses\":{\"MISSING_AUTHENTICATION_TOKEN\":{\"statusCode\":404,\"responseTemplates\":{\"application/json\":\"{\\\"message\\\": \\\"404 Not found\\\" }\"}},\"ACCESS_DENIED\":{\"statusCode\":404,\"responseTemplates\":{\"application/json\":\"{\\\"message\\\": \\\"404 Not found\\\" }\"}}},\"x-amazon-apigateway-api-key-source\":\"HEADER\"}",
+          "createdDate": "2023-12-19T09:25:30Z",
+          "description": "",
+          "disableExecuteApiEndpoint": false,
+          "endpointConfiguration": {
+            "types": "EDGE",
+            "vpcEndpointIds": []
+          },
+          "executionArn": "arn:aws:execute-api:us-west-2:052848974346:wyvv3uj04g",
+          "id": "wyvv3uj04g",
+          "minimumCompressionSize": "",
+          "name": "api",
+          "policy": "",
+          "rootResourceId": "59kosge5de",
+          "tags": {},
+          "tagsAll": {}
+        },
+        "parent": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI::api",
+        "dependencies": [
+          "urn:pulumi:test::simple-no-binary-media-type::aws:lambda/function:Function::lambda"
+        ],
+        "provider": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws::default_6_0_4::768dc080-1b79-4d87-a0b8-a79bf100ccae",
+        "propertyDependencies": {
+          "binaryMediaTypes": null,
+          "body": [
+            "urn:pulumi:test::simple-no-binary-media-type::aws:lambda/function:Function::lambda"
+          ],
+          "name": null
+        },
+        "created": "2023-12-19T09:25:31.716441Z",
+        "modified": "2023-12-19T09:25:31.716441Z"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api",
+        "custom": true,
+        "id": "a2s3mc",
+        "type": "aws:apigateway/deployment:Deployment",
+        "inputs": {
+          "__defaults": [],
+          "restApi": "wyvv3uj04g",
+          "stageName": "",
+          "variables": {
+            "__defaults": [],
+            "version": "bff8611b"
+          }
+        },
+        "outputs": {
+          "createdDate": "2023-12-19T09:25:32Z",
+          "description": "",
+          "executionArn": "arn:aws:execute-api:us-west-2:052848974346:wyvv3uj04g/",
+          "id": "a2s3mc",
+          "invokeUrl": "https://wyvv3uj04g.execute-api.us-west-2.amazonaws.com/",
+          "restApi": "wyvv3uj04g",
+          "variables": {
+            "version": "bff8611b"
+          }
+        },
+        "parent": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI::api",
+        "dependencies": [
+          "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api",
+          "urn:pulumi:test::simple-no-binary-media-type::aws:lambda/function:Function::lambda"
+        ],
+        "provider": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws::default_6_0_4::768dc080-1b79-4d87-a0b8-a79bf100ccae",
+        "propertyDependencies": {
+          "restApi": [
+            "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api"
+          ],
+          "stageName": null,
+          "variables": [
+            "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api",
+            "urn:pulumi:test::simple-no-binary-media-type::aws:lambda/function:Function::lambda"
+          ]
+        },
+        "created": "2023-12-19T09:25:32.355335Z",
+        "modified": "2023-12-19T09:25:32.355335Z"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:lambda/permission:Permission::api-fa520765",
+        "custom": true,
+        "id": "api-fa520765-c87d665",
+        "type": "aws:lambda/permission:Permission",
+        "inputs": {
+          "__defaults": [
+            "statementId"
+          ],
+          "action": "lambda:invokeFunction",
+          "function": "lambda-f3dbae3",
+          "principal": "apigateway.amazonaws.com",
+          "sourceArn": "arn:aws:execute-api:us-west-2:052848974346:wyvv3uj04g/*/GET/",
+          "statementId": "api-fa520765-c87d665"
+        },
+        "outputs": {
+          "action": "lambda:invokeFunction",
+          "function": "lambda-f3dbae3",
+          "id": "api-fa520765-c87d665",
+          "principal": "apigateway.amazonaws.com",
+          "qualifier": "",
+          "sourceArn": "arn:aws:execute-api:us-west-2:052848974346:wyvv3uj04g/*/GET/",
+          "statementId": "api-fa520765-c87d665",
+          "statementIdPrefix": ""
+        },
+        "parent": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI::api",
+        "dependencies": [
+          "urn:pulumi:test::simple-no-binary-media-type::aws:lambda/function:Function::lambda",
+          "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api"
+        ],
+        "provider": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws::default_6_0_4::768dc080-1b79-4d87-a0b8-a79bf100ccae",
+        "propertyDependencies": {
+          "action": null,
+          "function": [
+            "urn:pulumi:test::simple-no-binary-media-type::aws:lambda/function:Function::lambda"
+          ],
+          "principal": null,
+          "sourceArn": [
+            "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api"
+          ]
+        },
+        "created": "2023-12-19T09:25:33.349191Z",
+        "modified": "2023-12-19T09:25:33.349191Z"
+      },
+      {
+        "urn": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/stage:Stage::api",
+        "custom": true,
+        "id": "ags-wyvv3uj04g-stage",
+        "type": "aws:apigateway/stage:Stage",
+        "inputs": {
+          "__defaults": [],
+          "deployment": "a2s3mc",
+          "restApi": "wyvv3uj04g",
+          "stageName": "stage"
+        },
+        "outputs": {
+          "accessLogSettings": null,
+          "arn": "arn:aws:apigateway:us-west-2::/restapis/wyvv3uj04g/stages/stage",
+          "cacheClusterEnabled": false,
+          "cacheClusterSize": "",
+          "canarySettings": null,
+          "clientCertificateId": "",
+          "deployment": "a2s3mc",
+          "description": "",
+          "documentationVersion": "",
+          "executionArn": "arn:aws:execute-api:us-west-2:052848974346:wyvv3uj04g/stage",
+          "id": "ags-wyvv3uj04g-stage",
+          "invokeUrl": "https://wyvv3uj04g.execute-api.us-west-2.amazonaws.com/stage",
+          "restApi": "wyvv3uj04g",
+          "stageName": "stage",
+          "tags": {},
+          "tagsAll": {},
+          "variables": {},
+          "webAclArn": "",
+          "xrayTracingEnabled": false
+        },
+        "parent": "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI::api",
+        "dependencies": [
+          "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:lambda/permission:Permission::api-fa520765",
+          "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api",
+          "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api"
+        ],
+        "provider": "urn:pulumi:test::simple-no-binary-media-type::pulumi:providers:aws::default_6_0_4::768dc080-1b79-4d87-a0b8-a79bf100ccae",
+        "propertyDependencies": {
+          "deployment": [
+            "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/deployment:Deployment::api"
+          ],
+          "restApi": [
+            "urn:pulumi:test::simple-no-binary-media-type::aws-apigateway:index:RestAPI$aws:apigateway/restApi:RestApi::api"
+          ],
+          "stageName": null
+        },
+        "created": "2023-12-19T09:25:33.970366Z",
+        "modified": "2023-12-19T09:25:33.970366Z"
+      }
+    ]
+  }
+}
