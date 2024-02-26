@@ -11,40 +11,41 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/pulumi/providertest"
+	"github.com/pulumi/providertest/optproviderupgrade"
+	"github.com/pulumi/providertest/pulumitest"
+	"github.com/pulumi/providertest/pulumitest/assertpreview"
+	"github.com/pulumi/providertest/pulumitest/opttest"
 )
 
-func TestApi(t *testing.T) {
-	e2eTest("api", providertest.WithBaselineVersion("1.0.1")).Run(t)
+func TestApiUpgrade(t *testing.T) {
+	testProviderUpgrade(t, "api", "1.0.1")
 }
 
-func TestSimpleNoBinaryMediaType(t *testing.T) {
-	e2eTest("simple-no-binary-media-type", providertest.WithBaselineVersion("2.1.0")).Run(t)
+func TestSimpleNoBinaryMediaTypeUpgrade(t *testing.T) {
+	testProviderUpgrade(t, "simple-no-binary-media-type", "2.1.0")
 }
 
-func TestSimpleWithManualSwaggerSpec(t *testing.T) {
-	e2eTest(
-		"simple-with-manual-swagger-spec",
-		providertest.WithBaselineVersion("2.1.0"),
-	).Run(t)
+func TestSimpleWithManualSwaggerSpecUpgrade(t *testing.T) {
+	testProviderUpgrade(t, "simple-with-manual-swagger-spec", "2.1.0")
 }
 
-func e2eTest(dir string, opts ...providertest.Option) *providertest.ProviderTest {
+func testProviderUpgrade(t *testing.T, dir, baselineVersion string) {
+	// if testing.Short() {
+	// 	t.Skipf("Skipping in testing.Short() mode, assuming a CI run without creds")
+	// }
+	providerName := "aws-apigateway"
+	dir = filepath.Join("test-programs", dir)
 	cwd, err := os.Getwd()
-	if err != nil {
-		// If we can't get the current working directory, we'll fail hard.
-		panic(err)
-	}
-
-	opts = append(opts,
-		providertest.WithProviderName("aws-apigateway"),
-		providertest.WithSkippedUpgradeTestMode(
-			providertest.UpgradeTestMode_Quick,
-			"Quick mode is only supported for providers written in Go at the moment"),
+	require.NoError(t, err)
+	test := pulumitest.NewPulumiTest(t, dir,
+		opttest.DownloadProviderVersion(providerName, baselineVersion),
+		opttest.LocalProviderPath(providerName, filepath.Join(cwd, "..", "..", "bin")),
 	)
-
-	return providertest.NewProviderTest(
-		filepath.Join(cwd, "test-programs", dir),
-		opts...,
+	result := providertest.PreviewProviderUpgrade(test, providerName, baselineVersion,
+		optproviderupgrade.DisableAttach(),
 	)
+	assertpreview.HasNoReplacements(t, result)
 }

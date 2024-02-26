@@ -198,8 +198,8 @@ public final class TargetArgs extends com.pulumi.resources.ResourceArgs {
      * arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
      * 
      */
-    @Import(name="uri", required=true)
-    private Output<String> uri;
+    @Import(name="uri")
+    private @Nullable Output<String> uri;
 
     /**
      * @return Specifies Uniform Resource Identifier (URI) of the integration endpoint.
@@ -223,8 +223,8 @@ public final class TargetArgs extends com.pulumi.resources.ResourceArgs {
      * arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
      * 
      */
-    public Output<String> uri() {
-        return this.uri;
+    public Optional<Output<String>> uri() {
+        return Optional.ofNullable(this.uri);
     }
 
     private TargetArgs() {}
@@ -467,7 +467,7 @@ public final class TargetArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder uri(Output<String> uri) {
+        public Builder uri(@Nullable Output<String> uri) {
             $.uri = uri;
             return this;
         }
@@ -503,7 +503,6 @@ public final class TargetArgs extends com.pulumi.resources.ResourceArgs {
         public TargetArgs build() {
             $.httpMethod = Codegen.stringProp("httpMethod").output().arg($.httpMethod).getNullable();
             $.type = Objects.requireNonNull($.type, "expected parameter 'type' to be non-null");
-            $.uri = Objects.requireNonNull($.uri, "expected parameter 'uri' to be non-null");
             return $;
         }
     }
