@@ -64,13 +64,15 @@ func main() {
 					EventHandler: f,
 				},
 			},
-			DisableExecuteApiEndpoint: pulumi.Bool(true),
+			DisableExecuteApiEndpoint: pulumi.Bool(disableExecuteApiEndpoint),
 		})
 		if err != nil {
 			return err
 		}
 
 		ctx.Export("url", restAPI.Url)
+		ctx.Export("restApiARN", restAPI.Api.Arn())
+		ctx.Export("disableExecuteApiEndpoint", restAPI.Api.DisableExecuteApiEndpoint())
 		return nil
 	})
 }
