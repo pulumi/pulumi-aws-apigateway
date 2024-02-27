@@ -97,6 +97,14 @@ namespace Pulumi.AwsApiGateway
             set => _binaryMediaTypes = value;
         }
 
+        /// <summary>
+        /// Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+        /// your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+        /// clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+        /// </summary>
+        [Input("disableExecuteApiEndpoint")]
+        public Input<bool>? DisableExecuteApiEndpoint { get; set; }
+
         [Input("gatewayResponses")]
         private Dictionary<string, Input<Inputs.SwaggerGatewayResponseArgs>>? _gatewayResponses;
 

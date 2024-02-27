@@ -56,6 +56,10 @@ type restAPIArgs struct {
 	// If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
 	// If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
 	BinaryMediaTypes []string `pulumi:"binaryMediaTypes"`
+	// Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+	// your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+	// clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+	DisableExecuteApiEndpoint *bool `pulumi:"disableExecuteApiEndpoint"`
 	// Define custom gateway responses for the API. This can be used to properly enable
 	// CORS for Lambda Authorizers.
 	GatewayResponses map[string]SwaggerGatewayResponse `pulumi:"gatewayResponses"`
@@ -89,6 +93,10 @@ type RestAPIArgs struct {
 	// If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
 	// If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
 	BinaryMediaTypes []pulumi.StringInput
+	// Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+	// your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+	// clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+	DisableExecuteApiEndpoint pulumi.BoolPtrInput
 	// Define custom gateway responses for the API. This can be used to properly enable
 	// CORS for Lambda Authorizers.
 	GatewayResponses map[string]SwaggerGatewayResponseInput

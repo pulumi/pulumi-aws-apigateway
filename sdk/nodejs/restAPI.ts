@@ -64,6 +64,7 @@ export class RestAPI extends pulumi.ComponentResource {
         if (!opts.id) {
             resourceInputs["apiKeySource"] = args ? args.apiKeySource : undefined;
             resourceInputs["binaryMediaTypes"] = args ? args.binaryMediaTypes : undefined;
+            resourceInputs["disableExecuteApiEndpoint"] = args ? args.disableExecuteApiEndpoint : undefined;
             resourceInputs["gatewayResponses"] = args ? args.gatewayResponses : undefined;
             resourceInputs["requestValidator"] = args ? args.requestValidator : undefined;
             resourceInputs["routes"] = args ? args.routes : undefined;
@@ -102,6 +103,12 @@ export interface RestAPIArgs {
      * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
      */
     binaryMediaTypes?: pulumi.Input<string>[];
+    /**
+     * Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+     * your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+     * clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+     */
+    disableExecuteApiEndpoint?: pulumi.Input<boolean>;
     /**
      * Define custom gateway responses for the API. This can be used to properly enable
      * CORS for Lambda Authorizers.

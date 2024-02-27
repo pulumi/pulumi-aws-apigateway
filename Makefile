@@ -36,7 +36,7 @@ install_provider:: build_provider
 .PHONY: test_provider
 test_provider: bin/gotestfmt
 test_provider:
-	cd provider && PATH=$(WORKING_DIR)/bin:$(PATH) go test -v -json -tags=all -timeout 2h ./... | tee /tmp/gotest.log | gotestfmt
+	cd provider && PATH="$(WORKING_DIR)/bin:$(PATH)" go test -v -json -tags=all -timeout 2h ./... | tee /tmp/gotest.log | gotestfmt
 
 bin/gotestfmt:
 	@mkdir -p bin

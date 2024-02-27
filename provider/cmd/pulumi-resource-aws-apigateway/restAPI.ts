@@ -139,6 +139,7 @@ export interface RestAPIArgs {
   staticRoutesBucket: aws.s3.Bucket;
   gatewayResponses: { [key: string]: SwaggerGatewayResponse };
   binaryMediaTypes: string[];
+  disableExecuteApiEndpoint?: boolean;
 }
 
 export class RestAPI extends pulumi.ComponentResource {
@@ -169,6 +170,7 @@ export class RestAPI extends pulumi.ComponentResource {
         staticRoutesBucket: args.staticRoutesBucket,
         gatewayResponses: args.gatewayResponses,
         binaryMediaTypes: args.binaryMediaTypes,
+        restApiArgs: args,
       });
     });
 
