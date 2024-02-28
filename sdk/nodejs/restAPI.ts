@@ -64,6 +64,7 @@ export class RestAPI extends pulumi.ComponentResource {
         if (!opts.id) {
             resourceInputs["apiKeySource"] = args ? args.apiKeySource : undefined;
             resourceInputs["binaryMediaTypes"] = args ? args.binaryMediaTypes : undefined;
+            resourceInputs["description"] = args ? args.description : undefined;
             resourceInputs["disableExecuteApiEndpoint"] = args ? args.disableExecuteApiEndpoint : undefined;
             resourceInputs["gatewayResponses"] = args ? args.gatewayResponses : undefined;
             resourceInputs["requestValidator"] = args ? args.requestValidator : undefined;
@@ -103,6 +104,10 @@ export interface RestAPIArgs {
      * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
      */
     binaryMediaTypes?: pulumi.Input<string>[];
+    /**
+     * Description of the REST API.
+     */
+    description?: pulumi.Input<string>;
     /**
      * Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
      * your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that

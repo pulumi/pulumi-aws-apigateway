@@ -56,6 +56,8 @@ type restAPIArgs struct {
 	// If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
 	// If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
 	BinaryMediaTypes []string `pulumi:"binaryMediaTypes"`
+	// Description of the REST API.
+	Description *string `pulumi:"description"`
 	// Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
 	// your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
 	// clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
@@ -93,6 +95,8 @@ type RestAPIArgs struct {
 	// If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
 	// If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
 	BinaryMediaTypes []pulumi.StringInput
+	// Description of the REST API.
+	Description pulumi.StringPtrInput
 	// Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
 	// your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
 	// clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.

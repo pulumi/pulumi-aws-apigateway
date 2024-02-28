@@ -140,6 +140,7 @@ export interface RestAPIArgs {
   gatewayResponses: { [key: string]: SwaggerGatewayResponse };
   binaryMediaTypes: string[];
   disableExecuteApiEndpoint?: boolean;
+  description?: string;
 }
 
 export class RestAPI extends pulumi.ComponentResource {
