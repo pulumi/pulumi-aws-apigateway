@@ -98,6 +98,12 @@ namespace Pulumi.AwsApiGateway
         }
 
         /// <summary>
+        /// Description of the REST API.
+        /// </summary>
+        [Input("description")]
+        public Input<string>? Description { get; set; }
+
+        /// <summary>
         /// Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
         /// your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
         /// clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
