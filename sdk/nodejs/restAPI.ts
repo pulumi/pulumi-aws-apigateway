@@ -150,7 +150,7 @@ export interface RestAPIArgs {
      */
     swaggerString?: pulumi.Input<string>;
     /**
-     * 'Map of tags to assign to the resource. If configured with a provider `default_tags` configuration block present,
+     * 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
      * tags with matching keys will overwrite those defined at the provider-level.
      */
     tags?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;

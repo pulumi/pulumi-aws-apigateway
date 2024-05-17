@@ -55,7 +55,7 @@ class RestAPIArgs:
                when using `swaggerString`.
                
                Either `swaggerString` or `routes` must be specified.
-        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] tags: 'Map of tags to assign to the resource. If configured with a provider `default_tags` configuration block present,
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] tags: 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
                tags with matching keys will overwrite those defined at the provider-level.
         """
         if api_key_source is not None:
@@ -220,7 +220,7 @@ class RestAPIArgs:
     @pulumi.getter
     def tags(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
         """
-        'Map of tags to assign to the resource. If configured with a provider `default_tags` configuration block present,
+        'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
         tags with matching keys will overwrite those defined at the provider-level.
         """
         return pulumi.get(self, "tags")
@@ -280,7 +280,7 @@ class RestAPI(pulumi.ComponentResource):
                when using `swaggerString`.
                
                Either `swaggerString` or `routes` must be specified.
-        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] tags: 'Map of tags to assign to the resource. If configured with a provider `default_tags` configuration block present,
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] tags: 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
                tags with matching keys will overwrite those defined at the provider-level.
         """
         ...
