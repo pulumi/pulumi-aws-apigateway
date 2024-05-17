@@ -141,6 +141,7 @@ export interface RestAPIArgs {
   binaryMediaTypes: string[];
   disableExecuteApiEndpoint?: boolean;
   description?: string;
+  tags?: pulumi.Input<{ [key: string]: pulumi.Input<string> }>;
 }
 
 export class RestAPI extends pulumi.ComponentResource {

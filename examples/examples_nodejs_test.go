@@ -65,6 +65,24 @@ func TestBinaryMediaTypesRetained(t *testing.T) {
 	)
 }
 
+func TestTagging(t *testing.T) {
+	t.Skip("TODO[pulumi/pulumi-aws-apigateway#111]")
+	test := getJSBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: filepath.Join(getCwd(t), "tagged-api-gateway"),
+			ExtraRuntimeValidation: func(t *testing.T, stackInfo integration.RuntimeValidationStackInfo) {
+				expectedTags := map[string]interface{}{
+					"environment": "development",
+					"test": "test-tag",
+				}
+				assert.Equal(t, expectedTags, stackInfo.Outputs["apiTags"])
+				assert.Equal(t, expectedTags, stackInfo.Outputs["stageTags"])
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func getJSBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions(t)
 	baseJS := base.With(integration.ProgramTestOptions{

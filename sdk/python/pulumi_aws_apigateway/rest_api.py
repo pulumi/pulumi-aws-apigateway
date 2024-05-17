@@ -26,7 +26,8 @@ class RestAPIArgs:
                  routes: Optional[Sequence['RouteArgs']] = None,
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
-                 swagger_string: Optional[pulumi.Input[str]] = None):
+                 swagger_string: Optional[pulumi.Input[str]] = None,
+                 tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a RestAPI resource.
         :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
@@ -54,6 +55,8 @@ class RestAPIArgs:
                when using `swaggerString`.
                
                Either `swaggerString` or `routes` must be specified.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] tags: 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+               tags with matching keys will overwrite those defined at the provider-level.
         """
         if api_key_source is not None:
             pulumi.set(__self__, "api_key_source", api_key_source)
@@ -75,6 +78,8 @@ class RestAPIArgs:
             pulumi.set(__self__, "static_routes_bucket", static_routes_bucket)
         if swagger_string is not None:
             pulumi.set(__self__, "swagger_string", swagger_string)
+        if tags is not None:
+            pulumi.set(__self__, "tags", tags)
 
     @property
     @pulumi.getter(name="apiKeySource")
@@ -211,6 +216,19 @@ class RestAPIArgs:
     def swagger_string(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "swagger_string", value)
 
+    @property
+    @pulumi.getter
+    def tags(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+        tags with matching keys will overwrite those defined at the provider-level.
+        """
+        return pulumi.get(self, "tags")
+
+    @tags.setter
+    def tags(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "tags", value)
+
 
 class RestAPI(pulumi.ComponentResource):
     @overload
@@ -227,6 +245,7 @@ class RestAPI(pulumi.ComponentResource):
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
                  swagger_string: Optional[pulumi.Input[str]] = None,
+                 tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  __props__=None):
         """
         The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The
@@ -261,6 +280,8 @@ class RestAPI(pulumi.ComponentResource):
                when using `swaggerString`.
                
                Either `swaggerString` or `routes` must be specified.
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] tags: 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+               tags with matching keys will overwrite those defined at the provider-level.
         """
         ...
     @overload
@@ -299,6 +320,7 @@ class RestAPI(pulumi.ComponentResource):
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
                  swagger_string: Optional[pulumi.Input[str]] = None,
+                 tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -320,6 +342,7 @@ class RestAPI(pulumi.ComponentResource):
             __props__.__dict__["stage_name"] = stage_name
             __props__.__dict__["static_routes_bucket"] = static_routes_bucket
             __props__.__dict__["swagger_string"] = swagger_string
+            __props__.__dict__["tags"] = tags
             __props__.__dict__["api"] = None
             __props__.__dict__["api_policy"] = None
             __props__.__dict__["deployment"] = None

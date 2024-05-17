@@ -72,6 +72,7 @@ export class RestAPI extends pulumi.ComponentResource {
             resourceInputs["stageName"] = args ? args.stageName : undefined;
             resourceInputs["staticRoutesBucket"] = args ? args.staticRoutesBucket : undefined;
             resourceInputs["swaggerString"] = args ? args.swaggerString : undefined;
+            resourceInputs["tags"] = args ? args.tags : undefined;
             resourceInputs["api"] = undefined /*out*/;
             resourceInputs["apiPolicy"] = undefined /*out*/;
             resourceInputs["deployment"] = undefined /*out*/;
@@ -148,4 +149,9 @@ export interface RestAPIArgs {
      * Either `swaggerString` or `routes` must be specified.
      */
     swaggerString?: pulumi.Input<string>;
+    /**
+     * 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+     * tags with matching keys will overwrite those defined at the provider-level.
+     */
+    tags?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }

@@ -84,6 +84,9 @@ type restAPIArgs struct {
 	//
 	// Either `swaggerString` or `routes` must be specified.
 	SwaggerString *string `pulumi:"swaggerString"`
+	// 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+	// tags with matching keys will overwrite those defined at the provider-level.
+	Tags map[string]string `pulumi:"tags"`
 }
 
 // The set of arguments for constructing a RestAPI resource.
@@ -123,6 +126,9 @@ type RestAPIArgs struct {
 	//
 	// Either `swaggerString` or `routes` must be specified.
 	SwaggerString pulumi.StringPtrInput
+	// 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+	// tags with matching keys will overwrite those defined at the provider-level.
+	Tags pulumi.StringMapInput
 }
 
 func (RestAPIArgs) ElementType() reflect.Type {

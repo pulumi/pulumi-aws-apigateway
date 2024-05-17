@@ -169,6 +169,19 @@ namespace Pulumi.AwsApiGateway
         [Input("swaggerString")]
         public Input<string>? SwaggerString { get; set; }
 
+        [Input("tags")]
+        private InputMap<string>? _tags;
+
+        /// <summary>
+        /// 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+        /// tags with matching keys will overwrite those defined at the provider-level.
+        /// </summary>
+        public InputMap<string> Tags
+        {
+            get => _tags ?? (_tags = new InputMap<string>());
+            set => _tags = value;
+        }
+
         public RestAPIArgs()
         {
         }

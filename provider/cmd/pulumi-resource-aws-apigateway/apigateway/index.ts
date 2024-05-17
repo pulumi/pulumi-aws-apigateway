@@ -14,7 +14,6 @@
 
 export {
   AdditionalRoute,
-  API,
   APIArgs,
   BaseRoute,
   DeploymentArgs,
@@ -32,7 +31,6 @@ export {
   StageArgs,
   StaticRoute, // Intentionally not re-exporting this
 } from /* createAPI */ "./api";
-export * from "./apikey";
 export * from "./cognitoAuthorizer";
 export * from "./lambdaAuthorizer";
 export * from "./swagger_json";

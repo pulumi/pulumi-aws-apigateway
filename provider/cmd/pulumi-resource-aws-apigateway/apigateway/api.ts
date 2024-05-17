@@ -485,111 +485,6 @@ export interface DeploymentArgs {
   stageDescription?: pulumi.Input<string>;
 }
 
-export class API extends pulumi.ComponentResource {
-  public readonly restAPI: aws.apigateway.RestApi;
-  public readonly deployment: aws.apigateway.Deployment;
-  public readonly stage: aws.apigateway.Stage;
-  public readonly apiPolicy?: aws.apigateway.RestApiPolicy;
-
-  /**
-   * Bucket where static resources were placed.  Only set if a Bucket was provided to the API at
-   * construction time, or if there were any [StaticRoute]s passed to the API.
-   */
-  public readonly staticRoutesBucket?: aws.s3.Bucket;
-  public readonly url: pulumi.Output<string>;
-  private readonly swaggerLambdas: SwaggerLambdas;
-
-  constructor(
-    name: string,
-    args: APIArgs,
-    opts: pulumi.ComponentResourceOptions = {}
-  ) {
-    super("aws:apigateway:x:API", name, {}, opts);
-
-    const apiResource = createAPI(this, name, args, opts.parent);
-    this.restAPI = apiResource.restAPI;
-    this.deployment = apiResource.deployment;
-    this.stage = apiResource.stage;
-    this.apiPolicy = apiResource.apiPolicy;
-    this.staticRoutesBucket = apiResource.staticRoutesBucket;
-    this.url = apiResource.url;
-    this.swaggerLambdas = apiResource.swaggerLambdas;
-
-    this.registerOutputs();
-  }
-
-  /**
-   * Returns the [aws.lambda.Function] an [EventHandlerRoute] points to.  This will either be for
-   * the aws.lambda.Function created on your behalf if the route was passed a normal
-   * JavaScript/Typescript function, or it will be the [aws.lambda.Function] that was explicitly
-   * passed in.
-   *
-   * [route] and [method] can both be elided if this API only has a single [EventHandlerRoute]
-   * assigned to it.
-   *
-   * [method] can be elided if [route] only has a single [EventHandlerRoute] assigned to it.
-   *
-   * This method will throw if the provided [route] and [method] do not resolve to a single
-   * [aws.lambda.Function]
-   */
-  public getFunction(route?: string, method?: Method): aws.lambda.Function {
-    const methods = this.getMethods(route);
-    if (!methods || methods.size === 0) {
-      throw new pulumi.ResourceError(
-        `Route '${route}' has no methods defined for it`,
-        this
-      );
-    }
-
-    if (!method) {
-      if (methods.size === 1) {
-        for (const m of methods.values()) {
-          return m;
-        }
-      }
-
-      throw new pulumi.ResourceError(
-        `Route '${route}' has multiple methods defined for it.  Please provide [method].`,
-        this
-      );
-    }
-
-    const result = methods.get(method);
-    if (!result) {
-      throw new pulumi.ResourceError(
-        `Route '${route}' does not have method '${method}' defined for it`,
-        this
-      );
-    }
-
-    return result;
-  }
-
-  private getMethods(route: string | undefined) {
-    if (route === undefined) {
-      if (this.swaggerLambdas.size === 0) {
-        throw new pulumi.ResourceError(
-          `This Api has no routes to any Functions.`,
-          this
-        );
-      }
-
-      if (this.swaggerLambdas.size === 1) {
-        for (const map of this.swaggerLambdas.values()) {
-          return map;
-        }
-      }
-
-      throw new pulumi.ResourceError(
-        `[route] must be provided as this Api defines multiple routes with Functions.`,
-        this
-      );
-    }
-
-    return this.swaggerLambdas.get(route);
-  }
-}
-
 interface APIResources {
   restAPI: aws.apigateway.RestApi;
   deployment: aws.apigateway.Deployment;
@@ -636,7 +531,8 @@ export function createAPI(
       args.requestValidator,
       args.apiKeySource,
       binaryMediaTypesList,
-      args.staticRoutesBucket
+      args.staticRoutesBucket,
+      args.restApiArgs?.tags,
     );
 
     title = pulumi.output(name);
@@ -751,6 +647,10 @@ export function createAPI(
       restApi: restAPI,
       deployment: deployment,
       stageName: stageName,
+      tags: args.stageArgs?.tags || args.restApiArgs?.tags ? {
+        ...args.restApiArgs?.tags,
+        ...args.stageArgs?.tags,
+      } : undefined,
     },
     { parent, dependsOn: permissions }
   );
@@ -810,7 +710,8 @@ function createSwaggerSpec(
   requestValidator: RequestValidator | undefined,
   apikeySource: APIKeySource | undefined,
   binaryMediaTypesList: string[],
-  bucketOrArgs: aws.s3.Bucket | aws.s3.BucketArgs | undefined
+  bucketOrArgs: aws.s3.Bucket | aws.s3.BucketArgs | undefined,
+  tags: pulumi.Input<{ [key: string]: pulumi.Input<string> }> | undefined,
 ) {
   // Default API Key source to "HEADER"
   apikeySource = apikeySource || "HEADER";
@@ -888,7 +789,8 @@ function createSwaggerSpec(
         swagger,
         route,
         staticRoutesBucket,
-        apiAuthorizers
+        apiAuthorizers,
+        tags
       );
     } else if (isIntegrationRoute(route) || isRawDataRoute(route)) {
       addIntegrationOrRawDataRouteToSwaggerSpec(route);
@@ -1266,7 +1168,8 @@ function addStaticRouteToSwaggerSpec(
   swagger: SwaggerSpec,
   route: StaticRoute,
   bucket: aws.s3.Bucket,
-  apiAuthorizers: Record<string, Authorizer>
+  apiAuthorizers: Record<string, Authorizer>,
+  tags: pulumi.Input<{ [key: string]: pulumi.Input<string> }> | undefined
 ) {
   checkRoute(parent, route, "localPath");
 
@@ -1290,6 +1193,7 @@ function addStaticRouteToSwaggerSpec(
       key,
       {
         assumeRolePolicy: JSON.stringify(apigatewayAssumeRolePolicyDocument),
+        tags,
       },
       { parent }
     );
@@ -1315,6 +1219,7 @@ function addStaticRouteToSwaggerSpec(
       {
         bucket,
         key,
+        tags,
         source: new pulumi.asset.FileAsset(localPath),
         contentType: contentType || mime.getType(localPath) || undefined,
       },
