@@ -118,5 +118,6 @@ export function hasTrueBooleanMember(obj: any, memberName: string | number | sym
 
 /** @internal */
 export function getRegion(res: pulumi.Resource): pulumi.Output<aws.Region> {
+    // uses the provider from the parent resource to fetch the region
     return aws.getRegionOutput({}, { parent: res }).apply(region => region.name as aws.Region);
 }
