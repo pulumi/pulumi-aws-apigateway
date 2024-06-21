@@ -6,6 +6,7 @@ import (
 	"path"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/pulumi/providertest/pulumitest"
 	"github.com/pulumi/pulumi/pkg/v3/testing/integration"
@@ -73,10 +74,32 @@ func TestTagging(t *testing.T) {
 			ExtraRuntimeValidation: func(t *testing.T, stackInfo integration.RuntimeValidationStackInfo) {
 				expectedTags := map[string]interface{}{
 					"environment": "development",
-					"test": "test-tag",
+					"test":        "test-tag",
 				}
 				assert.Equal(t, expectedTags, stackInfo.Outputs["apiTags"])
 				assert.Equal(t, expectedTags, stackInfo.Outputs["stageTags"])
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
+func TestAuth(t *testing.T) {
+	test := getJSBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			Dir: filepath.Join(getCwd(t), "apigateway-auth"),
+			ExtraRuntimeValidation: func(t *testing.T, stackInfo integration.RuntimeValidationStackInfo) {
+				url := stackInfo.Outputs["url"].(string) + "test"
+
+				validAuthHeaders := map[string]string{"Authorization": "Bearer DUMMY_TOKEN"}
+
+				// Make a request to the API Gateway endpoint with an auth token to verify it's working
+				integration.AssertHTTPResultWithRetry(t, url, validAuthHeaders, 60*time.Second, func(body string) bool {
+					return assert.Equal(t, "Hello, World!", body, "Body should equal 'Hello, World!', got %s", body)
+				})
+
+				// Make a request to the API Gateway endpoint without an auth token and expect a 401 to verify the authorizer is working
+				retryGETRequestUntil(t, url, nil, 401, 60*time.Second)
 			},
 		})
 
