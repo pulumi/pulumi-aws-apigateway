@@ -751,10 +751,6 @@ function createSwaggerSpec(
 
   // Now add all the routes to it.
 
-  // Use this to track the API's authorizers and ensure any authorizers with the same name
-  // reference the same authorizer.
-  const apiAuthorizers: Record<string, Authorizer> = {};
-
   let staticRoutesBucket: aws.s3.Bucket | undefined;
 
   // First, process the routes that create contingent resources.
@@ -774,7 +770,6 @@ function createSwaggerSpec(
         swagger,
         swaggerLambdas,
         route,
-        apiAuthorizers
       );
     } else if (isStaticRoute(route)) {
       if (!staticRoutesBucket) {
@@ -789,7 +784,6 @@ function createSwaggerSpec(
         swagger,
         route,
         staticRoutesBucket,
-        apiAuthorizers,
         tags
       );
     } else if (isIntegrationRoute(route) || isRawDataRoute(route)) {
@@ -821,7 +815,6 @@ function createSwaggerSpec(
         name,
         swagger,
         route,
-        apiAuthorizers
       );
     } else {
       addRawDataRouteToSwaggerSpec(parent, name, swagger, route);
@@ -884,7 +877,6 @@ function addEventHandlerRouteToSwaggerSpec(
   swagger: SwaggerSpec,
   swaggerLambdas: SwaggerLambdas,
   route: EventHandlerRoute,
-  apiAuthorizers: Record<string, Authorizer>
 ) {
   checkRoute(parent, route, "eventHandler");
   checkRoute(parent, route, "method");
@@ -902,7 +894,6 @@ function addEventHandlerRouteToSwaggerSpec(
     swagger,
     swaggerOperation,
     route,
-    apiAuthorizers
   );
   addSwaggerOperation(swagger, route.path, method, swaggerOperation);
 
@@ -935,14 +926,12 @@ function addBasePathOptionsToSwagger(
   swagger: SwaggerSpec,
   swaggerOperation: SwaggerOperation,
   route: BaseRoute,
-  apiAuthorizers: Record<string, Authorizer>
 ) {
   if (route.authorizers) {
     const authRecords = addAuthorizersToSwagger(
       parent,
       swagger,
-      route.authorizers,
-      apiAuthorizers
+      route.authorizers
     );
     addAuthorizersToSwaggerOperation(swaggerOperation, authRecords);
   }
@@ -989,8 +978,7 @@ function addAPIKeyToSwaggerOperation(swaggerOperation: SwaggerOperation) {
 function addAuthorizersToSwagger(
   parent: pulumi.Resource,
   swagger: SwaggerSpec,
-  authorizers: Authorizer[] | Authorizer,
-  apiAuthorizers: Record<string, Authorizer>
+  authorizers: Authorizer[] | Authorizer
 ): Record<string, string[]>[] {
   const authRecords: Record<string, string[]>[] = [];
   swagger.securityDefinitions = swagger.securityDefinitions || {};
@@ -1002,16 +990,6 @@ function addAuthorizersToSwagger(
     const authName =
       auth.authorizerName || `${swagger.info.title}-authorizer-${suffix}`;
     auth.authorizerName = authName;
-
-    // Check API authorizers - if its a new authorizer add it to the apiAuthorizers
-    // if the name already exists, we check that the authorizer references the same authorizer
-    if (!apiAuthorizers[authName]) {
-      apiAuthorizers[authName] = auth;
-    } else if (apiAuthorizers[authName] !== auth) {
-      throw new Error(
-        "Two different authorizers using the same name: " + authName
-      );
-    }
 
     // Add security definition if it's a new authorizer
     if (!swagger.securityDefinitions[auth.authorizerName]) {
@@ -1168,7 +1146,6 @@ function addStaticRouteToSwaggerSpec(
   swagger: SwaggerSpec,
   route: StaticRoute,
   bucket: aws.s3.Bucket,
-  apiAuthorizers: Record<string, Authorizer>,
   tags: pulumi.Input<{ [key: string]: pulumi.Input<string> }> | undefined
 ) {
   checkRoute(parent, route, "localPath");
@@ -1239,7 +1216,6 @@ function addStaticRouteToSwaggerSpec(
       swagger,
       swaggerOperation,
       route,
-      apiAuthorizers
     );
     addSwaggerOperation(swagger, route.path, method, swaggerOperation);
   }
@@ -1307,7 +1283,6 @@ function addStaticRouteToSwaggerSpec(
               swagger,
               swaggerOperation,
               directory,
-              apiAuthorizers
             );
             swagger.paths[directoryServerPath] = {
               [method]: swaggerOperation,
@@ -1332,7 +1307,6 @@ function addStaticRouteToSwaggerSpec(
       swagger,
       swaggerOperation,
       directory,
-      apiAuthorizers
     );
     addSwaggerOperation(
       swagger,
@@ -1419,7 +1393,6 @@ function addIntegrationRouteToSwaggerSpec(
   name: string,
   swagger: SwaggerSpec,
   route: IntegrationRoute,
-  apiAuthorizers: Record<string, Authorizer>
 ) {
   checkRoute(parent, route, "target");
 
@@ -1441,7 +1414,6 @@ function addIntegrationRouteToSwaggerSpec(
     swagger,
     swaggerOpWithoutProxyPathParam,
     route,
-    apiAuthorizers
   );
   addSwaggerOperation(
     swagger,
@@ -1459,7 +1431,6 @@ function addIntegrationRouteToSwaggerSpec(
     swagger,
     swaggerOpWithProxyPathParam,
     route,
-    apiAuthorizers
   );
   addSwaggerOperation(
     swagger,
