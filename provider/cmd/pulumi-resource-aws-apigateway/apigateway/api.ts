@@ -23,7 +23,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 import type * as awslambda from "aws-lambda";
 
-import { getRegion, ifUndefined, isInstance, sha1hash } from "./utils";
+import { getRegion, ifUndefined, sha1hash } from "./utils";
 
 import { apiKeySecurityDefinition } from "./apikey";
 import * as cognitoAuthorizer from "./cognitoAuthorizer";
@@ -43,7 +43,6 @@ import {
   SwaggerSpec,
 } from "./swagger_json";
 import { isDeepStrictEqual } from "util";
-import { deepStrictEqual } from "assert";
 
 export type Request = awslambda.APIGatewayProxyEvent;
 
