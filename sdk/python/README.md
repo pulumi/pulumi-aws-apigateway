@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/pulumi/pulumi-aws-apigateway/workflows/release/badge.svg)](https://github.com/pulumi/pulumi-aws-apigateway/actions)
+[![Actions Status](https://github.com/pulumi/pulumi-aws-apigateway/actions/workflows/release.yml/badge.svg)](https://github.com/pulumi/pulumi-aws-apigateway/actions)
 [![Slack](http://www.pulumi.com/images/docs/badges/slack.svg)](https://slack.pulumi.com)
 [![NPM version](https://badge.fury.io/js/%40pulumi%2Faws-apigateway.svg)](https://www.npmjs.com/package/@pulumi/aws-apigateway)
 [![Python version](https://badge.fury.io/py/pulumi-aws-apigateway.svg)](https://pypi.org/project/pulumi-aws-apigateway)
