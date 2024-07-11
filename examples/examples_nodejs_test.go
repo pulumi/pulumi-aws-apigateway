@@ -3,7 +3,6 @@
 package examples
 
 import (
-	"fmt"
 	"path"
 	"path/filepath"
 	"testing"
@@ -110,25 +109,32 @@ func TestAuth(t *testing.T) {
 func TestMultiAuth(t *testing.T) {
 	test := getJSBaseOptions(t).
 		With(integration.ProgramTestOptions{
-			// Tests whether all routes re-use the same authorizer. This is done by creating 15 routes that all use the same
-			// authorizer. API Gateway only allows 10 authorizers per API Gateway, so if the authorizer is not re-used, the
-			// test will fail.
+			// Tests whether authorizers can be reused. This is done by creating 20 routes 10 using a common lambda authorizer
+			// and the other 10 using a common cognito authorizer. API Gateway only allows 10 authorizers per API Gateway,
+			// so if the authorizers are not re-used, the test will fail.
 			Dir: filepath.Join(getCwd(t), "apigateway-multi-auth"),
-			ExtraRuntimeValidation: func(t *testing.T, stackInfo integration.RuntimeValidationStackInfo) {
-				// Test the authorizer for each route
-				for idx := range 15 {
-					url := stackInfo.Outputs["url"].(string) + "route" + fmt.Sprint(idx)
+		})
 
-					validAuthHeaders := map[string]string{"Authorization": "Bearer DUMMY_TOKEN"}
+	integration.ProgramTest(t, &test)
+}
 
-					// Make a request to the API Gateway endpoint with an auth token to verify it's working
-					integration.AssertHTTPResultWithRetry(t, url, validAuthHeaders, 60*time.Second, func(body string) bool {
-						return assert.Equal(t, "Hello, World!", body, "Body should equal 'Hello, World!', got %s", body)
-					})
-
-					// Make a request to the API Gateway endpoint without an auth token and expect a 401 to verify the authorizer is working
-					retryGETRequestUntil(t, url, nil, 401, 60*time.Second)
-				}
+func TestAuthorizerValidation(t *testing.T) {
+	test := getJSBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			// Tests whether the validation correctly detects invalid authorizer configurations.
+			Dir:           filepath.Join(getCwd(t), "test-programs", "authorizer-validation", "base-params"),
+			ExpectFailure: true,
+			EditDirs: []integration.EditDir{
+				{
+					Dir:           filepath.Join(getCwd(t), "test-programs", "authorizer-validation", "lambda"),
+					Additive:      true,
+					ExpectFailure: true,
+				},
+				{
+					Dir:           filepath.Join(getCwd(t), "test-programs", "authorizer-validation", "cognito"),
+					Additive:      true,
+					ExpectFailure: true,
+				},
 			},
 		})
 

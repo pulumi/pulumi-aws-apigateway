@@ -23,7 +23,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 import type * as awslambda from "aws-lambda";
 
-import { getRegion, ifUndefined, sha1hash } from "./utils";
+import { getRegion, ifUndefined, isInstance, sha1hash } from "./utils";
 
 import { apiKeySecurityDefinition } from "./apikey";
 import * as cognitoAuthorizer from "./cognitoAuthorizer";
@@ -42,6 +42,8 @@ import {
   SwaggerOperation,
   SwaggerSpec,
 } from "./swagger_json";
+import { isDeepStrictEqual } from "util";
+import { deepStrictEqual } from "assert";
 
 export type Request = awslambda.APIGatewayProxyEvent;
 
@@ -749,6 +751,16 @@ function createSwaggerSpec(
 
   const swaggerLambdas: SwaggerLambdas = new Map();
 
+  const authorizers = routes.flatMap(r => {
+    if (isEventHandler(r) || isStaticRoute(r) || isIntegrationRoute(r)) {
+      return r.authorizers ?? [];
+    } else {
+      return [];
+    }
+  });
+
+  const duplicateAuthorizer = checkDuplicateAuthorizer(authorizers);
+
   // Now add all the routes to it.
 
   let staticRoutesBucket: aws.s3.Bucket | undefined;
@@ -795,8 +807,15 @@ function createSwaggerSpec(
   }
 
   const swaggerText = pulumi
-    .all([swagger, additionalRoutes])
-    .apply(([_, routes]) => {
+    .all([swagger, additionalRoutes, duplicateAuthorizer])
+    .apply(([_, routes, duplicateAuthorizer]) => {
+      if (duplicateAuthorizer) {
+        throw new pulumi.ResourceError(
+          `Multiple authorizers with the same name '${duplicateAuthorizer}' but different configurations are not allowed.`,
+          parent
+        );;
+      }
+
       for (const route of routes) {
         addIntegrationOrRawDataRouteToSwaggerSpec(route);
       }
@@ -820,6 +839,97 @@ function createSwaggerSpec(
       addRawDataRouteToSwaggerSpec(parent, name, swagger, route);
     }
   }
+}
+
+/**
+ * Checks for duplicate authorizers in the given array.
+ * @param authorizers - The array of authorizers to check.
+ * @returns A pulumi.Output containing the name of the duplicate authorizer, if found; otherwise, undefined.
+ */
+function checkDuplicateAuthorizer(
+  authorizers: Authorizer[]
+): pulumi.Output<string | undefined> {
+  const namedAuthorizers: Record<string, Authorizer> = {};
+  const duplicates = authorizers.map((auth) => {
+    if (!auth.authorizerName) {
+      return undefined;
+    }
+
+    if (namedAuthorizers[auth.authorizerName]) {
+      return authorizerEquals(namedAuthorizers[auth.authorizerName], auth).apply((equal) => {
+        if (!equal) {
+          return auth.authorizerName;
+        }
+        return undefined;
+      });
+    } else {
+      namedAuthorizers[auth.authorizerName] = auth;
+      return undefined;
+    }
+  }).filter((verification) => verification !== undefined);
+
+  return pulumi.all(duplicates).apply((duplicates) => {
+    return duplicates.find((dupe) => dupe !== undefined);
+  });
+}
+
+/**
+ * Checks if two Authorizer objects are structurally equal.
+ * @param a - The first Authorizer object.
+ * @param b - The second Authorizer object.
+ * @returns A pulumi.Output<boolean> indicating whether the two Authorizer objects are equal.
+ */
+function authorizerEquals(
+  a: Authorizer,
+  b: Authorizer
+): pulumi.Output<boolean> {
+  if (lambdaAuthorizer.isLambdaAuthorizer(a) && lambdaAuthorizer.isLambdaAuthorizer(b)) {
+    const aSimplified = simplifyLambdaAuthorizer(a);
+    const bSimplified = simplifyLambdaAuthorizer(b);
+
+    // First compare the base properties of the authorizers
+    if (!isDeepStrictEqual(aSimplified, bSimplified)) {
+      return pulumi.output(false);
+    }
+
+    // Compare the handler functions of the authorizers by resolving their properties
+    const aSimplifiedHandler = resolveResourceProperties(a.handler);
+    const bSimplifiedHandler = resolveResourceProperties(b.handler);
+    return pulumi.all([aSimplifiedHandler, bSimplifiedHandler]).apply(([aHandler, bHandler]) => {
+      const handlerEqual = isDeepStrictEqual(aHandler, bHandler);
+      return handlerEqual;
+    });
+  } else if (cognitoAuthorizer.isCognitoAuthorizer(a) && cognitoAuthorizer.isCognitoAuthorizer(b)) {
+    return pulumi.all([a, b]).apply(([a, b]) => {
+      const providerArnsEqual = isDeepStrictEqual(a, b);
+      return providerArnsEqual;
+    });
+  } else {
+    // different types of authorizers
+    return pulumi.output(false);
+  }
+}
+
+/**
+ * Simplifies a resource object by converting its properties into a single output object.
+ * This allows for resolving all output properties of the resource at once.
+ * 
+ * @param resource - The resource object to simplify.
+ * @returns A Pulumi output object containing the simplified properties of the resource.
+ */
+function resolveResourceProperties(resource: object): pulumi.Output<{
+  [x: string]: any;
+}> {
+  const props = Object.getOwnPropertyNames(resource)
+    .map((key) => pulumi.output(Reflect.get(resource, key)).apply(val => {
+      return { [key]: val };
+    }));
+  return pulumi.all(props).apply((props) => props.reduce((acc, prop) => ({ ...acc, ...prop }), {}));
+}
+
+function simplifyLambdaAuthorizer(auth: lambdaAuthorizer.LambdaAuthorizer): Omit<lambdaAuthorizer.LambdaAuthorizer, "handler"> {
+  const { handler, ...simplifiedAuth } = { ...auth };
+  return simplifiedAuth;
 }
 
 function generateGatewayResponses(

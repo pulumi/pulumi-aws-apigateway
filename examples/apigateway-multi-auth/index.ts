@@ -12,9 +12,9 @@ const f = new aws.lambda.CallbackFunction("f", {
     },
   });
 
-const authorizer = {
+const lambdaAuthorizer: apigateway.types.input.AuthorizerArgs = {
     authType: "custom",
-    authorizerName: "jwt-rsa-custom-authorizer",
+    authorizerName: "lambda-authorizer",
     parameterName: "Authorization",
     identityValidationExpression: "^Bearer [-0-9a-zA-Z\._]*$",
     type: "token",
@@ -25,14 +25,34 @@ const authorizer = {
     }),
 }
 
+const userPoolA = new aws.cognito.UserPool("userpoolA", {});
+const userPoolB = new aws.cognito.UserPool("userpoolB", {});
+
+const cognitoAuthorizer: apigateway.types.input.AuthorizerArgs = {
+  authorizerName: "cognito-authorizer",
+  parameterName: "Authorization",
+  identityValidationExpression: "^Bearer [-0-9a-zA-Z\._]*$",
+  parameterLocation: "header",
+  authorizerResultTtlInSeconds: 300,
+  providerARNs: [userPoolA.arn, userPoolB.arn],
+}
+
 // Create multiple routes with the same authorizer.
 const routes: apigateway.types.input.RouteArgs[] = [];
-for (let i = 0; i < 15; i++) {
+for (let i = 0; i < 10; i++) {
     routes.push({
       path: `/route${i}`,
       method: "ANY",
       eventHandler: f,
-      authorizers: [authorizer]
+      authorizers: [lambdaAuthorizer]
+  });
+}
+for (let i = 10; i < 20; i++) {
+    routes.push({
+      path: `/route${i}`,
+      method: "ANY",
+      eventHandler: f,
+      authorizers: [cognitoAuthorizer]
   });
 }
 

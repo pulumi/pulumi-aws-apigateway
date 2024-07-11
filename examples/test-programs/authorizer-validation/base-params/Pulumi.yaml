@@ -1,0 +1,3 @@
+name: authorizer-validation
+runtime: nodejs
+description: Test for the authorizer validation
