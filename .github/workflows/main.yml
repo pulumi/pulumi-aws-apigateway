@@ -60,7 +60,9 @@ jobs:
           $GITHUB_ENV
 
       - name: Build & Install Provider & SDKs
-        run: make install
+        run: |
+          make build
+          make install
 
       - name: Check worktree clean
         run: |
