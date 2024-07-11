@@ -70,6 +70,12 @@ jobs:
       - name: Install Pulumi CLI
         uses: pulumi/actions@v4
 
+      # Required by Makefile::bin/pulumi-java-gen
+      - name: Install pulumictl
+        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        with:
+          repo: pulumi/pulumictl
+
       - name: Set PACKAGE_VERSION to Env
         env:
           PACKAGE_VERSION: ${{ inputs.version }}
