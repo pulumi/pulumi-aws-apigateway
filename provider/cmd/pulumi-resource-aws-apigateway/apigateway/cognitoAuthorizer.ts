@@ -16,6 +16,7 @@
 
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
+import { LambdaAuthorizer } from "./lambdaAuthorizer";
 
 /**
  * CognitoAuthorizer provides the definition for a Cognito User Pools Authorizer for API Gateway.
@@ -131,4 +132,10 @@ export function getCognitoAuthorizer(
     authorizerResultTtlInSeconds: args.authorizerResultTtlInSeconds,
     methodsToAuthorize: args.methodsToAuthorize,
   };
+}
+
+export function isCognitoAuthorizer(
+  authorizer: LambdaAuthorizer | CognitoAuthorizer
+): authorizer is CognitoAuthorizer {
+  return (<CognitoAuthorizer>authorizer).providerARNs !== undefined;
 }

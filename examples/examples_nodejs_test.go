@@ -106,6 +106,41 @@ func TestAuth(t *testing.T) {
 	integration.ProgramTest(t, &test)
 }
 
+func TestMultiAuth(t *testing.T) {
+	test := getJSBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			// Tests whether authorizers can be reused. This is done by creating 20 routes 10 using a common lambda authorizer
+			// and the other 10 using a common cognito authorizer. API Gateway only allows 10 authorizers per API Gateway,
+			// so if the authorizers are not re-used, the test will fail.
+			Dir: filepath.Join(getCwd(t), "apigateway-multi-auth"),
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
+func TestAuthorizerValidation(t *testing.T) {
+	test := getJSBaseOptions(t).
+		With(integration.ProgramTestOptions{
+			// Tests whether the validation correctly detects invalid authorizer configurations.
+			Dir:           filepath.Join(getCwd(t), "test-programs", "authorizer-validation", "base-params"),
+			ExpectFailure: true,
+			EditDirs: []integration.EditDir{
+				{
+					Dir:           filepath.Join(getCwd(t), "test-programs", "authorizer-validation", "lambda"),
+					Additive:      true,
+					ExpectFailure: true,
+				},
+				{
+					Dir:           filepath.Join(getCwd(t), "test-programs", "authorizer-validation", "cognito"),
+					Additive:      true,
+					ExpectFailure: true,
+				},
+			},
+		})
+
+	integration.ProgramTest(t, &test)
+}
+
 func getJSBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	base := getBaseOptions(t)
 	baseJS := base.With(integration.ProgramTestOptions{

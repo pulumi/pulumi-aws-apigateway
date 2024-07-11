@@ -42,6 +42,7 @@ import {
   SwaggerOperation,
   SwaggerSpec,
 } from "./swagger_json";
+import { isDeepStrictEqual } from "util";
 
 export type Request = awslambda.APIGatewayProxyEvent;
 
@@ -749,11 +750,17 @@ function createSwaggerSpec(
 
   const swaggerLambdas: SwaggerLambdas = new Map();
 
-  // Now add all the routes to it.
+  const authorizers = routes.flatMap(r => {
+    if (isEventHandler(r) || isStaticRoute(r) || isIntegrationRoute(r)) {
+      return r.authorizers ?? [];
+    } else {
+      return [];
+    }
+  });
 
-  // Use this to track the API's authorizers and ensure any authorizers with the same name
-  // reference the same authorizer.
-  const apiAuthorizers: Record<string, Authorizer> = {};
+  const duplicateAuthorizer = checkDuplicateAuthorizer(authorizers);
+
+  // Now add all the routes to it.
 
   let staticRoutesBucket: aws.s3.Bucket | undefined;
 
@@ -774,7 +781,6 @@ function createSwaggerSpec(
         swagger,
         swaggerLambdas,
         route,
-        apiAuthorizers
       );
     } else if (isStaticRoute(route)) {
       if (!staticRoutesBucket) {
@@ -789,7 +795,6 @@ function createSwaggerSpec(
         swagger,
         route,
         staticRoutesBucket,
-        apiAuthorizers,
         tags
       );
     } else if (isIntegrationRoute(route) || isRawDataRoute(route)) {
@@ -801,8 +806,15 @@ function createSwaggerSpec(
   }
 
   const swaggerText = pulumi
-    .all([swagger, additionalRoutes])
-    .apply(([_, routes]) => {
+    .all([swagger, additionalRoutes, duplicateAuthorizer])
+    .apply(([_, routes, duplicateAuthorizer]) => {
+      if (duplicateAuthorizer) {
+        throw new pulumi.ResourceError(
+          `Multiple authorizers with the same name '${duplicateAuthorizer}' but different configurations are not allowed.`,
+          parent
+        );;
+      }
+
       for (const route of routes) {
         addIntegrationOrRawDataRouteToSwaggerSpec(route);
       }
@@ -821,12 +833,103 @@ function createSwaggerSpec(
         name,
         swagger,
         route,
-        apiAuthorizers
       );
     } else {
       addRawDataRouteToSwaggerSpec(parent, name, swagger, route);
     }
   }
+}
+
+/**
+ * Checks for duplicate authorizers in the given array. A duplicate authorizer is one that has the same name but
+ * different configuration then another authorizer.
+ * @param authorizers - The array of authorizers to check.
+ * @returns A pulumi.Output containing the name of the duplicate authorizer, if found; otherwise, undefined.
+ */
+function checkDuplicateAuthorizer(
+  authorizers: Authorizer[]
+): pulumi.Output<string | undefined> {
+  const namedAuthorizers: Record<string, Authorizer> = {};
+  const duplicates = authorizers.map((auth) => {
+    if (!auth.authorizerName) {
+      return undefined;
+    }
+
+    if (namedAuthorizers[auth.authorizerName]) {
+      return authorizerEquals(namedAuthorizers[auth.authorizerName], auth).apply((equal) => {
+        if (!equal) {
+          return auth.authorizerName;
+        }
+        return undefined;
+      });
+    } else {
+      namedAuthorizers[auth.authorizerName] = auth;
+      return undefined;
+    }
+  }).filter((verification) => verification !== undefined);
+
+  return pulumi.all(duplicates).apply((duplicates) => {
+    return duplicates.find((dupe) => dupe !== undefined);
+  });
+}
+
+/**
+ * Checks if two Authorizer objects are structurally equal.
+ * @param a - The first Authorizer object.
+ * @param b - The second Authorizer object.
+ * @returns A pulumi.Output<boolean> indicating whether the two Authorizer objects are equal.
+ */
+function authorizerEquals(
+  a: Authorizer,
+  b: Authorizer
+): pulumi.Output<boolean> {
+  if (lambdaAuthorizer.isLambdaAuthorizer(a) && lambdaAuthorizer.isLambdaAuthorizer(b)) {
+    const aSimplified = simplifyLambdaAuthorizer(a);
+    const bSimplified = simplifyLambdaAuthorizer(b);
+
+    // First compare the base properties of the authorizers
+    if (!isDeepStrictEqual(aSimplified, bSimplified)) {
+      return pulumi.output(false);
+    }
+
+    // Compare the handler functions of the authorizers by resolving their properties
+    const aSimplifiedHandler = resolveResourceProperties(a.handler);
+    const bSimplifiedHandler = resolveResourceProperties(b.handler);
+    return pulumi.all([aSimplifiedHandler, bSimplifiedHandler]).apply(([aHandler, bHandler]) => {
+      const handlerEqual = isDeepStrictEqual(aHandler, bHandler);
+      return handlerEqual;
+    });
+  } else if (cognitoAuthorizer.isCognitoAuthorizer(a) && cognitoAuthorizer.isCognitoAuthorizer(b)) {
+    return pulumi.all([a, b]).apply(([a, b]) => {
+      const providerArnsEqual = isDeepStrictEqual(a, b);
+      return providerArnsEqual;
+    });
+  } else {
+    // different types of authorizers
+    return pulumi.output(false);
+  }
+}
+
+/**
+ * Simplifies a resource object by converting its properties into a single output object.
+ * This allows for resolving all output properties of the resource at once.
+ * 
+ * @param resource - The resource object to simplify.
+ * @returns A Pulumi output object containing the simplified properties of the resource.
+ */
+function resolveResourceProperties(resource: object): pulumi.Output<{
+  [x: string]: any;
+}> {
+  const props = Object.getOwnPropertyNames(resource)
+    .map((key) => pulumi.output(Reflect.get(resource, key)).apply(val => {
+      return { [key]: val };
+    }));
+  return pulumi.all(props).apply((props) => props.reduce((acc, prop) => ({ ...acc, ...prop }), {}));
+}
+
+function simplifyLambdaAuthorizer(auth: lambdaAuthorizer.LambdaAuthorizer): Omit<lambdaAuthorizer.LambdaAuthorizer, "handler"> {
+  const { handler, ...simplifiedAuth } = { ...auth };
+  return simplifiedAuth;
 }
 
 function generateGatewayResponses(
@@ -884,7 +987,6 @@ function addEventHandlerRouteToSwaggerSpec(
   swagger: SwaggerSpec,
   swaggerLambdas: SwaggerLambdas,
   route: EventHandlerRoute,
-  apiAuthorizers: Record<string, Authorizer>
 ) {
   checkRoute(parent, route, "eventHandler");
   checkRoute(parent, route, "method");
@@ -902,7 +1004,6 @@ function addEventHandlerRouteToSwaggerSpec(
     swagger,
     swaggerOperation,
     route,
-    apiAuthorizers
   );
   addSwaggerOperation(swagger, route.path, method, swaggerOperation);
 
@@ -935,14 +1036,12 @@ function addBasePathOptionsToSwagger(
   swagger: SwaggerSpec,
   swaggerOperation: SwaggerOperation,
   route: BaseRoute,
-  apiAuthorizers: Record<string, Authorizer>
 ) {
   if (route.authorizers) {
     const authRecords = addAuthorizersToSwagger(
       parent,
       swagger,
-      route.authorizers,
-      apiAuthorizers
+      route.authorizers
     );
     addAuthorizersToSwaggerOperation(swaggerOperation, authRecords);
   }
@@ -989,8 +1088,7 @@ function addAPIKeyToSwaggerOperation(swaggerOperation: SwaggerOperation) {
 function addAuthorizersToSwagger(
   parent: pulumi.Resource,
   swagger: SwaggerSpec,
-  authorizers: Authorizer[] | Authorizer,
-  apiAuthorizers: Record<string, Authorizer>
+  authorizers: Authorizer[] | Authorizer
 ): Record<string, string[]>[] {
   const authRecords: Record<string, string[]>[] = [];
   swagger.securityDefinitions = swagger.securityDefinitions || {};
@@ -1002,16 +1100,6 @@ function addAuthorizersToSwagger(
     const authName =
       auth.authorizerName || `${swagger.info.title}-authorizer-${suffix}`;
     auth.authorizerName = authName;
-
-    // Check API authorizers - if its a new authorizer add it to the apiAuthorizers
-    // if the name already exists, we check that the authorizer references the same authorizer
-    if (!apiAuthorizers[authName]) {
-      apiAuthorizers[authName] = auth;
-    } else if (apiAuthorizers[authName] !== auth) {
-      throw new Error(
-        "Two different authorizers using the same name: " + authName
-      );
-    }
 
     // Add security definition if it's a new authorizer
     if (!swagger.securityDefinitions[auth.authorizerName]) {
@@ -1168,7 +1256,6 @@ function addStaticRouteToSwaggerSpec(
   swagger: SwaggerSpec,
   route: StaticRoute,
   bucket: aws.s3.Bucket,
-  apiAuthorizers: Record<string, Authorizer>,
   tags: pulumi.Input<{ [key: string]: pulumi.Input<string> }> | undefined
 ) {
   checkRoute(parent, route, "localPath");
@@ -1239,7 +1326,6 @@ function addStaticRouteToSwaggerSpec(
       swagger,
       swaggerOperation,
       route,
-      apiAuthorizers
     );
     addSwaggerOperation(swagger, route.path, method, swaggerOperation);
   }
@@ -1307,7 +1393,6 @@ function addStaticRouteToSwaggerSpec(
               swagger,
               swaggerOperation,
               directory,
-              apiAuthorizers
             );
             swagger.paths[directoryServerPath] = {
               [method]: swaggerOperation,
@@ -1332,7 +1417,6 @@ function addStaticRouteToSwaggerSpec(
       swagger,
       swaggerOperation,
       directory,
-      apiAuthorizers
     );
     addSwaggerOperation(
       swagger,
@@ -1419,7 +1503,6 @@ function addIntegrationRouteToSwaggerSpec(
   name: string,
   swagger: SwaggerSpec,
   route: IntegrationRoute,
-  apiAuthorizers: Record<string, Authorizer>
 ) {
   checkRoute(parent, route, "target");
 
@@ -1441,7 +1524,6 @@ function addIntegrationRouteToSwaggerSpec(
     swagger,
     swaggerOpWithoutProxyPathParam,
     route,
-    apiAuthorizers
   );
   addSwaggerOperation(
     swagger,
@@ -1459,7 +1541,6 @@ function addIntegrationRouteToSwaggerSpec(
     swagger,
     swaggerOpWithProxyPathParam,
     route,
-    apiAuthorizers
   );
   addSwaggerOperation(
     swagger,
