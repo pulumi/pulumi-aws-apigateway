@@ -46,12 +46,35 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          cache: gradle
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+
       - uses: MOZGIII/install-ldid-action@v1
         with:
           tag: v2.1.5-procursus2
 
       - name: Install Pulumi CLI
         uses: pulumi/actions@v4
+
+      # Required by Makefile::bin/pulumi-java-gen
+      - name: Install pulumictl
+        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        with:
+          repo: pulumi/pulumictl
 
       - name: Set PACKAGE_VERSION to Env
         env:
@@ -60,7 +83,9 @@ jobs:
           $GITHUB_ENV
 
       - name: Build & Install Provider & SDKs
-        run: make install
+        run: |
+          make build
+          make install
 
       - name: Check worktree clean
         run: |
