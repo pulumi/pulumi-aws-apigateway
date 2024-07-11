@@ -841,7 +841,8 @@ function createSwaggerSpec(
 }
 
 /**
- * Checks for duplicate authorizers in the given array.
+ * Checks for duplicate authorizers in the given array. A duplicate authorizer is one that has the same name but
+ * different configuration then another authorizer.
  * @param authorizers - The array of authorizers to check.
  * @returns A pulumi.Output containing the name of the duplicate authorizer, if found; otherwise, undefined.
  */
