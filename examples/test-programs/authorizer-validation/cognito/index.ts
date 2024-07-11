@@ -14,7 +14,7 @@ const f = new aws.lambda.CallbackFunction("f", {
 const userPoolA = new aws.cognito.UserPool("userpoolA", {});
 const userPoolB = new aws.cognito.UserPool("userpoolB", {});
 
-// Create multiple routes with the same authorizer.
+// Creates two routes with different authorizers that have the same name
 const routes: apigateway.types.input.RouteArgs[] = [
   {
     path: `/route1`,
@@ -39,7 +39,7 @@ const routes: apigateway.types.input.RouteArgs[] = [
       identityValidationExpression: "^Bearer [-0-9a-zA-Z\._]*$",
       parameterLocation: "header",
       authorizerResultTtlInSeconds: 300,
-      providerARNs: [userPoolA.arn],
+      providerARNs: [userPoolA.arn], // <- here's the diff, using userPoolA instead of userPoolB
     }]
   }
 ];

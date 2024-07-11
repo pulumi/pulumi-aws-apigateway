@@ -12,7 +12,7 @@ const f = new aws.lambda.CallbackFunction("f", {
     },
   });
 
-// Create multiple routes with the same authorizer.
+// Creates two routes with different authorizers that have the same name
 const routes: apigateway.types.input.RouteArgs[] = [
   {
     path: `/route1`,
@@ -43,7 +43,7 @@ const routes: apigateway.types.input.RouteArgs[] = [
       type: "token",
       parameterLocation: "header",
       authorizerResultTtlInSeconds: 300,
-      handler: new aws.lambda.CallbackFunction("authorizerB", {
+      handler: new aws.lambda.CallbackFunction("authorizerB", { // <- here's the diff, using a different lambda function
         callback: authorizerLambda(),
       }),
     }]
