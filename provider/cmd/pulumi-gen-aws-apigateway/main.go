@@ -22,6 +22,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/blang/semver"
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
 	dotnetgen "github.com/pulumi/pulumi/pkg/v3/codegen/dotnet"
@@ -33,23 +34,26 @@ import (
 
 func main() {
 	if len(os.Args) < 4 {
-		fmt.Printf("Usage: %s <language> <out-dir> <schema-file>\n", os.Args[0])
+		fmt.Printf("Usage: %s <language> <version> <out-dir> <schema-file>\n", os.Args[0])
 		os.Exit(1)
 	}
 
-	language, outdir, schemaPath := os.Args[1], os.Args[2], os.Args[3]
+	language, version, outdir, schemaPath := os.Args[1], os.Args[2], os.Args[3], os.Args[4]
 
-	err := emitSDK(language, outdir, schemaPath)
+	err := emitSDK(language, version, outdir, schemaPath)
 	if err != nil {
 		fmt.Printf("Failed: %s", err.Error())
 	}
 }
 
-func emitSDK(language, outdir, schemaPath string) error {
+func emitSDK(language, version, outdir, schemaPath string) error {
 	pkg, err := readSchema(schemaPath)
 	if err != nil {
 		return err
 	}
+
+	pkgVersion := semver.MustParse(version)
+	pkg.Version = &pkgVersion
 
 	tool := "Pulumi SDK Generator"
 	extraFiles := map[string][]byte{}
