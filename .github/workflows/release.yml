@@ -217,6 +217,17 @@ jobs:
           build-root-directory: ./sdk/java
           gradle-version: 8.3
 
-      - name: Publish Go SDK
+      - uses: pulumi/publish-go-sdk-action@v1
         if: ${{ inputs.publishGo && matrix.language == 'go' }}
-        run: git tag sdk/v${{ inputs.version }} && git push origin sdk/v${{ inputs.version }}
+        with:
+          repository: ${{ github.repository }}
+          base-ref: ${{ github.sha }}
+          source: sdk
+          path: sdk
+          version: ${{ inputs.version }}
+          additive: false
+          # Avoid including other language SDKs & artifacts in the commit
+          files: |
+            go.*
+            go/**
+            !*.tar.gz
