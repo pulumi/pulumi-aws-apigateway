@@ -27,12 +27,10 @@ build_provider:
 		yarn install && \
 		yarn tsc && \
 		cp package.json ../../../schema.yaml ./bin && \
-		sed -i.bak -e "s/\$${VERSION}/$(PROVIDER_VERSION)/g" bin/package.json
+		sed -i.bak -e "s/\$${VERSION}/$(PROVIDER_VERSION)/g" bin/package.json && \
+		yarn run pkg . --no-bytecode --public-packages "*" --public --target node18 --output ../../../bin/${PROVIDER}
 
-install_provider: PKG_ARGS := --no-bytecode --public-packages "*" --public
 install_provider: build_provider
-	cd provider/cmd/${PROVIDER}/ && \
-		yarn run pkg . ${PKG_ARGS} --target node18 --output ../../../bin/${PROVIDER}
 
 .PHONY: test_provider
 test_provider: bin/gotestfmt
