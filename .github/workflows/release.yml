@@ -289,7 +289,7 @@ jobs:
         working-directory: sdk/python
         run: |
           {
-            echo "python_version="
+            echo -n "python_version="
             cat pyproject.toml | sed -nE 's/.*version.*=.*"(.+)"/\1/p'
           } >> "${GITHUB_OUTPUT}"
 
