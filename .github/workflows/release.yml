@@ -224,6 +224,7 @@ jobs:
           user: ${{ env.PYPI_USERNAME }}
           password: ${{ env.PYPI_PASSWORD }}
           packages-dir: ${{github.workspace}}/sdk/python/bin/dist
+          skip-existing: true
 
       - name: Publish Node SDK
         if: ${{ inputs.publishNpm && matrix.language == 'nodejs' }}
@@ -240,7 +241,8 @@ jobs:
           echo "done publishing packages"
 
       - name: Publish Java SDK
-        if: ${{ inputs.publishJava && matrix.language == 'java' }}
+        # Disable Java SDK publishing for pre-release versions
+        if: ${{ inputs.publishJava && matrix.language == 'java' && !contains(inputs.version, '-') }}
         uses: gradle/gradle-build-action@v3
         with:
           arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
@@ -261,6 +263,16 @@ jobs:
             go.*
             go/**
             !*.tar.gz
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: us-west-2
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-duration-seconds: 3600
+          role-session-name: aws-apigateway@githubActions
+          role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
 
       - name: Verify nodejs release
         if: ${{ inputs.publishNpm && matrix.language == 'nodejs' }}
