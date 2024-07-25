@@ -292,6 +292,13 @@ jobs:
             cat sdk/python/pyproject.toml | sed -nE 's/.*version.*=.*"(.+)"/\1/p'
           } >> "${GITHUB_OUTPUT}"
 
+      - name: Wait for python package to be available
+        if: ${{ inputs.publishPython && matrix.language == 'python' }}
+        timeout-minutes: 15
+        continue-on-error: true
+        run: |
+          while ! (pip index versions --pre pulumi-aws-apigateway | grep -q " ${{ steps.python-package-version.outputs.version }}"); do sleep 5; done
+
       - name: Verify python release
         if: ${{ inputs.publishPython && matrix.language == 'python' }}
         uses: pulumi/verify-provider-release@v1
