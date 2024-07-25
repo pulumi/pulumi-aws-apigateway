@@ -1,7 +1,7 @@
 import json
 import pulumi
 import pulumi_aws as aws
-import pulumi_apigateway as apigateway
+import pulumi_aws_apigateway as apigateway
 
 role = aws.iam.Role("mylambda-role",
     assume_role_policy=json.dumps({
