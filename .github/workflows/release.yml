@@ -261,3 +261,30 @@ jobs:
             go.*
             go/**
             !*.tar.gz
+
+      - name: Verify nodejs release
+        if: ${{ inputs.publishNpm && matrix.language == 'nodejs' }}
+        uses: pulumi/verify-provider-release@v1
+        with:
+          runtime: nodejs
+          directory: examples/simple
+          provider: aws-apigateway
+          providerVersion: ${{ inputs.version }}
+
+      - name: Verify python release
+        if: ${{ inputs.publishPython && matrix.language == 'python' }}
+        uses: pulumi/verify-provider-release@v1
+        with:
+          runtime: python
+          directory: examples/simple-py
+          provider: aws-apigateway
+          providerVersion: ${{ inputs.version }}
+
+      - name: Verify go release
+        if: ${{ inputs.publishGo && matrix.language == 'go' }}
+        uses: pulumi/verify-provider-release@v1
+        with:
+          runtime: go
+          directory: examples/simple-go
+          provider: aws-apigateway
+          providerVersion: ${{ inputs.version }}
