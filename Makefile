@@ -4,7 +4,6 @@ PACK            := aws-apigateway
 PROJECT         := github.com/pulumi/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
-CODEGEN         := pulumi-gen-${PACK}
 VERSION_PATH    := provider/pkg/version.Version
 
 JAVA_GEN := pulumi-java-gen
@@ -12,6 +11,8 @@ JAVA_GEN_VERSION := v0.9.7
 
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
+
+export PULUMI_IGNORE_AMBIENT_PLUGINS = true
 
 build: build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk build_go_sdk build_java_sdk
 
@@ -44,17 +45,17 @@ bin/gotestfmt:
 
 # Go SDK
 
-gen_go_sdk:
+gen_go_sdk: .pulumi/bin/pulumi
 	rm -rf go
-	cd provider/cmd/${CODEGEN} && go run . go "${PROVIDER_VERSION}" ../../../sdk/go "${SCHEMA_PATH}"
+	.pulumi/bin/pulumi package gen-sdk "${SCHEMA_PATH}" --language go --version "${PROVIDER_VERSION}"
 
 build_go_sdk: gen_go_sdk
 
 # .NET SDK
 
-gen_dotnet_sdk:
+gen_dotnet_sdk: .pulumi/bin/pulumi
 	rm -rf sdk/dotnet
-	cd provider/cmd/${CODEGEN} && go run . dotnet "${PROVIDER_VERSION}" ../../../sdk/dotnet "${SCHEMA_PATH}"
+	.pulumi/bin/pulumi package gen-sdk "${SCHEMA_PATH}" --language dotnet --version "${PROVIDER_VERSION}"
 	echo "module fake_dotnet_module // Exclude this directory from Go tools\n\ngo 1.17" > sdk/dotnet/go.mod
 
 build_dotnet_sdk: gen_dotnet_sdk
@@ -68,9 +69,9 @@ install_dotnet_sdk: build_dotnet_sdk
 
 # Node.js SDK
 
-gen_nodejs_sdk:
+gen_nodejs_sdk: .pulumi/bin/pulumi
 	rm -rf sdk/nodejs
-	cd provider/cmd/${CODEGEN} && go run . nodejs "${PROVIDER_VERSION}" ../../../sdk/nodejs "${SCHEMA_PATH}"
+	.pulumi/bin/pulumi package gen-sdk "${SCHEMA_PATH}" --language nodejs --version "${PROVIDER_VERSION}"
 	echo "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17" > sdk/nodejs/go.mod
 
 build_nodejs_sdk: gen_nodejs_sdk
@@ -86,9 +87,9 @@ install_nodejs_sdk: build_nodejs_sdk
 
 # Python SDK
 
-gen_python_sdk:
+gen_python_sdk: .pulumi/bin/pulumi
 	rm -rf sdk/python
-	cd provider/cmd/${CODEGEN} && go run . python "${PROVIDER_VERSION}" ../../../sdk/python "${SCHEMA_PATH}"
+	.pulumi/bin/pulumi package gen-sdk "${SCHEMA_PATH}" --language python --version "${PROVIDER_VERSION}"
 	cp ${WORKING_DIR}/README.md sdk/python
 	echo "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17" > sdk/python/go.mod
 
@@ -113,6 +114,11 @@ gen_java_sdk: bin/pulumi-java-gen
 build_java_sdk: gen_java_sdk
 	cd sdk/java/ && \
 		PACKAGE_VERSION="$(PROVIDER_VERSION)" gradle --console=plain build
+
+.pulumi/bin/pulumi: PULUMI_VERSION := $(shell cat .pulumi.version)
+.pulumi/bin/pulumi: HOME := $(WORKING_DIR)
+.pulumi/bin/pulumi: .pulumi.version
+	curl -fsSL https://get.pulumi.com | sh -s -- --version "$(PULUMI_VERSION)"
 
 # builds all providers required for publishing
 dist: PKG_ARGS := --no-bytecode --public-packages "*" --public
