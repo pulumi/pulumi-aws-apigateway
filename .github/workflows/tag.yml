@@ -4,16 +4,21 @@ on:
     tags:
       - v*.*.*
 jobs:
-  dispatch_publish:
-    name: Dispatch Release Workflow
+  version:
+    name: Calculate version
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.format_version.outputs.version }}
     steps:
       - id: format_version
         # Replace the leading v
         # Outputs must be in the form `var=` so we can access the value
         run: echo "${{ github.ref_name }}" | sed "s/^v/version=/" >> "${GITHUB_OUTPUT}"
-      - name: Dispatch Release Workflow
-        uses: benc-uk/workflow-dispatch@v1.2.2
-        with:
-          workflow: release.yml
-          inputs: '{ "version": "${{ steps.format_version.outputs.version }}" }'
+
+  release:
+    name: Release
+    uses: ./.github/workflows/release.yml
+    needs: version
+    secrets: inherit
+    with:
+      version: ${{ needs.version.outputs.version }}

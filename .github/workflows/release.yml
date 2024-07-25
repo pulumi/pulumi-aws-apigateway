@@ -1,5 +1,35 @@
 name: Release provider & SDKs
 on:
+  workflow_call:
+    inputs:
+      version:
+        description: "Version to be released"
+        type: string
+        required: true
+      publishProvider:
+        description: "Publish provider binaries (to GH & S3)"
+        default: true
+        type: boolean
+      publishNpm:
+        description: "Publish Node.js SDK"
+        default: true
+        type: boolean
+      publishNuget:
+        description: "Publish .NET SDK"
+        default: true
+        type: boolean
+      publishPython:
+        description: "Publish Python SDK"
+        default: true
+        type: boolean
+      publishJava:
+        description: "Publish Java SDK"
+        default: true
+        type: boolean
+      publishGo:
+        description: "Publish Go SDK"
+        default: true
+        type: boolean
   workflow_dispatch:
     inputs:
       version:
