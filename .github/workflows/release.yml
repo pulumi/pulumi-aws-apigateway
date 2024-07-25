@@ -283,6 +283,16 @@ jobs:
           provider: aws-apigateway
           providerVersion: ${{ inputs.version }}
 
+      - name: Get python version
+        id: python-package-version
+        if: ${{ inputs.publishPython && matrix.language == 'python' }}
+        working-directory: sdk/python
+        run: |
+          {
+            echo "python_version="
+            cat pyproject.toml | sed -nE 's/.*version.*=.*"(.+)"/\1/p'
+          } >> "${GITHUB_OUTPUT}"
+
       - name: Verify python release
         if: ${{ inputs.publishPython && matrix.language == 'python' }}
         uses: pulumi/verify-provider-release@v1
@@ -291,6 +301,7 @@ jobs:
           directory: examples/simple-py
           provider: aws-apigateway
           providerVersion: ${{ inputs.version }}
+          packageVersion: ${{ steps.python-package-version.outputs.python-version }}
 
       - name: Verify go release
         if: ${{ inputs.publishGo && matrix.language == 'go' }}
