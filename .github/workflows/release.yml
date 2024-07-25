@@ -286,11 +286,10 @@ jobs:
       - name: Get python version
         id: python-package-version
         if: ${{ inputs.publishPython && matrix.language == 'python' }}
-        working-directory: sdk/python
         run: |
           {
-            echo -n "python_version="
-            cat pyproject.toml | sed -nE 's/.*version.*=.*"(.+)"/\1/p'
+            echo -n "version="
+            cat sdk/python/pyproject.toml | sed -nE 's/.*version.*=.*"(.+)"/\1/p'
           } >> "${GITHUB_OUTPUT}"
 
       - name: Verify python release
@@ -301,7 +300,7 @@ jobs:
           directory: examples/simple-py
           provider: aws-apigateway
           providerVersion: ${{ inputs.version }}
-          packageVersion: ${{ steps.python-package-version.outputs.python-version }}
+          packageVersion: ${{ steps.python-package-version.outputs.version }}
 
       - name: Verify go release
         if: ${{ inputs.publishGo && matrix.language == 'go' }}
