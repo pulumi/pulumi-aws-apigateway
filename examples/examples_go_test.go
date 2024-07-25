@@ -18,7 +18,8 @@ import (
 func TestSimpleGo(t *testing.T) {
 	// Assert the value of the API's DisableExecuteApiEndpoint, bypassing Pulumi and reading directly from AWS.
 	assertDisableExecuteApiEndpointInAws := func(t *testing.T, ctx context.Context, expected bool, arn string) {
-		awsConf, err := config.LoadDefaultConfig(ctx)
+		region := getRegion(t)
+		awsConf, err := config.LoadDefaultConfig(ctx, config.WithRegion(region))
 		require.NoError(t, err)
 		awsClient := apigatewaySdk.NewFromConfig(awsConf)
 
