@@ -1,5 +1,0 @@
-name: simple-with-manual-swagger-spec
-runtime: nodejs
-description: A simple apigateway example
-config:
-  aws:region: us-west-2
