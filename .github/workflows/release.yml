@@ -205,7 +205,7 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
 
       - name: Build SDK
-        run: make build_${{ matrix.language }}_sdk VERSION=${{ inputs.version }}
+        run: make build_${{ matrix.language }}_sdk PROVIDER_VERSION=${{ inputs.version }}
 
       - name: Check worktree clean
         uses: pulumi/git-status-check-action@v1
@@ -244,6 +244,8 @@ jobs:
         # Disable Java SDK publishing for pre-release versions
         if: ${{ inputs.publishJava && matrix.language == 'java' && !contains(inputs.version, '-') }}
         uses: gradle/gradle-build-action@v3
+        env:
+          PACKAGE_VERSION: ${{ inputs.version }}
         with:
           arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
           build-root-directory: ./sdk/java
