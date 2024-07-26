@@ -86,7 +86,7 @@ type AuthorizerArgs struct {
 	// where in the request identity information is expected. Applicable for the authorizer of the
 	// "request" type only. Example: ["method.request.header.HeaderAuth1",
 	// "method.request.querystring.QueryString1"]
-	IdentitySource []pulumi.StringInput `pulumi:"identitySource"`
+	IdentitySource []string `pulumi:"identitySource"`
 	// A regular expression for validating the token as the incoming identity. It only invokes the
 	// authorizer's lambda if there is a match, else it will return a 401. This does not apply to
 	// REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
@@ -96,7 +96,7 @@ type AuthorizerArgs struct {
 	// "http://my.resource.com/file.read"] For more information on resource servers and custom
 	// scopes visit the AWS documentation -
 	// https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
-	MethodsToAuthorize []pulumi.StringInput `pulumi:"methodsToAuthorize"`
+	MethodsToAuthorize []string `pulumi:"methodsToAuthorize"`
 	// Defines where in the request API Gateway should look for identity information. The value must
 	// be "header" or "query". If there are multiple identity sources, the value must be "header".
 	ParameterLocation *string `pulumi:"parameterLocation"`
@@ -416,7 +416,7 @@ type RouteArgs struct {
 	ApiKeyRequired *bool `pulumi:"apiKeyRequired"`
 	// Authorizers allows you to define Lambda authorizers be applied for authorization when the
 	// the route is called.
-	Authorizers []AuthorizerInput `pulumi:"authorizers"`
+	Authorizers []AuthorizerArgs `pulumi:"authorizers"`
 	// The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
 	// `localPath` points to a directory, the content types for all files will be inferred.
 	ContentType *string `pulumi:"contentType"`
@@ -443,7 +443,7 @@ type RouteArgs struct {
 	RequestValidator *RequestValidator `pulumi:"requestValidator"`
 	// Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
 	// gateway will validate these before sending traffic to the event handler.
-	RequiredParameters []RequiredParameterInput `pulumi:"requiredParameters"`
+	RequiredParameters []RequiredParameterArgs `pulumi:"requiredParameters"`
 	// The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
 	Target TargetPtrInput `pulumi:"target"`
 }

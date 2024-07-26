@@ -57,8 +57,8 @@ func main() {
 			BinaryMediaTypes: pulumi.StringArray{
 				pulumi.String("application/json"),
 			},
-			Routes: []apigateway.RouteInput{
-				apigateway.RouteArgs{
+			Routes: []apigateway.RouteArgs{
+				{
 					Path:         "/",
 					Method:       &getMethod,
 					EventHandler: f,

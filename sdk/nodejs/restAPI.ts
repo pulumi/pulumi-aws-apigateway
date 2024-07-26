@@ -131,7 +131,7 @@ export interface RestAPIArgs {
      *
      * Either `swaggerString` or `routes` must be specified.
      */
-    routes?: pulumi.Input<inputs.RouteArgs>[];
+    routes?: inputs.RouteArgs[];
     /**
      * The stage name for your API. This will get added as a base path to your API url.
      */

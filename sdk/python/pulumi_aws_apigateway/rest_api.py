@@ -23,7 +23,7 @@ class RestAPIArgs:
                  disable_execute_api_endpoint: Optional[pulumi.Input[bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']]] = None,
                  request_validator: Optional['RequestValidator'] = None,
-                 routes: Optional[Sequence[pulumi.Input['RouteArgs']]] = None,
+                 routes: Optional[Sequence['RouteArgs']] = None,
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
                  swagger_string: Optional[pulumi.Input[str]] = None,
@@ -43,7 +43,7 @@ class RestAPIArgs:
                CORS for Lambda Authorizers.
         :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
                override this.
-        :param Sequence[pulumi.Input['RouteArgs']] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+        :param Sequence['RouteArgs'] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
                specification for the API.
                
                Either `swaggerString` or `routes` must be specified.
@@ -162,7 +162,7 @@ class RestAPIArgs:
 
     @property
     @pulumi.getter
-    def routes(self) -> Optional[Sequence[pulumi.Input['RouteArgs']]]:
+    def routes(self) -> Optional[Sequence['RouteArgs']]:
         """
         Routes to use to initialize the APIGateway.  These will be used to create the Swagger
         specification for the API.
@@ -172,7 +172,7 @@ class RestAPIArgs:
         return pulumi.get(self, "routes")
 
     @routes.setter
-    def routes(self, value: Optional[Sequence[pulumi.Input['RouteArgs']]]):
+    def routes(self, value: Optional[Sequence['RouteArgs']]):
         pulumi.set(self, "routes", value)
 
     @property
@@ -241,7 +241,7 @@ class RestAPI(pulumi.ComponentResource):
                  disable_execute_api_endpoint: Optional[pulumi.Input[bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
-                 routes: Optional[Sequence[pulumi.Input[pulumi.InputType['RouteArgs']]]] = None,
+                 routes: Optional[Sequence[pulumi.InputType['RouteArgs']]] = None,
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
                  swagger_string: Optional[pulumi.Input[str]] = None,
@@ -268,7 +268,7 @@ class RestAPI(pulumi.ComponentResource):
                CORS for Lambda Authorizers.
         :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
                override this.
-        :param Sequence[pulumi.Input[pulumi.InputType['RouteArgs']]] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+        :param Sequence[pulumi.InputType['RouteArgs']] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
                specification for the API.
                
                Either `swaggerString` or `routes` must be specified.
@@ -316,7 +316,7 @@ class RestAPI(pulumi.ComponentResource):
                  disable_execute_api_endpoint: Optional[pulumi.Input[bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
-                 routes: Optional[Sequence[pulumi.Input[pulumi.InputType['RouteArgs']]]] = None,
+                 routes: Optional[Sequence[pulumi.InputType['RouteArgs']]] = None,
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
                  swagger_string: Optional[pulumi.Input[str]] = None,

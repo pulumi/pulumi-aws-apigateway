@@ -114,7 +114,7 @@ type RestAPIArgs struct {
 	// specification for the API.
 	//
 	// Either `swaggerString` or `routes` must be specified.
-	Routes []RouteInput
+	Routes []RouteArgs
 	// The stage name for your API. This will get added as a base path to your API url.
 	StageName pulumi.StringPtrInput
 	// Bucket to use for placing resources for static resources.  If not provided a default one will
