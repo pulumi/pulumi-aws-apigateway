@@ -22,6 +22,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/blang/semver"
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
 	dotnetgen "github.com/pulumi/pulumi/pkg/v3/codegen/dotnet"
@@ -33,37 +34,45 @@ import (
 
 func main() {
 	if len(os.Args) < 4 {
-		fmt.Printf("Usage: %s <language> <out-dir> <schema-file>\n", os.Args[0])
+		fmt.Printf("Usage: %s <language> <version> <out-dir> <schema-file>\n", os.Args[0])
 		os.Exit(1)
 	}
 
-	language, outdir, schemaPath := os.Args[1], os.Args[2], os.Args[3]
+	language, version, outdir, schemaPath := os.Args[1], os.Args[2], os.Args[3], os.Args[4]
 
-	err := emitSDK(language, outdir, schemaPath)
+	err := emitSDK(language, version, outdir, schemaPath)
 	if err != nil {
 		fmt.Printf("Failed: %s", err.Error())
 	}
 }
 
-func emitSDK(language, outdir, schemaPath string) error {
+func emitSDK(language, version, outdir, schemaPath string) error {
 	pkg, err := readSchema(schemaPath)
 	if err != nil {
 		return err
 	}
 
-	tool := "Pulumi SDK Generator"
+	pkgVersion := semver.MustParse(version)
+	pkg.Version = &pkgVersion
+
 	extraFiles := map[string][]byte{}
 
 	var generator func() (map[string][]byte, error)
 	switch language {
 	case "dotnet":
-		generator = func() (map[string][]byte, error) { return dotnetgen.GeneratePackage(tool, pkg, extraFiles) }
+		generator = func() (map[string][]byte, error) {
+			return dotnetgen.GeneratePackage("pulumi", pkg, extraFiles, map[string]string{})
+		}
 	case "go":
-		generator = func() (map[string][]byte, error) { return gogen.GeneratePackage(tool, pkg) }
+		generator = func() (map[string][]byte, error) { return gogen.GeneratePackage("pulumi-language-go", pkg) }
 	case "nodejs":
-		generator = func() (map[string][]byte, error) { return nodejsgen.GeneratePackage(tool, pkg, extraFiles) }
+		generator = func() (map[string][]byte, error) {
+			return nodejsgen.GeneratePackage("pulumi-language-nodejs", pkg, extraFiles, map[string]string{})
+		}
 	case "python":
-		generator = func() (map[string][]byte, error) { return pygen.GeneratePackage(tool, pkg, extraFiles) }
+		generator = func() (map[string][]byte, error) {
+			return pygen.GeneratePackage("pulumi-language-python", pkg, extraFiles)
+		}
 	default:
 		return errors.Errorf("Unrecognized language %q", language)
 	}

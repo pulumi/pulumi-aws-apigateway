@@ -4,8 +4,10 @@ package examples
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -18,7 +20,7 @@ import (
 func getRegion(t *testing.T) string {
 	envRegion := os.Getenv("AWS_REGION")
 	if envRegion == "" {
-		t.Skipf("Skipping test due to missing AWS_REGION environment variable")
+		envRegion = "us-west-2"
 	}
 
 	return envRegion
@@ -26,6 +28,11 @@ func getRegion(t *testing.T) string {
 
 func getBaseOptions(t *testing.T) integration.ProgramTestOptions {
 	awsRegion := getRegion(t)
+	binPath, err := filepath.Abs("../bin")
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("Using binPath %s\n", binPath)
 	return integration.ProgramTestOptions{
 		SkipRefresh: true,
 		Quick:       true,
@@ -34,6 +41,12 @@ func getBaseOptions(t *testing.T) integration.ProgramTestOptions {
 		},
 		Config: map[string]string{
 			"aws:region": awsRegion,
+		},
+		LocalProviders: []integration.LocalDependency{
+			{
+				Package: "aws-apigateway",
+				Path:    binPath,
+			},
 		},
 	}
 }

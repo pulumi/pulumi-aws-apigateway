@@ -1,5 +1,35 @@
 name: Release provider & SDKs
 on:
+  workflow_call:
+    inputs:
+      version:
+        description: "Version to be released"
+        type: string
+        required: true
+      publishProvider:
+        description: "Publish provider binaries (to GH & S3)"
+        default: true
+        type: boolean
+      publishNpm:
+        description: "Publish Node.js SDK"
+        default: true
+        type: boolean
+      publishNuget:
+        description: "Publish .NET SDK"
+        default: true
+        type: boolean
+      publishPython:
+        description: "Publish Python SDK"
+        default: true
+        type: boolean
+      publishJava:
+        description: "Publish Java SDK"
+        default: true
+        type: boolean
+      publishGo:
+        description: "Publish Go SDK"
+        default: true
+        type: boolean
   workflow_dispatch:
     inputs:
       version:
@@ -60,7 +90,7 @@ env:
   SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
   PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
   PUBLISH_REPO_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-  PACKAGE_VERSION: ${{ inputs.version }}
+  PROVIDER_VERSION: ${{ inputs.version }}
   DOTNET_VERSION: "6.x"
   GO_VERSION: "1.21.x"
   JAVA_VERSION: "11"
@@ -178,14 +208,14 @@ jobs:
         run: make build_${{ matrix.language }}_sdk VERSION=${{ inputs.version }}
 
       - name: Check worktree clean
-        run: |
-          git update-index -q --refresh
-          if ! git diff-files --quiet; then
-              >&2 echo "error: working tree is not clean, aborting!"
-              git status
-              git diff
-              exit 1
-          fi
+        uses: pulumi/git-status-check-action@v1
+        with:
+          allowed-changes: |
+            sdk/**/pulumi-plugin.json
+            sdk/dotnet/Pulumi.*.csproj
+            sdk/go/**/pulumiUtilities.go
+            sdk/nodejs/package.json
+            sdk/python/pyproject.toml
 
       - name: Publish Python SDK
         if: ${{ inputs.publishPython && matrix.language == 'python' }}
@@ -194,6 +224,7 @@ jobs:
           user: ${{ env.PYPI_USERNAME }}
           password: ${{ env.PYPI_PASSWORD }}
           packages-dir: ${{github.workspace}}/sdk/python/bin/dist
+          skip-existing: true
 
       - name: Publish Node SDK
         if: ${{ inputs.publishNpm && matrix.language == 'nodejs' }}
@@ -210,13 +241,79 @@ jobs:
           echo "done publishing packages"
 
       - name: Publish Java SDK
-        if: ${{ inputs.publishJava && matrix.language == 'java' }}
+        # Disable Java SDK publishing for pre-release versions
+        if: ${{ inputs.publishJava && matrix.language == 'java' && !contains(inputs.version, '-') }}
         uses: gradle/gradle-build-action@v3
         with:
           arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
           build-root-directory: ./sdk/java
           gradle-version: 8.3
 
-      - name: Publish Go SDK
+      - uses: pulumi/publish-go-sdk-action@v1
         if: ${{ inputs.publishGo && matrix.language == 'go' }}
-        run: git tag sdk/v${{ inputs.version }} && git push origin sdk/v${{ inputs.version }}
+        with:
+          repository: ${{ github.repository }}
+          base-ref: ${{ github.sha }}
+          source: sdk
+          path: sdk
+          version: ${{ inputs.version }}
+          additive: false
+          # Avoid including other language SDKs & artifacts in the commit
+          files: |
+            go.*
+            go/**
+            !*.tar.gz
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: us-west-2
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-duration-seconds: 3600
+          role-session-name: aws-apigateway@githubActions
+          role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
+
+      - name: Verify nodejs release
+        if: ${{ inputs.publishNpm && matrix.language == 'nodejs' }}
+        uses: pulumi/verify-provider-release@v1
+        with:
+          runtime: nodejs
+          directory: examples/simple
+          provider: aws-apigateway
+          providerVersion: ${{ inputs.version }}
+
+      - name: Get python version
+        id: python-package-version
+        if: ${{ inputs.publishPython && matrix.language == 'python' }}
+        run: |
+          {
+            echo -n "version="
+            cat sdk/python/pyproject.toml | sed -nE 's/.*version.*=.*"(.+)"/\1/p'
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Wait for python package to be available
+        if: ${{ inputs.publishPython && matrix.language == 'python' }}
+        timeout-minutes: 15
+        continue-on-error: true
+        run: |
+          while ! (pip index versions --pre pulumi-aws-apigateway | grep -q " ${{ steps.python-package-version.outputs.version }}"); do sleep 5; done
+
+      - name: Verify python release
+        if: ${{ inputs.publishPython && matrix.language == 'python' }}
+        uses: pulumi/verify-provider-release@v1
+        with:
+          runtime: python
+          directory: examples/simple-py
+          provider: aws-apigateway
+          providerVersion: ${{ inputs.version }}
+          packageVersion: ${{ steps.python-package-version.outputs.version }}
+
+      - name: Verify go release
+        if: ${{ inputs.publishGo && matrix.language == 'go' }}
+        uses: pulumi/verify-provider-release@v1
+        with:
+          runtime: go
+          directory: examples/simple-go
+          provider: aws-apigateway
+          providerVersion: ${{ inputs.version }}

@@ -36,6 +36,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      - uses: pulumi/provider-version-action@v1
+        id: provider-version
+        with:
+          set-env: "PROVIDER_VERSION"
+
       - name: Install Go
         uses: actions/setup-go@v4
         with:
@@ -76,26 +81,20 @@ jobs:
         with:
           repo: pulumi/pulumictl
 
-      - name: Set PACKAGE_VERSION to Env
-        env:
-          PACKAGE_VERSION: ${{ inputs.version }}
-        run: echo "PACKAGE_VERSION=$PACKAGE_VERSION" >>
-          $GITHUB_ENV
-
       - name: Build & Install Provider & SDKs
         run: |
           make build
           make install
 
       - name: Check worktree clean
-        run: |
-          git update-index -q --refresh
-          if ! git diff-files --quiet; then
-              >&2 echo "error: working tree is not clean, aborting!"
-              git status
-              git diff
-              exit 1
-          fi
+        uses: pulumi/git-status-check-action@v1
+        with:
+          allowed-changes: |
+            sdk/**/pulumi-plugin.json
+            sdk/dotnet/Pulumi.*.csproj
+            sdk/go/**/pulumiUtilities.go
+            sdk/nodejs/package.json
+            sdk/python/pyproject.toml
 
       - name: Install gotestfmt
         uses: GoTestTools/gotestfmt-action@v2
@@ -104,7 +103,7 @@ jobs:
           version: v2.4.0
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-region: ${{ env.AWS_REGION }}

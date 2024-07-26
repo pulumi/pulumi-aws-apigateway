@@ -10,6 +10,7 @@ import com.pulumi.awsapigateway.inputs.RouteArgs;
 import com.pulumi.awsapigateway.inputs.SwaggerGatewayResponseArgs;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,40 @@ public final class RestAPIArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<List<String>> binaryMediaTypes() {
         return Optional.ofNullable(this.binaryMediaTypes);
+    }
+
+    /**
+     * Description of the REST API.
+     * 
+     */
+    @Import(name="description")
+    private @Nullable Output<String> description;
+
+    /**
+     * @return Description of the REST API.
+     * 
+     */
+    public Optional<Output<String>> description() {
+        return Optional.ofNullable(this.description);
+    }
+
+    /**
+     * Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+     * your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+     * clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+     * 
+     */
+    @Import(name="disableExecuteApiEndpoint")
+    private @Nullable Output<Boolean> disableExecuteApiEndpoint;
+
+    /**
+     * @return Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+     * your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+     * clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+     * 
+     */
+    public Optional<Output<Boolean>> disableExecuteApiEndpoint() {
+        return Optional.ofNullable(this.disableExecuteApiEndpoint);
     }
 
     /**
@@ -168,17 +203,37 @@ public final class RestAPIArgs extends com.pulumi.resources.ResourceArgs {
         return Optional.ofNullable(this.swaggerString);
     }
 
+    /**
+     * &#39;Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+     * tags with matching keys will overwrite those defined at the provider-level.
+     * 
+     */
+    @Import(name="tags")
+    private @Nullable Output<Map<String,String>> tags;
+
+    /**
+     * @return &#39;Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+     * tags with matching keys will overwrite those defined at the provider-level.
+     * 
+     */
+    public Optional<Output<Map<String,String>>> tags() {
+        return Optional.ofNullable(this.tags);
+    }
+
     private RestAPIArgs() {}
 
     private RestAPIArgs(RestAPIArgs $) {
         this.apiKeySource = $.apiKeySource;
         this.binaryMediaTypes = $.binaryMediaTypes;
+        this.description = $.description;
+        this.disableExecuteApiEndpoint = $.disableExecuteApiEndpoint;
         this.gatewayResponses = $.gatewayResponses;
         this.requestValidator = $.requestValidator;
         this.routes = $.routes;
         this.stageName = $.stageName;
         this.staticRoutesBucket = $.staticRoutesBucket;
         this.swaggerString = $.swaggerString;
+        this.tags = $.tags;
     }
 
     public static Builder builder() {
@@ -234,6 +289,52 @@ public final class RestAPIArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder binaryMediaTypes(String... binaryMediaTypes) {
             return binaryMediaTypes(List.of(binaryMediaTypes));
+        }
+
+        /**
+         * @param description Description of the REST API.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder description(@Nullable Output<String> description) {
+            $.description = description;
+            return this;
+        }
+
+        /**
+         * @param description Description of the REST API.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder description(String description) {
+            return description(Output.of(description));
+        }
+
+        /**
+         * @param disableExecuteApiEndpoint Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+         * your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+         * clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder disableExecuteApiEndpoint(@Nullable Output<Boolean> disableExecuteApiEndpoint) {
+            $.disableExecuteApiEndpoint = disableExecuteApiEndpoint;
+            return this;
+        }
+
+        /**
+         * @param disableExecuteApiEndpoint Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
+         * your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
+         * clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder disableExecuteApiEndpoint(Boolean disableExecuteApiEndpoint) {
+            return disableExecuteApiEndpoint(Output.of(disableExecuteApiEndpoint));
         }
 
         /**
@@ -358,6 +459,29 @@ public final class RestAPIArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder swaggerString(String swaggerString) {
             return swaggerString(Output.of(swaggerString));
+        }
+
+        /**
+         * @param tags &#39;Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+         * tags with matching keys will overwrite those defined at the provider-level.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder tags(@Nullable Output<Map<String,String>> tags) {
+            $.tags = tags;
+            return this;
+        }
+
+        /**
+         * @param tags &#39;Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
+         * tags with matching keys will overwrite those defined at the provider-level.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder tags(Map<String,String> tags) {
+            return tags(Output.of(tags));
         }
 
         public RestAPIArgs build() {
