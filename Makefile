@@ -4,7 +4,6 @@ PACK            := aws-apigateway
 PROJECT         := github.com/pulumi/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
-CODEGEN         := pulumi-gen-${PACK}
 VERSION_PATH    := provider/pkg/version.Version
 
 JAVA_GEN := pulumi-java-gen
@@ -46,7 +45,7 @@ bin/gotestfmt:
 
 gen_go_sdk: .pulumi/bin/pulumi
 	rm -rf go
-	cd provider/cmd/${CODEGEN} && go run . go "${PROVIDER_VERSION}" ../../../sdk/go ${SCHEMA_PATH}
+	.pulumi/bin/pulumi package gen-sdk "${SCHEMA_PATH}" --language go --version "${PROVIDER_VERSION}"
 
 build_go_sdk: gen_go_sdk
 
@@ -54,7 +53,7 @@ build_go_sdk: gen_go_sdk
 
 gen_dotnet_sdk: .pulumi/bin/pulumi
 	rm -rf sdk/dotnet
-	cd provider/cmd/${CODEGEN} && go run . dotnet "${PROVIDER_VERSION}" ../../../sdk/dotnet ${SCHEMA_PATH}
+	.pulumi/bin/pulumi package gen-sdk "${SCHEMA_PATH}" --language dotnet --version "${PROVIDER_VERSION}"
 	echo "module fake_dotnet_module // Exclude this directory from Go tools\n\ngo 1.17" > sdk/dotnet/go.mod
 
 build_dotnet_sdk: gen_dotnet_sdk
@@ -70,7 +69,7 @@ install_dotnet_sdk: build_dotnet_sdk
 
 gen_nodejs_sdk: .pulumi/bin/pulumi
 	rm -rf sdk/nodejs
-	cd provider/cmd/${CODEGEN} && go run . nodejs "${PROVIDER_VERSION}" ../../../sdk/nodejs ${SCHEMA_PATH}
+	.pulumi/bin/pulumi package gen-sdk "${SCHEMA_PATH}" --language nodejs --version "${PROVIDER_VERSION}"
 	echo "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17" > sdk/nodejs/go.mod
 
 build_nodejs_sdk: gen_nodejs_sdk
@@ -88,7 +87,7 @@ install_nodejs_sdk: build_nodejs_sdk
 
 gen_python_sdk: .pulumi/bin/pulumi
 	rm -rf sdk/python
-	cd provider/cmd/${CODEGEN} && go run . python "${PROVIDER_VERSION}" ../../../sdk/python ${SCHEMA_PATH}
+	.pulumi/bin/pulumi package gen-sdk "${SCHEMA_PATH}" --language python --version "${PROVIDER_VERSION}"
 	cp ${WORKING_DIR}/README.md sdk/python
 	echo "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17" > sdk/python/go.mod
 

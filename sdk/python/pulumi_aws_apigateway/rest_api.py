@@ -239,9 +239,9 @@ class RestAPI(pulumi.ComponentResource):
                  binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  disable_execute_api_endpoint: Optional[pulumi.Input[bool]] = None,
-                 gateway_responses: Optional[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] = None,
+                 gateway_responses: Optional[Mapping[str, pulumi.Input[Union['SwaggerGatewayResponseArgs', 'SwaggerGatewayResponseArgsDict']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
-                 routes: Optional[Sequence[pulumi.InputType['RouteArgs']]] = None,
+                 routes: Optional[Sequence[Union['RouteArgs', 'RouteArgsDict']]] = None,
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
                  swagger_string: Optional[pulumi.Input[str]] = None,
@@ -264,11 +264,11 @@ class RestAPI(pulumi.ComponentResource):
         :param pulumi.Input[bool] disable_execute_api_endpoint: Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
                your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
                clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
-        :param Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
+        :param Mapping[str, pulumi.Input[Union['SwaggerGatewayResponseArgs', 'SwaggerGatewayResponseArgsDict']]] gateway_responses: Define custom gateway responses for the API. This can be used to properly enable
                CORS for Lambda Authorizers.
         :param 'RequestValidator' request_validator: Request Validator specifies the validator to use at the API level. Note method level validators
                override this.
-        :param Sequence[pulumi.InputType['RouteArgs']] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
+        :param Sequence[Union['RouteArgs', 'RouteArgsDict']] routes: Routes to use to initialize the APIGateway.  These will be used to create the Swagger
                specification for the API.
                
                Either `swaggerString` or `routes` must be specified.
@@ -314,9 +314,9 @@ class RestAPI(pulumi.ComponentResource):
                  binary_media_types: Optional[Sequence[pulumi.Input[str]]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  disable_execute_api_endpoint: Optional[pulumi.Input[bool]] = None,
-                 gateway_responses: Optional[Mapping[str, pulumi.Input[pulumi.InputType['SwaggerGatewayResponseArgs']]]] = None,
+                 gateway_responses: Optional[Mapping[str, pulumi.Input[Union['SwaggerGatewayResponseArgs', 'SwaggerGatewayResponseArgsDict']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
-                 routes: Optional[Sequence[pulumi.InputType['RouteArgs']]] = None,
+                 routes: Optional[Sequence[Union['RouteArgs', 'RouteArgsDict']]] = None,
                  stage_name: Optional[pulumi.Input[str]] = None,
                  static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
                  swagger_string: Optional[pulumi.Input[str]] = None,
