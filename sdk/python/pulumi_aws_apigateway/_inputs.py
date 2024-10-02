@@ -4,20 +4,101 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 from ._enums import *
 import pulumi_aws
 
 __all__ = [
     'AuthorizerArgs',
+    'AuthorizerArgsDict',
     'RequiredParameterArgs',
+    'RequiredParameterArgsDict',
     'RouteArgs',
+    'RouteArgsDict',
     'SwaggerGatewayResponseArgs',
+    'SwaggerGatewayResponseArgsDict',
     'TargetArgs',
+    'TargetArgsDict',
 ]
+
+MYPY = False
+
+if not MYPY:
+    class AuthorizerArgsDict(TypedDict):
+        """
+        LambdaAuthorizer provides the definition for a custom Authorizer for API Gateway.
+        """
+        parameter_name: str
+        """
+        parameterName is the name of the header or query parameter containing the authorization
+        token. Must be "Unused" for multiple identity sources.
+        """
+        auth_type: NotRequired[str]
+        """
+        Specifies the authorization mechanism for the client. Typical values are "oauth2" or "custom".
+        """
+        authorizer_name: NotRequired[str]
+        """
+        The name for the Authorizer to be referenced as. This must be unique for each unique
+        authorizer within the API. If no name if specified, a name will be generated for you.
+        """
+        authorizer_result_ttl_in_seconds: NotRequired[float]
+        """
+        The number of seconds during which the resulting IAM policy is cached. Default is 300s. You
+        can set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an
+        authorizer across more than one route you will want to disable the cache or else it will
+        cause problems for you.
+        """
+        handler: NotRequired[pulumi.Input['pulumi_aws.lambda_.Function']]
+        """
+        The authorizerHandler specifies information about the authorizing Lambda.
+        """
+        identity_source: NotRequired[Sequence[str]]
+        """
+        List of mapping expressions of the request parameters as the identity source. This indicates
+        where in the request identity information is expected. Applicable for the authorizer of the
+        "request" type only. Example: ["method.request.header.HeaderAuth1",
+        "method.request.querystring.QueryString1"]
+        """
+        identity_validation_expression: NotRequired[str]
+        """
+        A regular expression for validating the token as the incoming identity. It only invokes the
+        authorizer's lambda if there is a match, else it will return a 401. This does not apply to
+        REQUEST Lambda Authorizers. Example: "^x-[a-z]+".
+        """
+        methods_to_authorize: NotRequired[Sequence[str]]
+        """
+        For method authorization, you can define resource servers and custom scopes by specifying the
+        "resource-server/scope". e.g. ["com.hamuta.movies/drama.view",
+        "http://my.resource.com/file.read"] For more information on resource servers and custom
+        scopes visit the AWS documentation -
+        https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html
+        """
+        parameter_location: NotRequired[str]
+        """
+        Defines where in the request API Gateway should look for identity information. The value must
+        be "header" or "query". If there are multiple identity sources, the value must be "header".
+        """
+        provider_arns: NotRequired[Sequence[pulumi.Input[str]]]
+        """
+        The ARNs of the Cognito User Pools to use.
+        """
+        type: NotRequired[str]
+        """
+        The type of the authorizer. This value must be one of the following:
+        - "token", for an authorizer with the caller identity embedded in an authorization token
+        - "request", for an authorizer with the caller identity contained in request parameters
+        """
+elif False:
+    AuthorizerArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class AuthorizerArgs:
@@ -237,6 +318,13 @@ class AuthorizerArgs:
         pulumi.set(self, "type", value)
 
 
+if not MYPY:
+    class RequiredParameterArgsDict(TypedDict):
+        in_: NotRequired[pulumi.Input[str]]
+        name: NotRequired[pulumi.Input[str]]
+elif False:
+    RequiredParameterArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class RequiredParameterArgs:
     def __init__(__self__, *,
@@ -265,6 +353,77 @@ class RequiredParameterArgs:
     def name(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "name", value)
 
+
+if not MYPY:
+    class RouteArgsDict(TypedDict):
+        """
+        A route that that APIGateway should accept and forward to some type of destination. All routes
+        have an incoming path that they match against.  However, destinations are determined by the kind
+        of the route.
+        """
+        path: str
+        """
+        The path on the API that will serve this route.  If not prefixed with `/`,
+        then a `/` will be added automatically to the beginning.
+        """
+        api_key_required: NotRequired[bool]
+        """
+        If true, an API key will be required for this route. The source for the API Key can be set at
+        the API level and by default, the source will be the HEADER.
+        """
+        authorizers: NotRequired[Sequence['AuthorizerArgsDict']]
+        """
+        Authorizers allows you to define Lambda authorizers be applied for authorization when the
+        the route is called.
+        """
+        content_type: NotRequired[str]
+        """
+        The `content-type` to serve the file as.  Only valid when `localPath` points to a file.  If
+        `localPath` points to a directory, the content types for all files will be inferred.
+        """
+        data: NotRequired[Any]
+        """
+        A raw Swagger object to include verbatim in the integration for this path.
+        """
+        event_handler: NotRequired[pulumi.Input['pulumi_aws.lambda_.Function']]
+        """
+        A Lambda function which will handle the route for the given path and method.
+        """
+        iam_auth_enabled: NotRequired[bool]
+        """
+        By default, the route method auth type is set to `NONE`. If true, the auth type will be
+        set to `AWS_IAM`.
+        """
+        index: NotRequired[Union[str, bool]]
+        """
+        By default a `localPath` hosting static content will also serve 'index.html' in response to a request on a directory.
+        To disable this pass `false` or supply a new index document name.
+        """
+        local_path: NotRequired[str]
+        """
+        The local path on disk to create static S3 resources for.  Files will be uploaded into S3
+        objects, and directories will be recursively walked into.
+        """
+        method: NotRequired['Method']
+        """
+        The REST method of the route to match.  Only valid with `eventHandler` or `data` routes.
+        """
+        request_validator: NotRequired['RequestValidator']
+        """
+        Request Validator specifies the validator to use at the method level. This will override anything
+        defined at the API level.
+        """
+        required_parameters: NotRequired[Sequence['RequiredParameterArgsDict']]
+        """
+        Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
+        gateway will validate these before sending traffic to the event handler.
+        """
+        target: NotRequired[pulumi.Input['TargetArgsDict']]
+        """
+        The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
+        """
+elif False:
+    RouteArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class RouteArgs:
@@ -502,6 +661,14 @@ class RouteArgs:
         pulumi.set(self, "target", value)
 
 
+if not MYPY:
+    class SwaggerGatewayResponseArgsDict(TypedDict):
+        response_parameters: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        response_templates: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        status_code: NotRequired[pulumi.Input[float]]
+elif False:
+    SwaggerGatewayResponseArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class SwaggerGatewayResponseArgs:
     def __init__(__self__, *,
@@ -542,6 +709,94 @@ class SwaggerGatewayResponseArgs:
     def status_code(self, value: Optional[pulumi.Input[float]]):
         pulumi.set(self, "status_code", value)
 
+
+if not MYPY:
+    class TargetArgsDict(TypedDict):
+        type: pulumi.Input['IntegrationType']
+        """
+        Specifies an API method integration type. The valid value is one of the following:
+
+        * `aws`: for integrating the API method request with an AWS service action, including the Lambda
+        function-invoking action. With the Lambda function-invoking action, this is referred to as
+        the Lambda custom integration. With any other AWS service action, this is known as AWS
+        integration.
+
+        * `aws_proxy`: for integrating the API method request with the Lambda function-invoking action
+        with the client request passed through as-is. This integration is also referred to as the
+        Lambda proxy integration.
+
+        * `http`: for integrating the API method request with an HTTP endpoint, including a private HTTP
+        endpoint within a VPC. This integration is also referred to as the HTTP custom integration.
+
+        * `http_proxy`: for integrating the API method request with an HTTP endpoint, including a private
+        HTTP endpoint within a VPC, with the client request passed through as-is. This is also
+        referred to as the HTTP proxy integration.
+
+        * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
+        without invoking any backend.
+        """
+        connection_id: NotRequired[pulumi.Input[str]]
+        """
+        The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
+        otherwise.
+        """
+        connection_type: NotRequired[pulumi.Input['IntegrationConnectionType']]
+        """
+        The type of the network connection to the integration endpoint. The valid value is `INTERNET`
+        for connections through the public routable internet or `VPC_LINK` for private connections
+        between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
+        """
+        http_method: NotRequired[pulumi.Input[str]]
+        """
+        Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
+        """
+        passthrough_behaviour: NotRequired[pulumi.Input['IntegrationPassthroughBehavior']]
+        """
+        Specifies how the method request body of an unmapped content type will be passed through the
+        integration request to the back end without transformation.
+
+        The valid value is one of the following:
+
+        * `WHEN_NO_MATCH`: passes the method request body through the integration request to the back end
+        without transformation when the method request content type does not match any content type
+        associated with the mapping templates defined in the integration request.
+
+        * `WHEN_NO_TEMPLATES`: passes the method request body through the integration request to the back
+        end without transformation when no mapping template is defined in the integration request. If
+        a template is defined when this option is selected, the method request of an unmapped
+        content-type will be rejected with an HTTP 415 Unsupported Media Type response.
+
+        * `NEVER`: rejects the method request with an HTTP 415 Unsupported Media Type response when
+        either the method request content type does not match any content type associated with the
+        mapping templates defined in the integration request or no mapping template is defined in the
+        integration request.
+
+        Defaults to `WHEN_NO_MATCH` if unspecified.
+        """
+        uri: NotRequired[pulumi.Input[str]]
+        """
+        Specifies Uniform Resource Identifier (URI) of the integration endpoint.
+
+        For HTTP or HTTP_PROXY integrations, the URI must be a fully formed, encoded HTTP(S) URL
+        according to the RFC-3986 specification, for either standard integration, where
+        connectionType is not VPC_LINK, or private integration, where connectionType is VPC_LINK. For
+        a private HTTP integration, the URI is not used for routing.
+
+        For AWS or AWS_PROXY integrations, the URI is of the form
+        arn:aws:apigateway:{region}:{subdomain.service|service}:path|action/{service_api}. Here,
+        {Region} is the API Gateway region (e.g., us-east-1); {service} is the name of the integrated
+        AWS service (e.g., s3); and {subdomain} is a designated subdomain supported by certain AWS
+        service for fast host-name lookup. action can be used for an AWS service action-based API,
+        using an Action={name}&{p1}={v1}&p2={v2}... query string. The ensuing {service_api} refers to
+        a supported action {name} plus any required input parameters. Alternatively, path can be used
+        for an AWS service path-based API. The ensuing service_api refers to the path to an AWS
+        service resource, including the region of the integrated AWS service, if applicable. For
+        example, for integration with the S3 API of GetObject, the uri can be either
+        arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
+        arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
+        """
+elif False:
+    TargetArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class TargetArgs:
