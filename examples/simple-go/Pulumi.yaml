@@ -1,3 +1,0 @@
-name: simple-go-apigateway
-runtime: go
-description: A minimal AWS Go Pulumi program
