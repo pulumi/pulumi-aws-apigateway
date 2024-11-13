@@ -44,7 +44,7 @@ func testProviderUpgrade(t *testing.T, dir, baselineVersion string) {
 		opttest.DownloadProviderVersion(providerName, baselineVersion),
 		opttest.LocalProviderPath(providerName, filepath.Join(cwd, "..", "..", "bin")),
 	)
-	result := providertest.PreviewProviderUpgrade(test, providerName, baselineVersion,
+	result := providertest.PreviewProviderUpgrade(t, test, providerName, baselineVersion,
 		optproviderupgrade.DisableAttach(),
 	)
 	assertpreview.HasNoReplacements(t, result)
