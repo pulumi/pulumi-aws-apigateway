@@ -1,5 +1,6 @@
 ---
 name: aws-apigateway
+displayName: AWS API Gateway
 description: Pulumi Amazon Web Services (AWS) API Gateway Components.
 repository: https://github.com/pulumi/pulumi-aws-apigateway
 license: Apache-2.0
