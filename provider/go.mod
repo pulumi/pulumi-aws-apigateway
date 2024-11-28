@@ -5,7 +5,7 @@ go 1.21.0
 toolchain go1.21.1
 
 require (
-	github.com/pulumi/providertest v0.0.15
+	github.com/pulumi/providertest v0.1.3
 	github.com/stretchr/testify v1.9.0
 )
 
