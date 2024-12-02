@@ -120,7 +120,7 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Install Pulumi CLI
-        uses: pulumi/actions@v4
+        uses: pulumi/actions@c7fad9e2f0b79653172b36538b8b34b3c0291952 # v6
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -173,7 +173,7 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Install Pulumi CLI
-        uses: pulumi/actions@v4
+        uses: pulumi/actions@c7fad9e2f0b79653172b36538b8b34b3c0291952 # v6
 
       # Required by Makefile::bin/pulumi-java-gen
       - name: Install pulumictl
