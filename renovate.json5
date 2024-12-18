@@ -1,0 +1,15 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["github>pulumi/renovate-config//default.json5"],
+  packageRules: [
+    {
+      // Update metadata when aws-apigateway is bumped.
+      matchDatasources: ["npm"],
+      matchPackageNames: ["@pulumi/aws-apigateway"],
+      postUpgradeTasks: {
+        commands: ["make renovate"],
+        executionMode: "branch", // Only run once.
+      },
+    },
+  ]
+}
