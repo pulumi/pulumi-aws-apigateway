@@ -32,7 +32,6 @@ build_provider:
 
 install_provider: build_provider
 
-.PHONY: test_provider
 test_provider: bin/gotestfmt
 test_provider:
 	cd provider && PATH="$(WORKING_DIR)/bin:$(PATH)" go test -v -json -tags=all -timeout 2h ./... | tee /tmp/gotest.log | gotestfmt
@@ -138,3 +137,7 @@ test: PATH := $(WORKING_DIR)/bin:$(PATH)
 test:
 	@export PATH
 	cd examples && go test -v -json -tags=all -timeout 2h . 2>&1 | tee /tmp/gotest.log | gotestfmt
+
+renovate:	build
+
+.PHONY: build build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk build_go_sdk build_java_sdk generate gen_go_sdk gen_nodejs_sdk gen_python_sdk gen_dotnet_sdk gen_java_sdk install install_provider install_nodejs_sdk install_dotnet_sdk renovate
