@@ -148,7 +148,7 @@ test:
 	@export PATH
 	cd examples && go test -v -json -tags=all -timeout 2h . 2>&1 | tee /tmp/gotest.log | gotestfmt
 
-renovate:	build
+renovate: generate
 
 bin/pulumictl: bin/pulumictl-version.$(PULUMICTL_VERSION).txt
 	@mkdir -p bin
