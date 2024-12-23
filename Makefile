@@ -12,6 +12,10 @@ JAVA_GEN_VERSION := v0.9.7
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
 
+GOPATH := $(shell go env GOPATH)
+
+PULUMICTL_VERSION := v0.0.47
+
 export PULUMI_IGNORE_AMBIENT_PLUGINS = true
 
 build: build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk build_go_sdk build_java_sdk
@@ -25,6 +29,7 @@ install: install_provider install_nodejs_sdk install_dotnet_sdk
 build_provider:
 	cd provider/cmd/${PROVIDER}/ && \
 		yarn install --frozen-lockfile && \
+		yarn check-duplicate-deps && \
 		yarn tsc && \
 		cp package.json ../../../schema.yaml ./bin && \
 		sed -i.bak -e "s/\$${VERSION}/$(PROVIDER_VERSION)/g" bin/package.json && \
@@ -99,9 +104,15 @@ build_python_sdk: gen_python_sdk
 		../venv/bin/python -m build .
 
 # Java SDK
-bin/pulumi-java-gen:
-	mkdir -p bin/
-	pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
+
+bin/pulumi-java-gen-version.$(JAVA_GEN_VERSION).txt:
+	@mkdir -p bin/
+	@rm -f bin/pulumi-java-gen.v*
+	@echo "$(JAVA_GEN_VERSION)" >"$@"
+
+bin/pulumi-java-gen: bin/pulumi-java-gen-version.$(JAVA_GEN_VERSION).txt bin/pulumictl
+	@mkdir -p bin/
+	bin/pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
 
 gen_java_sdk: bin/pulumi-java-gen
 	rm -rf sdk/java
@@ -138,6 +149,15 @@ test:
 	@export PATH
 	cd examples && go test -v -json -tags=all -timeout 2h . 2>&1 | tee /tmp/gotest.log | gotestfmt
 
-renovate:	build
+renovate: generate
 
-.PHONY: build build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk build_go_sdk build_java_sdk generate gen_go_sdk gen_nodejs_sdk gen_python_sdk gen_dotnet_sdk gen_java_sdk install install_provider install_nodejs_sdk install_dotnet_sdk renovate
+bin/pulumictl: bin/pulumictl-version.$(PULUMICTL_VERSION).txt
+	@mkdir -p bin
+	@go install "github.com/pulumi/pulumictl/cmd/pulumictl@$(PULUMICTL_VERSION)"
+	@cp $(GOPATH)/bin/pulumictl "$@"
+
+bin/pulumictl-version.$(PULUMICTL_VERSION).txt:
+	@mkdir -p bin
+	@echo $(PULUMICTL_VERSION) > "$@"
+
+.PHONY: build build_dotnet_sdk build_go_sdk build_java_sdk build_nodejs_sdk build_provider build_python_sdk gen_dotnet_sdk gen_go_sdk gen_java_sdk gen_nodejs_sdk gen_python_sdk generate install install_dotnet_sdk install_nodejs_sdk install_provider renovate
