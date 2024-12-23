@@ -29,6 +29,7 @@ install: install_provider install_nodejs_sdk install_dotnet_sdk
 build_provider:
 	cd provider/cmd/${PROVIDER}/ && \
 		yarn install --frozen-lockfile && \
+		yarn check-duplicate-deps && \
 		yarn tsc && \
 		cp package.json ../../../schema.yaml ./bin && \
 		sed -i.bak -e "s/\$${VERSION}/$(PROVIDER_VERSION)/g" bin/package.json && \
