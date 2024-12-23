@@ -12,6 +12,11 @@ JAVA_GEN_VERSION := v0.9.7
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.yaml
 
+GOPATH := $(shell go env GOPATH)
+
+PULUMICTL_VERSION := v0.0.47
+PULUMICTL_BIN := $(shell which pulumictl 2>/dev/null)
+
 export PULUMI_IGNORE_AMBIENT_PLUGINS = true
 
 build: build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk build_go_sdk build_java_sdk
@@ -99,9 +104,9 @@ build_python_sdk: gen_python_sdk
 		../venv/bin/python -m build .
 
 # Java SDK
-bin/pulumi-java-gen:
-	mkdir -p bin/
-	pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
+bin/pulumi-java-gen: ensure-pulumictl
+	@mkdir -p bin/
+	@$(PULUMICTL_BIN) download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
 
 gen_java_sdk: bin/pulumi-java-gen
 	rm -rf sdk/java
@@ -140,4 +145,10 @@ test:
 
 renovate:	build
 
-.PHONY: build build_dotnet_sdk build_go_sdk build_java_sdk build_nodejs_sdk build_provider build_python_sdk gen_dotnet_sdk gen_go_sdk gen_java_sdk gen_nodejs_sdk gen_python_sdk generate install install_dotnet_sdk install_nodejs_sdk install_provider renovate
+ensure-pulumictl:
+ifeq ($(PULUMICTL_BIN),)
+	@if [ ! -f "$(GOPATH)/bin/pulumictl" ]; then go install "github.com/pulumi/pulumictl/cmd/pulumictl@$(PULUMICTL_VERSION)"; fi
+	@$(eval PULUMICTL_BIN=$(GOPATH)/bin/pulumictl)
+endif
+
+.PHONY: build build_dotnet_sdk build_go_sdk build_java_sdk build_nodejs_sdk build_provider build_python_sdk ensure-pulumictl gen_dotnet_sdk gen_go_sdk gen_java_sdk gen_nodejs_sdk gen_python_sdk generate install install_dotnet_sdk install_nodejs_sdk install_provider renovate
