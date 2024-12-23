@@ -140,4 +140,4 @@ test:
 
 renovate:	build
 
-.PHONY: build build_provider build_nodejs_sdk build_python_sdk build_dotnet_sdk build_go_sdk build_java_sdk generate gen_go_sdk gen_nodejs_sdk gen_python_sdk gen_dotnet_sdk gen_java_sdk install install_provider install_nodejs_sdk install_dotnet_sdk renovate
+.PHONY: build build_dotnet_sdk build_go_sdk build_java_sdk build_nodejs_sdk build_provider build_python_sdk gen_dotnet_sdk gen_go_sdk gen_java_sdk gen_nodejs_sdk gen_python_sdk generate install install_dotnet_sdk install_nodejs_sdk install_provider renovate
