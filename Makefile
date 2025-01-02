@@ -110,9 +110,9 @@ bin/pulumi-java-gen-version.$(JAVA_GEN_VERSION).txt:
 	@rm -f bin/pulumi-java-gen.v*
 	@echo "$(JAVA_GEN_VERSION)" >"$@"
 
-bin/pulumi-java-gen: bin/pulumi-java-gen-version.$(JAVA_GEN_VERSION).txt bin/pulumictl
+bin/pulumi-java-gen: bin/pulumi-java-gen-version.$(JAVA_GEN_VERSION).txt
 	@mkdir -p bin/
-	bin/pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
+	pulumictl download-binary -n pulumi-language-java -v $(JAVA_GEN_VERSION) -r pulumi/pulumi-java
 
 gen_java_sdk: bin/pulumi-java-gen
 	rm -rf sdk/java
@@ -150,14 +150,5 @@ test:
 	cd examples && go test -v -json -tags=all -timeout 2h . 2>&1 | tee /tmp/gotest.log | gotestfmt
 
 renovate: generate
-
-bin/pulumictl: bin/pulumictl-version.$(PULUMICTL_VERSION).txt
-	@mkdir -p bin
-	@go install "github.com/pulumi/pulumictl/cmd/pulumictl@$(PULUMICTL_VERSION)"
-	@cp $(GOPATH)/bin/pulumictl "$@"
-
-bin/pulumictl-version.$(PULUMICTL_VERSION).txt:
-	@mkdir -p bin
-	@echo $(PULUMICTL_VERSION) > "$@"
 
 .PHONY: build build_dotnet_sdk build_go_sdk build_java_sdk build_nodejs_sdk build_provider build_python_sdk gen_dotnet_sdk gen_go_sdk gen_java_sdk gen_nodejs_sdk gen_python_sdk generate install install_dotnet_sdk install_nodejs_sdk install_provider renovate
