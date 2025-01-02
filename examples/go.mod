@@ -1,11 +1,13 @@
 module github.com/pulumi/pulumi-aws-apigateway/examples
 
-go 1.22
+go 1.23
+
+toolchain go1.23.4
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.27.11
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.23.2
-	github.com/pulumi/providertest v0.1.3
+	github.com/pulumi/providertest v0.1.4
 	github.com/pulumi/pulumi/pkg/v3 v3.144.1
 	github.com/pulumi/pulumi/sdk/v3 v3.144.1
 	github.com/stretchr/testify v1.9.0
