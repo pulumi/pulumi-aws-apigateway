@@ -32,6 +32,7 @@ const (
 	DotNet Language = "dotnet"
 	Go     Language = "go"
 	Python Language = "python"
+	Schema Language = "schema"
 )
 
 func main() {
@@ -51,15 +52,21 @@ func main() {
 	var schemaFile string
 	var version string
 	var base string
-	if len(args) < 5 {
-		printUsage()
-		os.Exit(1)
+	if language != Schema {
+		if len(args) < 5 {
+			printUsage()
+			os.Exit(1)
+		}
+		base, schemaFile, version = args[2], args[3], args[4]
+	} else if len(args) >= 3 {
+		version = args[2]
 	}
-	base, schemaFile, version = args[2], args[3], args[4]
 
 	switch language {
 	case Nodejs, DotNet, Go, Python:
 		generateSDK(language, schemaFile, base, version)
+	case Schema:
+		generateSchema()
 	default:
 		panic(fmt.Sprintf("Unrecognized language %q", language))
 	}
@@ -73,6 +80,24 @@ func generateSDK(lang Language, schemaPath, base, version string) {
 
 	if err != nil {
 		fmt.Printf("Error generating SDK: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func generateSchema() {
+	// Read contents of schema.yaml file.
+	contents, err := os.ReadFile("../../../schema.yaml")
+	if err != nil {
+		fmt.Printf("Error reading schema.yaml: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Write contents to schema.json file. Note: the content is still a yaml file as gen-sdk can accept a yaml file.
+	// We call it schema.json to keep the same signature as the other providers.
+	outputPath := "../pulumi-resource-aws-apigateway/schema.json"
+	err = os.WriteFile(outputPath, contents, 0644)
+	if err != nil {
+		fmt.Printf("Error writing schema.json: %v\n", err)
 		os.Exit(1)
 	}
 }
