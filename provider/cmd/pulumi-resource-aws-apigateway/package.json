@@ -21,6 +21,7 @@
   "scripts": {
     "format": "prettier -w .",
     "dedupe-deps": "yarn-deduplicate",
-    "check-duplicate-deps": "yarn-deduplicate --fail"
+    "check-duplicate-deps": "yarn-deduplicate --fail",
+    "build": "SCHEMA=./schema.json ./scripts/build.sh"
   }
 }
