@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-aws-apigateway/provider
+module github.com/pulumi/pulumi-aws-apigateway/provider/v2
 
 go 1.23
 
