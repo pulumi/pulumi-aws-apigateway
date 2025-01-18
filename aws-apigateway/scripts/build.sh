@@ -45,7 +45,6 @@ VERSION=$(jq -r .version "${SCHEMA}")
 
 yarn install --no-progress --frozen-lockfile
 yarn check-duplicate-deps
-yarn gen-types
 yarn tsc
 cp ${SCHEMA} bin/schema.json
 cp package.json bin/package.json
