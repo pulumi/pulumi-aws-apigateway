@@ -118,18 +118,15 @@ func generateSDK(lang Language, schemaPath, base, version string) error {
 }
 
 func generateSchema() error {
-	// Read contents of schema.yaml file.
-	contents, err := os.ReadFile("schema.yaml")
+	contents, err := os.ReadFile("schema.json")
 	if err != nil {
-		return fmt.Errorf("error reading schema.yaml: %w", err)
+		return fmt.Errorf("error reading schema.json: %w", err)
 	}
 
-	// Write contents to schema.json file. Note: the content is still a yaml file as gen-sdk can accept a yaml file.
-	// We call it schema.json to keep the same signature as the other providers.
-	outputPath := "provider/cmd/pulumi-resource-aws-apigateway/schema.yaml"
+	outputPath := "provider/cmd/pulumi-resource-aws-apigateway/schema.json"
 	err = os.WriteFile(outputPath, contents, 0644)
 	if err != nil {
-		return fmt.Errorf("error writing schema.yaml: %w", err)
+		return fmt.Errorf("error writing schema.json: %w", err)
 	}
 
 	return nil
