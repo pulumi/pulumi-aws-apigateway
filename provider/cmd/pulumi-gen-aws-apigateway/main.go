@@ -97,7 +97,7 @@ func generate(language Language, cwd string) error {
 	case Schema:
 		return generateSchema()
 	case Nodejs, DotNet, Go, Python:
-		schemaPath := filepath.Join(cwd, "provider/pulumi-resource-aws-apigateway/schema.json")
+		schemaPath := filepath.Join(cwd, "provider/cmd/pulumi-resource-aws-apigateway/schema-embed.json")
 		return generateSDK(language, schemaPath, cwd, version.Version)
 	default:
 		return fmt.Errorf("unrecognized language %q", language)
