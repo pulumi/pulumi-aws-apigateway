@@ -6,7 +6,10 @@ toolchain go1.23.4
 
 require (
 	github.com/pulumi/providertest v0.1.4
+	github.com/pulumi/pulumi/pkg/v3 v3.143.0
+	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
@@ -132,7 +135,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.10.0 // indirect
-	github.com/pulumi/pulumi/pkg/v3 v3.143.0 // indirect
 	github.com/pulumi/pulumi/sdk/v3 v3.143.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
@@ -143,7 +145,6 @@ require (
 	github.com/segmentio/encoding v0.4.0 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.3.0 // indirect
-	github.com/spf13/cobra v1.8.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
