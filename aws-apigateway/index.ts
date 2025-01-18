@@ -18,7 +18,7 @@ import { Provider } from "./provider";
 import { parse } from "yaml";
 
 function main(args: string[]) {
-  const file = readFileSync(require.resolve("./schema.yaml"), "utf8");
+  const file = readFileSync(require.resolve("./schema.json"), "utf8");
   const schema = JSON.stringify(parse(file));
   let version: string = require("./package.json").version;
   // Node allows for the version to be prefixed by a "v",

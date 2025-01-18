@@ -22,7 +22,6 @@ import (
 	"os"
 
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
-	"gopkg.in/yaml.v2"
 )
 
 func main() {
@@ -31,15 +30,15 @@ func main() {
 		log.Fatal("version not found")
 	}
 
-	schemaContents, err := os.ReadFile("./schema.yaml")
+	schemaContents, err := os.ReadFile("./schema.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var packageSpec schema.PackageSpec
-	err = yaml.Unmarshal(schemaContents, &packageSpec)
+	err = json.Unmarshal(schemaContents, &packageSpec)
 	if err != nil {
-		log.Fatalf("cannot deserialize schema from yaml: %v", err)
+		log.Fatalf("cannot deserialize schema: %v", err)
 	}
 
 	packageSpec.Version = version
