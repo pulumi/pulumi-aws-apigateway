@@ -22,8 +22,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pulumi/pulumi-aws-apigateway/provider/v2/pkg/version"
 	"github.com/spf13/cobra"
+
+	"github.com/pulumi/pulumi-aws-apigateway/provider/v2/pkg/version"
 )
 
 const Tool = "pulumi-gen-aws-apigateway"
@@ -105,7 +106,9 @@ func generate(language Language, cwd string) error {
 }
 
 func generateSDK(lang Language, schemaPath, base, version string) error {
-	genSDKCmd := exec.Command(filepath.Join(base, ".pulumi/bin/pulumi"), "package", "gen-sdk", schemaPath, "--language", string(lang), "--version", version)
+	genSDKCmd := exec.Command(
+		filepath.Join(base, ".pulumi/bin/pulumi"),
+		"package", "gen-sdk", schemaPath, "--language", string(lang), "--version", version)
 	genSDKCmd.Dir = base
 	out, err := genSDKCmd.CombinedOutput()
 	fmt.Println(string(out))
