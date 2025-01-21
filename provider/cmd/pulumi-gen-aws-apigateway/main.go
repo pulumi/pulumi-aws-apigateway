@@ -26,8 +26,9 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 
-	"github.com/pulumi/pulumi-aws-apigateway/provider/v2/pkg/version"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
+
+	"github.com/pulumi/pulumi-aws-apigateway/provider/v2/pkg/version"
 )
 
 const Tool = "pulumi-gen-aws-apigateway"
