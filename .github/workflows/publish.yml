@@ -98,7 +98,13 @@ jobs:
         {
           echo 'summary<<EOF'
           if [[ "$LAST_VERSION" != "No stable release" ]]; then
-            schema-tools compare --provider="aws-apigateway" --old-commit="$LAST_VERSION" --repository="github://api.github.com/pulumi" --new-commit="--local-path=provider/cmd/pulumi-resource-aws-apigateway/schema.json"
+            if [[ "$LAST_VERSION" == "v2.6.1" ]]; then
+              # v2.6.1 is a special case where we want to compare against main instead of the last stable release.
+              # This is required since v2.6.1 does not store the schema in the expected location. Once v2.6.2 is released,
+              # we can remove this special case.
+                LAST_VERSION="main"
+            fi
+              schema-tools compare --provider="aws-apigateway" --old-commit="$LAST_VERSION" --repository="github://api.github.com/pulumi" --new-commit="--local-path=provider/cmd/pulumi-resource-aws-apigateway/schema.json"
           fi
           echo 'EOF'
         } >> "$GITHUB_OUTPUT"
