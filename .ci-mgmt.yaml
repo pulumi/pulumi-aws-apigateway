@@ -54,7 +54,6 @@ actions:
         role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
 
 releaseVerification:
-  nodejs: examples/vpc/nodejs/default-args
-  python: examples/cloudtrail/python
-  dotnet: examples/cloudtrail/dotnet
-  go: examples/cloudtrail/go
+  nodejs: examples/simple
+  python: examples/simple-py
+  go: examples/simple-go
