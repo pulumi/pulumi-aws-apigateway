@@ -6,6 +6,7 @@ template: generic
 providerDefaultBranch: main
 buildProviderCmd: "OS=$(1) ARCH=$(2) OUT=$(3) yarn --cwd aws-apigateway build"
 renovateCmd: "./scripts/renovate.sh"
+enableMacRunner: true
 
 env:
   AWS_REGION: us-west-2
@@ -54,7 +55,6 @@ actions:
         role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
 
 releaseVerification:
-  nodejs: examples/vpc/nodejs/default-args
-  python: examples/cloudtrail/python
-  dotnet: examples/cloudtrail/dotnet
-  go: examples/cloudtrail/go
+  nodejs: examples/simple
+  python: examples/simple-py
+  go: examples/simple-go

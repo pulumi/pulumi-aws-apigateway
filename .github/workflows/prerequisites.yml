@@ -93,15 +93,15 @@ jobs:
       uses: codecov/codecov-action@1e68e06f1dbfde0e4cefc87efeba9e4643565303 # v5.1.2
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-    # - if: inputs.is_pr
-    #   name: Check Schema is Valid
-    #   run: |
-    #     EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-    #     {
-    #       echo "SCHEMA_CHANGES<<$EOF";
-    #       schema-tools compare -r github://api.github.com/pulumi -p aws-apigateway -o "${{ inputs.default_branch }}" -n --local-path=schema.yaml;
-    #       echo "$EOF";
-    #     } >> "$GITHUB_ENV"
+    - if: inputs.is_pr
+      name: Check Schema is Valid
+      run: |
+        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+        {
+          echo "SCHEMA_CHANGES<<$EOF";
+          schema-tools compare -r github://api.github.com/pulumi -p aws-apigateway -o "${{ inputs.default_branch }}" -n --local-path=provider/cmd/pulumi-resource-aws-apigateway/schema.json;
+          echo "$EOF";
+        } >> "$GITHUB_ENV"
     - if: inputs.is_pr && inputs.is_automated == false && github.actor != 'dependabot[bot]'
       name: Comment on PR with Details of Schema Check
       uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
