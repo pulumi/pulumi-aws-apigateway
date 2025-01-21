@@ -16,6 +16,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -23,8 +24,10 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
 
 	"github.com/pulumi/pulumi-aws-apigateway/provider/v2/pkg/version"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 )
 
 const Tool = "pulumi-gen-aws-apigateway"
@@ -59,7 +62,7 @@ func parseLanguage(text string) (Language, error) {
 			allLangStrings = append(allLangStrings, string(lang))
 		}
 		all := strings.Join(allLangStrings, ", ")
-		return "", fmt.Errorf(`Invalid language: %q, supported values include: %s`, text, all)
+		return "", fmt.Errorf(`invalid language: %q, supported values include: %s`, text, all)
 	}
 }
 
@@ -121,18 +124,32 @@ func generateSDK(lang Language, schemaPath, base, version string) error {
 }
 
 func generateSchema() error {
-	contents, err := os.ReadFile("schema.json")
+	contents, err := os.ReadFile("schema.yaml")
 	if err != nil {
 		return fmt.Errorf("error reading schema.json: %w", err)
 	}
 
+	jsonSchema, err := convertYamlSchemaToJSON(contents)
+	if err != nil {
+		return fmt.Errorf("error converting YAML to JSON: %w", err)
+	}
+
 	outputPath := "provider/cmd/pulumi-resource-aws-apigateway/schema.json"
-	err = os.WriteFile(outputPath, contents, 0644)
+	err = os.WriteFile(outputPath, jsonSchema, 0644)
 	if err != nil {
 		return fmt.Errorf("error writing schema.json: %w", err)
 	}
 
 	return nil
+}
+
+func convertYamlSchemaToJSON(yamlData []byte) ([]byte, error) {
+	var packageSpec schema.PackageSpec
+	if err := yaml.Unmarshal(yamlData, &packageSpec); err != nil {
+		return nil, fmt.Errorf("error unmarshalling YAML: %w", err)
+	}
+
+	return json.MarshalIndent(packageSpec, "", "  ")
 }
 
 func main() {
