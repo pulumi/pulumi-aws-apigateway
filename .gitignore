@@ -18,7 +18,7 @@ ci-scripts/
 *.tar.gz
 
 /provider/cmd/pulumi-resource-*/schema.go
-!provider/cmd/pulumi-resource-*/yarn.lock
+!aws-apigateway/yarn.lock
 
 sdk/java/build
 sdk/java/.gradle
@@ -29,5 +29,6 @@ sdk/java/gradlew.bat
 
 sdk/python/venv
 
+.make
 go.work
 go.work.sum
