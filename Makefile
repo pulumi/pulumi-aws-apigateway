@@ -15,21 +15,18 @@ PULUMI_PROVIDER_BUILD_PARALLELISM ?=
 PULUMI_CONVERT := 0
 PULUMI_MISSING_DOCS_ERROR := true
 
-PULUMICTL_VERSION := v0.0.46
-PULUMICTL := $(shell which pulumictl || \
-	(test ! -e $(WORKING_DIR)/bin/pulumictl && \
-		GOPATH="$(WORKING_DIR)" go install "github.com/pulumi/pulumictl/cmd/pulumictl@$(PULUMICTL_VERSION)"; \
-	echo "$(WORKING_DIR)/bin/pulumictl"))
-
 # Override during CI using `make [TARGET] PROVIDER_VERSION=""` or by setting a PROVIDER_VERSION environment variable
 # Local & branch builds will just used this fixed default version unless specified
 PROVIDER_VERSION ?= 2.0.0-alpha.0+dev
-# Use this normalised version everywhere rather than the raw input to ensure consistency.
-VERSION_GENERIC = $(shell $(PULUMICTL) convert-version --language generic --version "$(PROVIDER_VERSION)")
+
+# Check version doesn't start with a "v" - this is a common mistake
+ifeq ($(shell echo $(PROVIDER_VERSION) | cut -c1),v)
+$(error PROVIDER_VERSION should not start with a "v")
+endif
 
 # Strips debug information from the provider binary to reduce its size and speed up builds
 LDFLAGS_STRIP_SYMBOLS=-s -w
-LDFLAGS_PROJ_VERSION=-X $(PROJECT)/$(VERSION_PATH)=$(VERSION_GENERIC)
+LDFLAGS_PROJ_VERSION=-X $(PROJECT)/$(VERSION_PATH)=$(PROVIDER_VERSION)
 LDFLAGS_UPSTREAM_VERSION=
 LDFLAGS_EXTRAS=
 LDFLAGS=$(LDFLAGS_PROJ_VERSION) $(LDFLAGS_UPSTREAM_VERSION) $(LDFLAGS_EXTRAS) $(LDFLAGS_STRIP_SYMBOLS)
@@ -106,7 +103,7 @@ build_dotnet: .make/build_dotnet
 	$(GEN_ENVS) $(WORKING_DIR)/bin/$(CODEGEN) dotnet --out sdk/dotnet/
 	cd sdk/dotnet/ && \
 		printf "module fake_dotnet_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
-		echo "$(VERSION_GENERIC)" >version.txt
+		echo "$(PROVIDER_VERSION)" >version.txt
 	@touch $@
 .make/build_dotnet: .make/generate_dotnet
 	cd sdk/dotnet/ && dotnet build
@@ -127,12 +124,12 @@ build_go: .make/build_go
 generate_java: .make/generate_java
 build_java: .make/build_java
 .make/generate_java: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
-.make/generate_java: PACKAGE_VERSION := $(VERSION_GENERIC)
+.make/generate_java: PACKAGE_VERSION := $(PROVIDER_VERSION)
 .make/generate_java: .make/install_plugins bin/pulumi-java-gen .make/schema
 	PULUMI_HOME=$(GEN_PULUMI_HOME) PULUMI_CONVERT_EXAMPLES_CACHE_DIR=$(GEN_PULUMI_CONVERT_EXAMPLES_CACHE_DIR) bin/$(JAVA_GEN) generate --schema provider/cmd/$(PROVIDER)/schema.json --out sdk/java  --build gradle-nexus
 	printf "module fake_java_module // Exclude this directory from Go tools\n\ngo 1.17\n" > sdk/java/go.mod
 	@touch $@
-.make/build_java: PACKAGE_VERSION := $(VERSION_GENERIC)
+.make/build_java: PACKAGE_VERSION := $(PROVIDER_VERSION)
 .make/build_java: .make/generate_java
 	cd sdk/java/ && \
 		gradle --console=plain build && \
@@ -200,14 +197,6 @@ install_nodejs_sdk: .make/install_nodejs_sdk
 install_python_sdk:
 .PHONY: install_dotnet_sdk install_go_sdk install_java_sdk install_nodejs_sdk install_python_sdk
 
-# Install Pulumi plugins required for CODEGEN to resolve references
-install_plugins: .make/install_plugins
-.make/install_plugins: export PULUMI_HOME := $(WORKING_DIR)/.pulumi
-.make/install_plugins: export PATH := $(WORKING_DIR)/.pulumi/bin:$(PATH)
-.make/install_plugins: .pulumi/bin/pulumi
-	@touch $@
-.PHONY: install_plugins
-
 lint_provider: provider
 	cd provider && golangci-lint run --path-prefix provider -c ../.golangci.yml
 # `lint_provider.fix` is a utility target meant to be run manually
@@ -253,20 +242,27 @@ tfgen_no_deps: .make/schema
 .make/schema: export PULUMI_MISSING_DOCS_ERROR := $(PULUMI_MISSING_DOCS_ERROR)
 .make/schema: bin/$(CODEGEN) .make/install_plugins .make/upstream
 	$(WORKING_DIR)/bin/$(CODEGEN) schema --out provider/cmd/$(PROVIDER)
-	(cd provider && VERSION=$(VERSION_GENERIC) go generate cmd/$(PROVIDER)/main.go)
+	(cd provider && VERSION=$(PROVIDER_VERSION) go generate cmd/$(PROVIDER)/main.go)
 	@touch $@
 tfgen_build_only: bin/$(CODEGEN)
 bin/$(CODEGEN): provider/*.go provider/go.* .make/upstream
 	(cd provider && go build $(PULUMI_PROVIDER_BUILD_PARALLELISM) -o $(WORKING_DIR)/bin/$(CODEGEN) -ldflags "$(LDFLAGS_PROJ_VERSION) $(LDFLAGS_EXTRAS)" $(PROJECT)/$(PROVIDER_PATH)/cmd/$(CODEGEN))
 .PHONY: tfgen schema tfgen_no_deps tfgen_build_only
 
+# Apply patches to the upstream submodule, if it exists
 upstream: .make/upstream
-.make/upstream:
+# Re-run if the upstream commit or the patches change.
+.make/upstream: $(wildcard patches/*) $(shell ./scripts/upstream.sh file_target)
+	./scripts/upstream.sh init
 	@touch $@
 .PHONY: upstream
 
-bin/pulumi-java-gen: .pulumi-java-gen.version
-	$(PULUMICTL) download-binary -n pulumi-language-java -v v$(shell cat .pulumi-java-gen.version) -r pulumi/pulumi-java
+bin/pulumi-java-gen: PULUMI_JAVA_VERSION := $(shell cat .pulumi-java-gen.version)
+bin/pulumi-java-gen: PLAT := $(shell go version | sed -En "s/go version go.* (.*)\/(.*)/\1-\2/p")
+bin/pulumi-java-gen: PULUMI_JAVA_URL := "https://github.com/pulumi/pulumi-java/releases/download/v$(PULUMI_JAVA_VERSION)/pulumi-language-java-v$(PULUMI_JAVA_VERSION)-$(PLAT).tar.gz"
+bin/pulumi-java-gen:
+	wget -q -O - "$(PULUMI_JAVA_URL)" | tar -xzf - -C $(WORKING_DIR)/bin pulumi-java-gen
+	@touch bin/pulumi-language-java
 
 # To make an immediately observable change to .ci-mgmt.yaml:
 #
@@ -277,114 +273,17 @@ ci-mgmt: .ci-mgmt.yaml
 	go run github.com/pulumi/ci-mgmt/provider-ci@master generate
 .PHONY: ci-mgmt
 
-# Because some codegen depends on the version of the CLI used, we install a local CLI
-# version pinned to the same version as `provider/go.mod`.
-#
-# This logic compares the version of .pulumi/bin/pulumi already installed. If it matches
-# the desired version, we just print. Otherwise we (re)install pulumi at the desired
-# version.
-.pulumi/bin/pulumi: .pulumi/version
-	@if [ -x .pulumi/bin/pulumi ] && [ "v$$(cat .pulumi/version)" = "$$(.pulumi/bin/pulumi version)" ]; then \
-		echo "pulumi/bin/pulumi version: v$$(cat .pulumi/version)"; \
-		touch $@; \
-	else \
-		curl -fsSL https://get.pulumi.com | \
-			HOME=$(WORKING_DIR) sh -s -- --version "$$(cat .pulumi/version)"; \
-	fi
-
-# Compute the version of Pulumi to use by inspecting the Go dependencies of the provider.
-.pulumi/version: provider/go.mod
-	cd provider && go list -f "{{slice .Version 1}}" -m github.com/pulumi/pulumi/pkg/v3 | tee ../$@
-
 # Start debug server for tfgen
 debug_tfgen:
 	dlv  --listen=:2345 --headless=true --api-version=2  exec $(WORKING_DIR)/bin/$(CODEGEN) -- schema --out provider/cmd/$(PROVIDER)
 .PHONY: debug_tfgen
-
-# Provider cross-platform build & packaging
-
-# Set these variables to enable signing of the windows binary
-AZURE_SIGNING_CLIENT_ID ?=
-AZURE_SIGNING_CLIENT_SECRET ?=
-AZURE_SIGNING_TENANT_ID ?=
-AZURE_SIGNING_KEY_VAULT_URI ?=
-SKIP_SIGNING ?=
-
-# These targets assume that the schema-embed.json exists - it's generated by tfgen.
-# We disable CGO to ensure that the binary is statically linked.
-bin/linux-amd64/$(PROVIDER): GOOS := linux
-bin/linux-amd64/$(PROVIDER): GOARCH := amd64
-bin/linux-arm64/$(PROVIDER): GOOS := linux
-bin/linux-arm64/$(PROVIDER): GOARCH := arm64
-bin/darwin-amd64/$(PROVIDER): GOOS := darwin
-bin/darwin-amd64/$(PROVIDER): GOARCH := amd64
-bin/darwin-arm64/$(PROVIDER): GOOS := darwin
-bin/darwin-arm64/$(PROVIDER): GOARCH := arm64
-bin/windows-amd64/$(PROVIDER).exe: GOOS := windows
-bin/windows-amd64/$(PROVIDER).exe: GOARCH := amd64
-bin/%/$(PROVIDER) bin/%/$(PROVIDER).exe: bin/jsign-6.0.jar
-	$(call build_provider_cmd,$(GOOS),$(GOARCH),$(WORKING_DIR)/$@)
-
-	@# Only sign windows binary if fully configured.
-	@# Test variables set by joining with | between and looking for || showing at least one variable is empty.
-	@# Move the binary to a temporary location and sign it there to avoid the target being up-to-date if signing fails.
-	@set -e; \
-	if [[ "${GOOS}-${GOARCH}" = "windows-amd64" && "${SKIP_SIGNING}" != "true" ]]; then \
-		if [[ "|${AZURE_SIGNING_CLIENT_ID}|${AZURE_SIGNING_CLIENT_SECRET}|${AZURE_SIGNING_TENANT_ID}|${AZURE_SIGNING_KEY_VAULT_URI}|" == *"||"* ]]; then \
-			echo "Can't sign windows binaries as required configuration not set: AZURE_SIGNING_CLIENT_ID, AZURE_SIGNING_CLIENT_SECRET, AZURE_SIGNING_TENANT_ID, AZURE_SIGNING_KEY_VAULT_URI"; \
-			echo "To rebuild with signing delete the unsigned $@ and rebuild with the fixed configuration"; \
-			if [[ "${CI}" == "true" ]]; then exit 1; fi; \
-		else \
-			mv $@ $@.unsigned; \
-			az login --service-principal \
-				--username "${AZURE_SIGNING_CLIENT_ID}" \
-				--password "${AZURE_SIGNING_CLIENT_SECRET}" \
-				--tenant "${AZURE_SIGNING_TENANT_ID}" \
-				--output none; \
-			ACCESS_TOKEN=$$(az account get-access-token --resource "https://vault.azure.net" | jq -r .accessToken); \
-			java -jar bin/jsign-6.0.jar \
-				--storetype AZUREKEYVAULT \
-				--keystore "PulumiCodeSigning" \
-				--url "${AZURE_SIGNING_KEY_VAULT_URI}" \
-				--storepass "$${ACCESS_TOKEN}" \
-				$@.unsigned; \
-			mv $@.unsigned $@; \
-			az logout; \
-		fi; \
-	fi
-
-bin/jsign-6.0.jar:
-	wget https://github.com/ebourg/jsign/releases/download/6.0/jsign-6.0.jar --output-document=bin/jsign-6.0.jar
-
-provider-linux-amd64: bin/linux-amd64/$(PROVIDER)
-provider-linux-arm64: bin/linux-arm64/$(PROVIDER)
-provider-darwin-amd64: bin/darwin-amd64/$(PROVIDER)
-provider-darwin-arm64: bin/darwin-arm64/$(PROVIDER)
-provider-windows-amd64: bin/windows-amd64/$(PROVIDER).exe
-.PHONY: provider-linux-amd64 provider-linux-arm64 provider-darwin-amd64 provider-darwin-arm64 provider-windows-amd64
-
-bin/$(PROVIDER)-v$(VERSION_GENERIC)-linux-amd64.tar.gz: bin/linux-amd64/$(PROVIDER)
-bin/$(PROVIDER)-v$(VERSION_GENERIC)-linux-arm64.tar.gz: bin/linux-arm64/$(PROVIDER)
-bin/$(PROVIDER)-v$(VERSION_GENERIC)-darwin-amd64.tar.gz: bin/darwin-amd64/$(PROVIDER)
-bin/$(PROVIDER)-v$(VERSION_GENERIC)-darwin-arm64.tar.gz: bin/darwin-arm64/$(PROVIDER)
-bin/$(PROVIDER)-v$(VERSION_GENERIC)-windows-amd64.tar.gz: bin/windows-amd64/$(PROVIDER).exe
-bin/$(PROVIDER)-v$(VERSION_GENERIC)-%.tar.gz:
-	@mkdir -p dist
-	@# $< is the last dependency (the binary path from above) e.g. bin/linux-amd64/pulumi-resource-xyz
-	@# $@ is the current target e.g. bin/pulumi-resource-xyz-v1.2.3-linux-amd64.tar.gz
-	tar --gzip -cf $@ README.md LICENSE -C $$(dirname $<) .
-
-provider_dist-linux-amd64: bin/$(PROVIDER)-v$(VERSION_GENERIC)-linux-amd64.tar.gz
-provider_dist-linux-arm64: bin/$(PROVIDER)-v$(VERSION_GENERIC)-linux-arm64.tar.gz
-provider_dist-darwin-amd64: bin/$(PROVIDER)-v$(VERSION_GENERIC)-darwin-amd64.tar.gz
-provider_dist-darwin-arm64: bin/$(PROVIDER)-v$(VERSION_GENERIC)-darwin-arm64.tar.gz
-provider_dist-windows-amd64: bin/$(PROVIDER)-v$(VERSION_GENERIC)-windows-amd64.tar.gz
-provider_dist: provider_dist-linux-amd64 provider_dist-linux-arm64 provider_dist-darwin-amd64 provider_dist-darwin-arm64 provider_dist-windows-amd64
-.PHONY: provider_dist-linux-amd64 provider_dist-linux-arm64 provider_dist-darwin-amd64 provider_dist-darwin-arm64 provider_dist-windows-amd64 provider_dist
 renovate_cmd = ./scripts/renovate.sh
 renovate:
 	$(call renovate_cmd)
 .PHONY: renovate
+
+include scripts/plugins.mk
+include scripts/crossbuild.mk
 
 # Permit providers to extend the Makefile with provider-specific Make includes.
 include $(wildcard .mk/*.mk)
