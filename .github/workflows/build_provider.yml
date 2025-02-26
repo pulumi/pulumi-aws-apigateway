@@ -45,17 +45,34 @@ jobs:
         uses: ./.github/actions/setup-tools
         with:
           tools: pulumictl, go
+          # use per-platform/arch caches instead since we are doing cross-builds
+          cache-go: false
+      # Based on https://github.com/actions/cache/blob/main/examples.md#go---modules
+      - name: Get GOCACHE
+        id: gocache
+        shell: bash
+        run: |
+          echo "path=$(go env GOCACHE)" >> "${GITHUB_OUTPUT}"
+      - name: Get GOMODCACHE
+        id: gomodcache
+        shell: bash
+        run: |
+          echo "path=$(go env GOMODCACHE)" >> "${GITHUB_OUTPUT}"
+      - name: Go Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ steps.gocache.outputs.path }}
+            ${{ steps.gomodcache.outputs.path }}
+          key: go-provider-${{ matrix.platform.os }}-${{ matrix.platform.arch }}-${{ hashFiles('provider/go.sum') }}
+          restore-keys: |
+            go-provider-${{ matrix.platform.os }}-${{ matrix.platform.arch }}-
       - name: Prepare local workspace before restoring previously built
         run: make prepare_local_workspace
-      - name: Download schema-embed.json
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
-        with:
-          # Use a pattern to avoid failing if the artifact doesn't exist
-          pattern: schema-embed.*
-          # Avoid creating directories for each artifact
-          merge-multiple: true
-          path: provider/cmd/pulumi-resource-aws-apigateway
+      - name: Restore prerequisites
+        uses: ./.github/actions/download-prerequisites
       - name: Restore makefile progress
+        # This mirrors the targets completed in the prerequisites job
         run: make --touch provider schema
 
       - name: Build provider
