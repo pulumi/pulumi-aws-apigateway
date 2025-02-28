@@ -4,8 +4,8 @@
     "pulumi-resource-aws-apigateway": "bin/index.js"
   },
   "dependencies": {
-    "@pulumi/aws": "6.67.0",
-    "@pulumi/pulumi": "3.148.0",
+    "@pulumi/aws": "6.70.0",
+    "@pulumi/pulumi": "3.153.0",
     "aws-lambda": "^1.0.7",
     "yaml": "^2.2.2"
   },
