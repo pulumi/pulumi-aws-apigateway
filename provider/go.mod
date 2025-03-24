@@ -5,7 +5,7 @@ go 1.23
 toolchain go1.23.4
 
 require (
-	github.com/pulumi/providertest v0.1.6
+	github.com/pulumi/providertest v0.1.7
 	github.com/pulumi/pulumi/pkg/v3 v3.157.0
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.10.0
