@@ -98,8 +98,11 @@ jobs:
         run: |
           [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
           iex ((New-Object System.Net.WebClient).DownloadString('https://get.pulumi.com/esc/install.ps1'))
-          $env:PATH += ";$env:USERPROFILE\.pulumi\bin"
-          Copy-Item "$env:USERPROFILE\.pulumi\bin\esc.exe" "$env:USERPROFILE\.pulumi\bin\esc"
+          Copy-Item "$env:USERPROFILE\.pulumi\bin\esc.exe" "C:\Windows\System32\esc.exe"
+          Copy-Item "$env:USERPROFILE\.pulumi\bin\esc.exe" "C:\Windows\System32\esc"
+      - name: Verify Installation
+        if: ${{ matrix.runner == 'windows-latest' }}
+        run: esc version
       - name: Export AWS Credentials
         uses: pulumi/esc-action@41fd832f44f4820124b5350b5f84a00f741f234e # v1.3.0
         env:
