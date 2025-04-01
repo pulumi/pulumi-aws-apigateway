@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.23.2
 	github.com/pulumi/providertest v0.2.0
 	github.com/pulumi/pulumi/pkg/v3 v3.159.0
-	github.com/pulumi/pulumi/sdk/v3 v3.159.0
+	github.com/pulumi/pulumi/sdk/v3 v3.160.0
 	github.com/stretchr/testify v1.10.0
 )
 
