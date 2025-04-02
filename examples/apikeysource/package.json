@@ -6,7 +6,7 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/aws": "6.74.0",
+        "@pulumi/aws": "6.75.0",
         "@pulumi/aws-apigateway": "1.1.0-alpha.3",
         "@pulumi/pulumi": "3.160.0"
     },
