@@ -464,18 +464,18 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@pulumi/aws@6.75.0":
-  version "6.75.0"
-  resolved "https://registry.yarnpkg.com/@pulumi/aws/-/aws-6.75.0.tgz#0709a997b5c3636aa86d9929334f873894f0a402"
-  integrity sha512-jid+H6rJNyirKTS/cokK1w+Z/0Eu7YMEdSzBLdceZ6f3iRpEcMH/KiqM91N/00dD+Or4Zj9Hi7Mfx/7pJ7xXfg==
+"@pulumi/aws@6.76.0":
+  version "6.76.0"
+  resolved "https://registry.yarnpkg.com/@pulumi/aws/-/aws-6.76.0.tgz#37a224955cb13aed8031c266fee7aa714456b2c8"
+  integrity sha512-rtb4RWSWxYyYGhE/dAeuUfY2+QJKPOftHc7Md+/MZgzgQ+mLhYSe36Oxxv1Msvb1RSxlIfmvfJLrfYiIVUoI2g==
   dependencies:
     "@pulumi/pulumi" "^3.142.0"
     mime "^2.0.0"
 
-"@pulumi/pulumi@3.160.0", "@pulumi/pulumi@^3.142.0":
-  version "3.160.0"
-  resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-3.160.0.tgz#0d7f4ee6c702b97b5c75ccf131db4e284b5303ce"
-  integrity sha512-ZQtryqkvJxuugra2t4a5ROmKFEIazSbpvC/W2Qv2Gmw7UPDxtKiYLJQVX/ZQg06Lu3MfoJ1z3S+gvt71R5OYHw==
+"@pulumi/pulumi@3.161.0", "@pulumi/pulumi@^3.142.0":
+  version "3.161.0"
+  resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-3.161.0.tgz#86a3318de12dc606e12ca30ba924e12c8f7a849b"
+  integrity sha512-3ITJPHHasBA4xVeBDjzaEYLAP0jgYE+SRQRqW+6LJSZD3a+KWn9NY97Cf3/KP0U+AyJo7Nk5tZn0uQ9A+hUNng==
   dependencies:
     "@grpc/grpc-js" "^1.10.1"
     "@logdna/tail-file" "^2.0.6"
@@ -487,7 +487,6 @@
     "@opentelemetry/resources" "^1.28"
     "@opentelemetry/sdk-trace-base" "^1.28"
     "@opentelemetry/sdk-trace-node" "^1.28"
-    "@pulumi/query" "^0.3.0"
     "@types/google-protobuf" "^3.15.5"
     "@types/semver" "^7.5.6"
     "@types/tmp" "^0.2.6"
@@ -506,11 +505,6 @@
     source-map-support "^0.5.6"
     tmp "^0.2.1"
     upath "^1.1.0"
-
-"@pulumi/query@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@pulumi/query/-/query-0.3.0.tgz#f496608e86a18c3dd31b6c533408e2441c29071d"
-  integrity sha512-xfo+yLRM2zVjVEA4p23IjQWzyWl1ZhWOGobsBqRpIarzLvwNH/RAGaoehdxlhx4X92302DrpdIFgTICMN4P38w==
 
 "@sigstore/bundle@^2.3.2":
   version "2.3.2"
