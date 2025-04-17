@@ -237,6 +237,9 @@ class RestAPIArgs:
 
 
 class RestAPI(pulumi.ComponentResource):
+
+    pulumi_type = "aws-apigateway:index:RestAPI"
+
     @overload
     def __init__(__self__,
                  resource_name: str,
