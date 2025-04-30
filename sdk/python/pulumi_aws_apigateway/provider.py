@@ -26,10 +26,8 @@ class ProviderArgs:
         pass
 
 
+@pulumi.type_token("pulumi:providers:aws-apigateway")
 class Provider(pulumi.ProviderResource):
-
-    pulumi_type = "pulumi:providers:aws-apigateway"
-
     @overload
     def __init__(__self__,
                  resource_name: str,
