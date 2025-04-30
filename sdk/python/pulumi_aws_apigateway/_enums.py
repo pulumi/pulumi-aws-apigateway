@@ -3,7 +3,7 @@
 # *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import builtins
-import builtins
+import pulumi
 from enum import Enum
 
 __all__ = [
@@ -16,22 +16,26 @@ __all__ = [
 ]
 
 
+@pulumi.type_token("aws-apigateway:index:APIKeySource")
 class APIKeySource(builtins.str, Enum):
     HEADER = "HEADER"
     AUTHORIZER = "AUTHORIZER"
 
 
+@pulumi.type_token("aws-apigateway:index:IntegrationConnectionType")
 class IntegrationConnectionType(builtins.str, Enum):
     INTERNET = "INTERNET"
     VP_C_LINK = "VPC_LINK"
 
 
+@pulumi.type_token("aws-apigateway:index:IntegrationPassthroughBehavior")
 class IntegrationPassthroughBehavior(builtins.str, Enum):
     WHEN_NO_MATCH = "when_no_match"
     WHEN_NO_TEMPLATES = "when_no_templates"
     NEVER = "never"
 
 
+@pulumi.type_token("aws-apigateway:index:IntegrationType")
 class IntegrationType(builtins.str, Enum):
     AWS = "aws"
     AWS_PROXY = "aws_proxy"
@@ -40,6 +44,7 @@ class IntegrationType(builtins.str, Enum):
     MOCK = "mock"
 
 
+@pulumi.type_token("aws-apigateway:index:Method")
 class Method(builtins.str, Enum):
     ANY = "ANY"
     GET = "GET"
@@ -51,6 +56,7 @@ class Method(builtins.str, Enum):
     HEAD = "HEAD"
 
 
+@pulumi.type_token("aws-apigateway:index:RequestValidator")
 class RequestValidator(builtins.str, Enum):
     ALL = "ALL"
     PARAM_S_ONLY = "PARAMS_ONLY"

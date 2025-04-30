@@ -236,10 +236,8 @@ class RestAPIArgs:
         pulumi.set(self, "tags", value)
 
 
+@pulumi.type_token("aws-apigateway:index:RestAPI")
 class RestAPI(pulumi.ComponentResource):
-
-    pulumi_type = "aws-apigateway:index:RestAPI"
-
     @overload
     def __init__(__self__,
                  resource_name: str,
