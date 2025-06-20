@@ -8,7 +8,7 @@
     "dependencies": {
         "@pulumi/aws": "6.83.0",
         "@pulumi/aws-apigateway": "1.1.0-alpha.3",
-        "@pulumi/pulumi": "3.177.0"
+        "@pulumi/pulumi": "3.178.0"
     },
     "devDependencies": {
         "@types/node": "^8.0.0"
