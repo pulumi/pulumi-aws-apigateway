@@ -20,7 +20,7 @@
       },
       "packageReferences": {
         "Pulumi": "3.*",
-        "Pulumi.Aws": "6.*"
+        "Pulumi.Aws": "7.0.0-alpha.1"
       },
       "respectSchemaVersion": true
     },
@@ -32,12 +32,12 @@
     },
     "java": {
       "dependencies": {
-        "com.pulumi:aws": "6.59.1"
+        "com.pulumi:aws": "7.0.0-alpha.1"
       }
     },
     "nodejs": {
       "dependencies": {
-        "@pulumi/aws": "^6.59.1"
+        "@pulumi/aws": "^7.0.0-alpha.1"
       },
       "respectSchemaVersion": true
     },
@@ -46,7 +46,7 @@
         "enabled": true
       },
       "requires": {
-        "pulumi-aws": "\u003e=6.59.1,\u003c7.0.0"
+        "pulumi-aws": "\u003e=7.0.0,\u003c8.0.0"
       },
       "respectSchemaVersion": true
     }
@@ -83,7 +83,7 @@
           "description": "The number of seconds during which the resulting IAM policy is cached. Default is 300s. You\ncan set this value to 0 to disable caching. Max value is 3600s. Note - if you are sharing an\nauthorizer across more than one route you will want to disable the cache or else it will\ncause problems for you.\n"
         },
         "handler": {
-          "$ref": "/aws/v6.59.1/schema.json#/resources/aws:lambda%2Ffunction:Function",
+          "$ref": "/aws/v7.0.0-alpha.1/schema.json#/resources/aws:lambda%2Ffunction:Function",
           "description": "The authorizerHandler specifies information about the authorizing Lambda.\n"
         },
         "identitySource": {
@@ -265,7 +265,7 @@
           "description": "A raw Swagger object to include verbatim in the integration for this path.\n"
         },
         "eventHandler": {
-          "$ref": "/aws/v6.59.1/schema.json#/resources/aws:lambda%2Ffunction:Function",
+          "$ref": "/aws/v7.0.0-alpha.1/schema.json#/resources/aws:lambda%2Ffunction:Function",
           "description": "A Lambda function which will handle the route for the given path and method.\n"
         },
         "iamAuthEnabled": {
@@ -386,19 +386,19 @@
       "description": "The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The \nREST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event \nhander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket \nand serves them or (3) an integration target such as an HTTP proxy or service integration.\n",
       "properties": {
         "api": {
-          "$ref": "/aws/v6.59.1/schema.json#/resources/aws:apigateway%2FrestApi:RestApi",
+          "$ref": "/aws/v7.0.0-alpha.1/schema.json#/resources/aws:apigateway%2FrestApi:RestApi",
           "description": "The underlying RestAPI resource.\n"
         },
         "apiPolicy": {
-          "$ref": "/aws/v6.59.1/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy",
+          "$ref": "/aws/v7.0.0-alpha.1/schema.json#/resources/aws:apigateway%2FrestApiPolicy:RestApiPolicy",
           "description": "The underlying RestAPIPolicy resource.\n"
         },
         "deployment": {
-          "$ref": "/aws/v6.59.1/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment",
+          "$ref": "/aws/v7.0.0-alpha.1/schema.json#/resources/aws:apigateway%2Fdeployment:Deployment",
           "description": "The underlying Deployment resource.\n"
         },
         "stage": {
-          "$ref": "/aws/v6.59.1/schema.json#/resources/aws:apigateway%2Fstage:Stage",
+          "$ref": "/aws/v7.0.0-alpha.1/schema.json#/resources/aws:apigateway%2Fstage:Stage",
           "description": "The underlying Stage resource.\n"
         },
         "url": {
@@ -461,7 +461,7 @@
           "description": "The stage name for your API. This will get added as a base path to your API url.\n"
         },
         "staticRoutesBucket": {
-          "$ref": "/aws/v6.59.1/schema.json#/resources/aws:s3%2Fbucket:Bucket",
+          "$ref": "/aws/v7.0.0-alpha.1/schema.json#/resources/aws:s3%2Fbucket:Bucket",
           "description": "Bucket to use for placing resources for static resources.  If not provided a default one will\nbe created on your behalf if any `StaticRoute`s are provided.\n"
         },
         "swaggerString": {
