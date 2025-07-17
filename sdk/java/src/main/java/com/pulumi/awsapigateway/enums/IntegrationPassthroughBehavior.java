@@ -26,7 +26,7 @@ import java.util.StringJoiner;
         }
 
         @Override
-        public String toString() {
+        public java.lang.String toString() {
             return new StringJoiner(", ", "IntegrationPassthroughBehavior[", "]")
                 .add("value='" + this.value + "'")
                 .toString();

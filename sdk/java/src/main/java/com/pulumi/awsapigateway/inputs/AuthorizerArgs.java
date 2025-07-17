@@ -6,6 +6,7 @@ package com.pulumi.awsapigateway.inputs;
 import com.pulumi.aws.lambda.Function;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.Double;
 import java.lang.String;
 import java.util.List;
@@ -441,7 +442,9 @@ public final class AuthorizerArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public AuthorizerArgs build() {
-            $.parameterName = Objects.requireNonNull($.parameterName, "expected parameter 'parameterName' to be non-null");
+            if ($.parameterName == null) {
+                throw new MissingRequiredPropertyException("AuthorizerArgs", "parameterName");
+            }
             return $;
         }
     }
