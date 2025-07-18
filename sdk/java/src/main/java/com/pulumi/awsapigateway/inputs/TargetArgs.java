@@ -9,6 +9,7 @@ import com.pulumi.awsapigateway.enums.IntegrationType;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
 import com.pulumi.core.internal.Codegen;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -502,7 +503,9 @@ public final class TargetArgs extends com.pulumi.resources.ResourceArgs {
 
         public TargetArgs build() {
             $.httpMethod = Codegen.stringProp("httpMethod").output().arg($.httpMethod).getNullable();
-            $.type = Objects.requireNonNull($.type, "expected parameter 'type' to be non-null");
+            if ($.type == null) {
+                throw new MissingRequiredPropertyException("TargetArgs", "type");
+            }
             return $;
         }
     }
