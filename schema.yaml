@@ -468,7 +468,7 @@ language:
       Pulumi.Aws: 7.*
     respectSchemaVersion: true
   go:
-    importBasePath: github.com/pulumi/pulumi-aws-apigateway/sdk/v2/go/apigateway
+    importBasePath: github.com/pulumi/pulumi-aws-apigateway/sdk/v3/go/apigateway
     respectSchemaVersion: true
     generateExtraInputTypes: true
     internalModuleName: utilities
