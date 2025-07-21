@@ -21,14 +21,17 @@ import (
 )
 
 func TestApiUpgrade(t *testing.T) {
+	t.Skip("Skipping for major version upgrade")
 	testProviderUpgrade(t, "api", "1.0.1")
 }
 
 func TestSimpleNoBinaryMediaTypeUpgrade(t *testing.T) {
+	t.Skip("Skipping for major version upgrade")
 	testProviderUpgrade(t, "simple-no-binary-media-type", "2.1.0")
 }
 
 func TestSimpleWithManualSwaggerSpecUpgrade(t *testing.T) {
+	t.Skip("Skipping for major version upgrade")
 	testProviderUpgrade(t, "simple-with-manual-swagger-spec", "2.1.0")
 }
 
