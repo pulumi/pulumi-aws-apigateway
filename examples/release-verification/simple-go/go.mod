@@ -1,11 +1,11 @@
-module github.com/pulumi/pulumi-aws-apigateway/sdk/v3
+module simple-go
 
 go 1.23.0
 
-toolchain go1.24.1
+toolchain go1.24.3
 
 require (
-	github.com/blang/semver v3.5.1+incompatible
+	github.com/pulumi/pulumi-aws-apigateway/sdk/v3 v3.0.0
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.0.0
 	github.com/pulumi/pulumi/sdk/v3 v3.175.0
 )
@@ -21,6 +21,7 @@ require (
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
+	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/charmbracelet/bubbles v0.16.1 // indirect
 	github.com/charmbracelet/bubbletea v0.25.0 // indirect
 	github.com/charmbracelet/lipgloss v0.7.1 // indirect
@@ -70,7 +71,6 @@ require (
 	github.com/skeema/knownhosts v1.3.0 // indirect
 	github.com/spf13/cobra v1.8.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect

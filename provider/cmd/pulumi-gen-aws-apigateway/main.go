@@ -28,7 +28,7 @@ import (
 
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 
-	"github.com/pulumi/pulumi-aws-apigateway/provider/v2/pkg/version"
+	"github.com/pulumi/pulumi-aws-apigateway/provider/v3/pkg/version"
 )
 
 const Tool = "pulumi-gen-aws-apigateway"

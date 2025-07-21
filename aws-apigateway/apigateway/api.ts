@@ -396,8 +396,8 @@ export interface APIArgs {
   gatewayResponses?: Record<string, SwaggerGatewayResponse>;
 
   /**
-   * List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
-   * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
+   * List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
+   * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
    * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
    */
   binaryMediaTypes?: string[];
@@ -533,7 +533,7 @@ export function createAPI(
       args.apiKeySource,
       binaryMediaTypesList,
       args.staticRoutesBucket,
-      args.restApiArgs?.tags,
+      args.restApiArgs?.tags
     );
 
     title = pulumi.output(name);
@@ -614,8 +614,6 @@ export function createAPI(
     {
       ...args.deploymentArgs,
       restApi: restAPI,
-      // Note: Set to empty to avoid creating an implicit stage, we'll create it explicitly below instead.
-      stageName: "",
       // Note: We set `variables` here because it forces recreation of the Deployment object
       // whenever the body hash changes.  Because we use a blank stage name above, there will
       // not actually be any stage created in AWS, and thus these variables will not actually
@@ -632,13 +630,11 @@ export function createAPI(
 
   const permissions = createLambdaPermissions(
     parent,
-    deployment,
+    restAPI,
+    stageName,
     name,
     swaggerLambdas
   );
-
-  // Expose the URL that the API is served at.
-  const url = pulumi.interpolate`${deployment.invokeUrl}${stageName}/`;
 
   // Create a stage, which is an addressable instance of the Rest API. Set it to point at the latest deployment.
   const stage = new aws.apigateway.Stage(
@@ -648,13 +644,19 @@ export function createAPI(
       restApi: restAPI,
       deployment: deployment,
       stageName: stageName,
-      tags: args.stageArgs?.tags || args.restApiArgs?.tags ? {
-        ...args.restApiArgs?.tags,
-        ...args.stageArgs?.tags,
-      } : undefined,
+      tags:
+        args.stageArgs?.tags || args.restApiArgs?.tags
+          ? {
+              ...args.restApiArgs?.tags,
+              ...args.stageArgs?.tags,
+            }
+          : undefined,
     },
     { parent, dependsOn: permissions }
   );
+
+  // Expose the URL that the API is served at.
+  const url = pulumi.interpolate`${stage.invokeUrl}/`;
 
   return {
     restAPI,
@@ -669,7 +671,8 @@ export function createAPI(
 
 function createLambdaPermissions(
   parent: pulumi.Resource,
-  deployment: aws.apigateway.Deployment,
+  restAPI: aws.apigateway.RestApi,
+  stageName: pulumi.Input<string>,
   name: string,
   swaggerLambdas: SwaggerLambdas
 ) {
@@ -689,7 +692,7 @@ function createLambdaPermissions(
             // path on the API. We allow any stage instead of encoding the one known stage that will be
             // deployed by Pulumi because the API Gateway console "Test" feature invokes the route
             // handler with the fake stage `test-invoke-stage`.
-            sourceArn: pulumi.interpolate`${deployment.executionArn}*/${methodAndPath}`,
+            sourceArn: pulumi.interpolate`${restAPI.executionArn}/*/${methodAndPath}`,
           },
           { parent }
         )
@@ -712,7 +715,7 @@ function createSwaggerSpec(
   apikeySource: APIKeySource | undefined,
   binaryMediaTypesList: string[],
   bucketOrArgs: aws.s3.Bucket | aws.s3.BucketArgs | undefined,
-  tags: pulumi.Input<{ [key: string]: pulumi.Input<string> }> | undefined,
+  tags: pulumi.Input<{ [key: string]: pulumi.Input<string> }> | undefined
 ) {
   // Default API Key source to "HEADER"
   apikeySource = apikeySource || "HEADER";
@@ -750,7 +753,7 @@ function createSwaggerSpec(
 
   const swaggerLambdas: SwaggerLambdas = new Map();
 
-  const authorizers = routes.flatMap(r => {
+  const authorizers = routes.flatMap((r) => {
     if (isEventHandler(r) || isStaticRoute(r) || isIntegrationRoute(r)) {
       return r.authorizers ?? [];
     } else {
@@ -780,7 +783,7 @@ function createSwaggerSpec(
         name,
         swagger,
         swaggerLambdas,
-        route,
+        route
       );
     } else if (isStaticRoute(route)) {
       if (!staticRoutesBucket) {
@@ -812,7 +815,7 @@ function createSwaggerSpec(
         throw new pulumi.ResourceError(
           `Multiple authorizers with the same name '${duplicateAuthorizer}' but different configurations are not allowed.`,
           parent
-        );;
+        );
       }
 
       for (const route of routes) {
@@ -828,12 +831,7 @@ function createSwaggerSpec(
     route: IntegrationRoute | RawDataRoute
   ): void {
     if (isIntegrationRoute(route)) {
-      addIntegrationRouteToSwaggerSpec(
-        parent,
-        name,
-        swagger,
-        route,
-      );
+      addIntegrationRouteToSwaggerSpec(parent, name, swagger, route);
     } else {
       addRawDataRouteToSwaggerSpec(parent, name, swagger, route);
     }
@@ -850,23 +848,28 @@ function checkDuplicateAuthorizer(
   authorizers: Authorizer[]
 ): pulumi.Output<string | undefined> {
   const namedAuthorizers: Record<string, Authorizer> = {};
-  const duplicates = authorizers.map((auth) => {
-    if (!auth.authorizerName) {
-      return undefined;
-    }
-
-    if (namedAuthorizers[auth.authorizerName]) {
-      return authorizerEquals(namedAuthorizers[auth.authorizerName], auth).apply((equal) => {
-        if (!equal) {
-          return auth.authorizerName;
-        }
+  const duplicates = authorizers
+    .map((auth) => {
+      if (!auth.authorizerName) {
         return undefined;
-      });
-    } else {
-      namedAuthorizers[auth.authorizerName] = auth;
-      return undefined;
-    }
-  }).filter((verification) => verification !== undefined);
+      }
+
+      if (namedAuthorizers[auth.authorizerName]) {
+        return authorizerEquals(
+          namedAuthorizers[auth.authorizerName],
+          auth
+        ).apply((equal) => {
+          if (!equal) {
+            return auth.authorizerName;
+          }
+          return undefined;
+        });
+      } else {
+        namedAuthorizers[auth.authorizerName] = auth;
+        return undefined;
+      }
+    })
+    .filter((verification) => verification !== undefined);
 
   return pulumi.all(duplicates).apply((duplicates) => {
     return duplicates.find((dupe) => dupe !== undefined);
@@ -883,7 +886,10 @@ function authorizerEquals(
   a: Authorizer,
   b: Authorizer
 ): pulumi.Output<boolean> {
-  if (lambdaAuthorizer.isLambdaAuthorizer(a) && lambdaAuthorizer.isLambdaAuthorizer(b)) {
+  if (
+    lambdaAuthorizer.isLambdaAuthorizer(a) &&
+    lambdaAuthorizer.isLambdaAuthorizer(b)
+  ) {
     const aSimplified = simplifyLambdaAuthorizer(a);
     const bSimplified = simplifyLambdaAuthorizer(b);
 
@@ -895,11 +901,16 @@ function authorizerEquals(
     // Compare the handler functions of the authorizers by resolving their properties
     const aSimplifiedHandler = resolveResourceProperties(a.handler);
     const bSimplifiedHandler = resolveResourceProperties(b.handler);
-    return pulumi.all([aSimplifiedHandler, bSimplifiedHandler]).apply(([aHandler, bHandler]) => {
-      const handlerEqual = isDeepStrictEqual(aHandler, bHandler);
-      return handlerEqual;
-    });
-  } else if (cognitoAuthorizer.isCognitoAuthorizer(a) && cognitoAuthorizer.isCognitoAuthorizer(b)) {
+    return pulumi
+      .all([aSimplifiedHandler, bSimplifiedHandler])
+      .apply(([aHandler, bHandler]) => {
+        const handlerEqual = isDeepStrictEqual(aHandler, bHandler);
+        return handlerEqual;
+      });
+  } else if (
+    cognitoAuthorizer.isCognitoAuthorizer(a) &&
+    cognitoAuthorizer.isCognitoAuthorizer(b)
+  ) {
     return pulumi.all([a, b]).apply(([a, b]) => {
       const providerArnsEqual = isDeepStrictEqual(a, b);
       return providerArnsEqual;
@@ -913,21 +924,26 @@ function authorizerEquals(
 /**
  * Simplifies a resource object by converting its properties into a single output object.
  * This allows for resolving all output properties of the resource at once.
- * 
+ *
  * @param resource - The resource object to simplify.
  * @returns A Pulumi output object containing the simplified properties of the resource.
  */
 function resolveResourceProperties(resource: object): pulumi.Output<{
   [x: string]: any;
 }> {
-  const props = Object.getOwnPropertyNames(resource)
-    .map((key) => pulumi.output(Reflect.get(resource, key)).apply(val => {
+  const props = Object.getOwnPropertyNames(resource).map((key) =>
+    pulumi.output(Reflect.get(resource, key)).apply((val) => {
       return { [key]: val };
-    }));
-  return pulumi.all(props).apply((props) => props.reduce((acc, prop) => ({ ...acc, ...prop }), {}));
+    })
+  );
+  return pulumi
+    .all(props)
+    .apply((props) => props.reduce((acc, prop) => ({ ...acc, ...prop }), {}));
 }
 
-function simplifyLambdaAuthorizer(auth: lambdaAuthorizer.LambdaAuthorizer): Omit<lambdaAuthorizer.LambdaAuthorizer, "handler"> {
+function simplifyLambdaAuthorizer(
+  auth: lambdaAuthorizer.LambdaAuthorizer
+): Omit<lambdaAuthorizer.LambdaAuthorizer, "handler"> {
   const { handler, ...simplifiedAuth } = { ...auth };
   return simplifiedAuth;
 }
@@ -986,7 +1002,7 @@ function addEventHandlerRouteToSwaggerSpec(
   name: string,
   swagger: SwaggerSpec,
   swaggerLambdas: SwaggerLambdas,
-  route: EventHandlerRoute,
+  route: EventHandlerRoute
 ) {
   checkRoute(parent, route, "eventHandler");
   checkRoute(parent, route, "method");
@@ -999,12 +1015,7 @@ function addEventHandlerRouteToSwaggerSpec(
   );
 
   const swaggerOperation = createSwaggerOperationForLambda();
-  addBasePathOptionsToSwagger(
-    parent,
-    swagger,
-    swaggerOperation,
-    route,
-  );
+  addBasePathOptionsToSwagger(parent, swagger, swaggerOperation, route);
   addSwaggerOperation(swagger, route.path, method, swaggerOperation);
 
   let lambdas = swaggerLambdas.get(route.path);
@@ -1035,7 +1046,7 @@ function addBasePathOptionsToSwagger(
   parent: pulumi.Resource,
   swagger: SwaggerSpec,
   swaggerOperation: SwaggerOperation,
-  route: BaseRoute,
+  route: BaseRoute
 ) {
   if (route.authorizers) {
     const authRecords = addAuthorizersToSwagger(
@@ -1288,7 +1299,7 @@ function addStaticRouteToSwaggerSpec(
       key,
       {
         role: role,
-        policyArn: aws.iam.ManagedPolicies.AmazonS3FullAccess,
+        policyArn: aws.iam.ManagedPolicy.AmazonS3FullAccess,
       },
       { parent }
     );
@@ -1321,12 +1332,7 @@ function addStaticRouteToSwaggerSpec(
     createBucketObject(key, route.localPath, route.contentType);
 
     const swaggerOperation = createSwaggerOperationForObjectKey(key, role);
-    addBasePathOptionsToSwagger(
-      parent,
-      swagger,
-      swaggerOperation,
-      route,
-    );
+    addBasePathOptionsToSwagger(parent, swagger, swaggerOperation, route);
     addSwaggerOperation(swagger, route.path, method, swaggerOperation);
   }
 
@@ -1354,8 +1360,8 @@ function addStaticRouteToSwaggerSpec(
       directory.index === false
         ? undefined
         : typeof directory.index === "string"
-          ? directory.index
-          : "index.html";
+        ? directory.index
+        : "index.html";
 
     const indexPath =
       indexFile === undefined ? undefined : fspath.join(startDir, indexFile);
@@ -1392,7 +1398,7 @@ function addStaticRouteToSwaggerSpec(
               parent,
               swagger,
               swaggerOperation,
-              directory,
+              directory
             );
             swagger.paths[directoryServerPath] = {
               [method]: swaggerOperation,
@@ -1412,12 +1418,7 @@ function addStaticRouteToSwaggerSpec(
       role,
       "proxy"
     );
-    addBasePathOptionsToSwagger(
-      parent,
-      swagger,
-      swaggerOperation,
-      directory,
-    );
+    addBasePathOptionsToSwagger(parent, swagger, swaggerOperation, directory);
     addSwaggerOperation(
       swagger,
       proxyPath,
@@ -1433,8 +1434,9 @@ function addStaticRouteToSwaggerSpec(
   ): SwaggerOperation {
     const region = getRegion(bucket);
 
-    const uri = pulumi.interpolate`arn:aws:apigateway:${region}:s3:path/${bucket.bucket
-      }/${objectKey}${pathParameter ? `/{${pathParameter}}` : ``}`;
+    const uri = pulumi.interpolate`arn:aws:apigateway:${region}:s3:path/${
+      bucket.bucket
+    }/${objectKey}${pathParameter ? `/{${pathParameter}}` : ``}`;
 
     const result: SwaggerOperation = {
       responses: {
@@ -1502,7 +1504,7 @@ function addIntegrationRouteToSwaggerSpec(
   parent: pulumi.Resource,
   name: string,
   swagger: SwaggerSpec,
-  route: IntegrationRoute,
+  route: IntegrationRoute
 ) {
   checkRoute(parent, route, "target");
 
@@ -1523,7 +1525,7 @@ function addIntegrationRouteToSwaggerSpec(
     parent,
     swagger,
     swaggerOpWithoutProxyPathParam,
-    route,
+    route
   );
   addSwaggerOperation(
     swagger,
@@ -1540,7 +1542,7 @@ function addIntegrationRouteToSwaggerSpec(
     parent,
     swagger,
     swaggerOpWithProxyPathParam,
-    route,
+    route
   );
   addSwaggerOperation(
     swagger,

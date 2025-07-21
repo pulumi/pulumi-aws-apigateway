@@ -1,6 +1,6 @@
 provider: aws-apigateway
 aws: true
-major-version: 2
+major-version: 3
 template: generic
 
 providerDefaultBranch: main
