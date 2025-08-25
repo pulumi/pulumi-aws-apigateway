@@ -33,23 +33,23 @@ export class RestAPI extends pulumi.ComponentResource {
     /**
      * The underlying RestAPI resource.
      */
-    public /*out*/ readonly api!: pulumi.Output<pulumiAws.apigateway.RestApi>;
+    declare public /*out*/ readonly api: pulumi.Output<pulumiAws.apigateway.RestApi>;
     /**
      * The underlying RestAPIPolicy resource.
      */
-    public /*out*/ readonly apiPolicy!: pulumi.Output<pulumiAws.apigateway.RestApiPolicy | undefined>;
+    declare public /*out*/ readonly apiPolicy: pulumi.Output<pulumiAws.apigateway.RestApiPolicy | undefined>;
     /**
      * The underlying Deployment resource.
      */
-    public /*out*/ readonly deployment!: pulumi.Output<pulumiAws.apigateway.Deployment>;
+    declare public /*out*/ readonly deployment: pulumi.Output<pulumiAws.apigateway.Deployment>;
     /**
      * The underlying Stage resource.
      */
-    public /*out*/ readonly stage!: pulumi.Output<pulumiAws.apigateway.Stage>;
+    declare public /*out*/ readonly stage: pulumi.Output<pulumiAws.apigateway.Stage>;
     /**
      * The URL where the Rest API is exposed.
      */
-    public /*out*/ readonly url!: pulumi.Output<string>;
+    declare public /*out*/ readonly url: pulumi.Output<string>;
 
     /**
      * Create a RestAPI resource with the given unique name, arguments, and options.
@@ -62,17 +62,17 @@ export class RestAPI extends pulumi.ComponentResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            resourceInputs["apiKeySource"] = args ? args.apiKeySource : undefined;
-            resourceInputs["binaryMediaTypes"] = args ? args.binaryMediaTypes : undefined;
-            resourceInputs["description"] = args ? args.description : undefined;
-            resourceInputs["disableExecuteApiEndpoint"] = args ? args.disableExecuteApiEndpoint : undefined;
-            resourceInputs["gatewayResponses"] = args ? args.gatewayResponses : undefined;
-            resourceInputs["requestValidator"] = args ? args.requestValidator : undefined;
-            resourceInputs["routes"] = args ? args.routes : undefined;
-            resourceInputs["stageName"] = args ? args.stageName : undefined;
-            resourceInputs["staticRoutesBucket"] = args ? args.staticRoutesBucket : undefined;
-            resourceInputs["swaggerString"] = args ? args.swaggerString : undefined;
-            resourceInputs["tags"] = args ? args.tags : undefined;
+            resourceInputs["apiKeySource"] = args?.apiKeySource;
+            resourceInputs["binaryMediaTypes"] = args?.binaryMediaTypes;
+            resourceInputs["description"] = args?.description;
+            resourceInputs["disableExecuteApiEndpoint"] = args?.disableExecuteApiEndpoint;
+            resourceInputs["gatewayResponses"] = args?.gatewayResponses;
+            resourceInputs["requestValidator"] = args?.requestValidator;
+            resourceInputs["routes"] = args?.routes;
+            resourceInputs["stageName"] = args?.stageName;
+            resourceInputs["staticRoutesBucket"] = args?.staticRoutesBucket;
+            resourceInputs["swaggerString"] = args?.swaggerString;
+            resourceInputs["tags"] = args?.tags;
             resourceInputs["api"] = undefined /*out*/;
             resourceInputs["apiPolicy"] = undefined /*out*/;
             resourceInputs["deployment"] = undefined /*out*/;
