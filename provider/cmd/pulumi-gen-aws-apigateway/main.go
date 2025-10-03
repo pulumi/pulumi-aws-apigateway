@@ -111,7 +111,7 @@ func generate(language Language, cwd string) error {
 
 func generateSDK(lang Language, schemaPath, base, version string) error {
 	genSDKCmd := exec.Command(
-		filepath.Join(base, ".pulumi/bin/pulumi"),
+		"pulumi",
 		"package", "gen-sdk", schemaPath, "--language", string(lang), "--version", version)
 	genSDKCmd.Dir = base
 	out, err := genSDKCmd.CombinedOutput()
