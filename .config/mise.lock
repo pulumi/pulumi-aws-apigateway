@@ -29,6 +29,11 @@ checksum = "sha256:10ad9e86233e74c0f6590fe5426895de6bf388964210eac34a6d83f38918e
 size = 78563580
 url = "https://dl.google.com/go/go1.24.5.linux-amd64.tar.gz"
 
+[tools.go.platforms.macos-arm64]
+checksum = "sha256:92d30a678f306c327c544758f2d2fa5515aa60abe9dba4ca35fbf9b8bfc53212"
+size = 76284834
+url = "https://dl.google.com/go/go1.24.5.darwin-arm64.tar.gz"
+
 [[tools.golangci-lint]]
 version = "1.64.8"
 backend = "aqua:golangci/golangci-lint"
