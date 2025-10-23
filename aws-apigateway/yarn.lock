@@ -464,18 +464,18 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@pulumi/aws@7.9.0":
-  version "7.9.0"
-  resolved "https://registry.yarnpkg.com/@pulumi/aws/-/aws-7.9.0.tgz#5b0ec5c5379d8f340907e955f72f4de287aacbdc"
-  integrity sha512-tQ3shCfGi+VbpfkViTHguOLA9XgZ13sdGzBMsHePbiG7LkpQTi0y6neBPp+9iWh5/bTZswtM5qqRFNBinWIDjA==
+"@pulumi/aws@7.9.1":
+  version "7.9.1"
+  resolved "https://registry.yarnpkg.com/@pulumi/aws/-/aws-7.9.1.tgz#5e4abe7ebaf7e1f27b1631f306dea185b1657c24"
+  integrity sha512-Uw2P92PbDQbHeW23UReUqqEGnYKCKHGVkOFPYABaSHr+fK1U4YN8KlBihWYF7gI8TxUW7JrYKv7l5uW9PdaQIA==
   dependencies:
     "@pulumi/pulumi" "^3.142.0"
     mime "^2.0.0"
 
-"@pulumi/pulumi@3.203.0", "@pulumi/pulumi@^3.142.0":
-  version "3.203.0"
-  resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-3.203.0.tgz#a0fd2ac723ef2ca38bd64f197031a7f0f49c24fa"
-  integrity sha512-wXGzxYC61DF+YtJYwidxrpvRxn2y3+ML5OUuAQWUzPgM0byEgKotHAhadQ9uvfutSE262mmoqv5skXaDJdBGzQ==
+"@pulumi/pulumi@3.204.0", "@pulumi/pulumi@^3.142.0":
+  version "3.204.0"
+  resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-3.204.0.tgz#6beb880888d880237eb374cd27bfc38050a912e7"
+  integrity sha512-B+FJTd0lJ1/6kl/OHsLzUc/QoNp+0VwOXbhlbCVYzlsPi6UTIdaio25oCOSTFuQEj0gKWkE9m0Rq1d4Pk5DErw==
   dependencies:
     "@grpc/grpc-js" "^1.10.1"
     "@logdna/tail-file" "^2.0.6"
