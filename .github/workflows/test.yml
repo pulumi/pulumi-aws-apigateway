@@ -62,10 +62,8 @@ jobs:
       env:
         MISE_ENV: test
       with:
-        # Latest working version. See https://github.com/jdx/mise/discussions/6781
-        version: 2025.10.16
+        version: 2025.11.6
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        cache_key: "mise-{{platform}}-{{file_hash}}"
         # also save this cache since we are using a different mise env.
         cache_save: true
     - name: Prepare local workspace
@@ -75,7 +73,7 @@ jobs:
     - name: Download bin
       uses: ./.github/actions/download-provider
     - name: Setup Go Cache
-      uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6
+      uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6
       if: matrix.language == 'go' || contains(matrix.language, 'go')
       with:
         cache-dependency-path: |
@@ -105,7 +103,7 @@ jobs:
         requested-token-type: urn:pulumi:token-type:access_token:organization
         export-environment-variables: false
     - name: Export AWS Credentials
-      uses: pulumi/esc-action@6cf9520e68354d86f81c455e8d43eabd58f5c9f5 # v1.5.0
+      uses: pulumi/esc-action@efb0bc8946938f0dfbfa00e829196ec95f0d0ea7 # v1.4.0
       env:
         PULUMI_ACCESS_TOKEN: ${{ steps.generate_pulumi_token.outputs.pulumi-access-token }}
       with:
