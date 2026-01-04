@@ -6,7 +6,7 @@ toolchain go1.24.9
 
 require (
 	github.com/pulumi/providertest v0.6.0
-	github.com/pulumi/pulumi/pkg/v3 v3.207.0
+	github.com/pulumi/pulumi/pkg/v3 v3.214.1
 	github.com/spf13/cobra v1.10.1
 	github.com/stretchr/testify v1.10.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -73,8 +73,8 @@ require (
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
-	github.com/pulumi/esc v0.20.0 // indirect
-	github.com/pulumi/pulumi/sdk/v3 v3.207.0 // indirect
+	github.com/pulumi/esc v0.21.0 // indirect
+	github.com/pulumi/pulumi/sdk/v3 v3.214.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06 // indirect
@@ -83,7 +83,7 @@ require (
 	github.com/segmentio/encoding v0.4.0 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
 	github.com/skeema/knownhosts v1.3.0 // indirect
-	github.com/spf13/pflag v1.0.9 // indirect
+	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
