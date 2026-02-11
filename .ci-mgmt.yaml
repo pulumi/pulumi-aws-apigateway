@@ -55,3 +55,4 @@ releaseVerification:
     nodejs: examples/simple
     python: examples/simple-py
     go: examples/simple-go
+useJavaPackageGenSdk: true
