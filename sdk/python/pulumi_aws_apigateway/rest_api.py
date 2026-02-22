@@ -35,6 +35,7 @@ class RestAPIArgs:
                  tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a RestAPI resource.
+
         :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
                set to true on a route, and this is not defined the value will default to HEADER.
         :param Sequence[pulumi.Input[_builtins.str]] binary_media_types: List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
@@ -259,6 +260,7 @@ class RestAPI(pulumi.ComponentResource):
         hander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket
         and serves them or (3) an integration target such as an HTTP proxy or service integration.
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param 'APIKeySource' api_key_source: The source for the apikey. This can either be a HEADER or AUTHORIZER. If `apiKeyRequired` is
@@ -300,6 +302,7 @@ class RestAPI(pulumi.ComponentResource):
         REST API can define any number of routes, each of which maps a path and HTTP method to one of (1) an event
         hander route that invokes a Lambda Function (2) a local path route which uploads local files into an S3 bucket
         and serves them or (3) an integration target such as an HTTP proxy or service integration.
+
 
         :param str resource_name: The name of the resource.
         :param RestAPIArgs args: The arguments to use to populate this resource's properties.
