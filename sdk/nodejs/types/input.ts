@@ -31,7 +31,7 @@ export interface AuthorizerArgs {
     /**
      * The authorizerHandler specifies information about the authorizing Lambda.
      */
-    handler?: pulumi.Input<pulumiAws.lambda.Function>;
+    handler?: pulumi.Input<pulumiAws.lambda.Function | undefined>;
     /**
      * List of mapping expressions of the request parameters as the identity source. This indicates
      * where in the request identity information is expected. Applicable for the authorizer of the
@@ -76,8 +76,8 @@ export interface AuthorizerArgs {
 }
 
 export interface RequiredParameterArgs {
-    in?: pulumi.Input<string>;
-    name?: pulumi.Input<string>;
+    in?: pulumi.Input<string | undefined>;
+    name?: pulumi.Input<string | undefined>;
 }
 
 /**
@@ -108,7 +108,7 @@ export interface RouteArgs {
     /**
      * A Lambda function which will handle the route for the given path and method.
      */
-    eventHandler?: pulumi.Input<pulumiAws.lambda.Function>;
+    eventHandler?: pulumi.Input<pulumiAws.lambda.Function | undefined>;
     /**
      * By default, the route method auth type is set to `NONE`. If true, the auth type will be
      * set to `AWS_IAM`.
@@ -146,13 +146,13 @@ export interface RouteArgs {
     /**
      * The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
      */
-    target?: pulumi.Input<inputs.TargetArgs>;
+    target?: pulumi.Input<inputs.TargetArgs | undefined>;
 }
 
 export interface SwaggerGatewayResponseArgs {
-    responseParameters?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    responseTemplates?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    statusCode?: pulumi.Input<number>;
+    responseParameters?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
+    responseTemplates?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
+    statusCode?: pulumi.Input<number | undefined>;
 }
 
 export interface TargetArgs {
@@ -160,17 +160,17 @@ export interface TargetArgs {
      * The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
      * otherwise.
      */
-    connectionId?: pulumi.Input<string>;
+    connectionId?: pulumi.Input<string | undefined>;
     /**
      * The type of the network connection to the integration endpoint. The valid value is `INTERNET`
      * for connections through the public routable internet or `VPC_LINK` for private connections
      * between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
      */
-    connectionType?: pulumi.Input<enums.IntegrationConnectionType>;
+    connectionType?: pulumi.Input<enums.IntegrationConnectionType | undefined>;
     /**
      * Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
      */
-    httpMethod?: pulumi.Input<"ANY">;
+    httpMethod?: pulumi.Input<"ANY" | undefined>;
     /**
      * Specifies how the method request body of an unmapped content type will be passed through the
      * integration request to the back end without transformation.
@@ -193,7 +193,7 @@ export interface TargetArgs {
      *
      * Defaults to `WHEN_NO_MATCH` if unspecified.
      */
-    passthroughBehaviour?: pulumi.Input<enums.IntegrationPassthroughBehavior>;
+    passthroughBehaviour?: pulumi.Input<enums.IntegrationPassthroughBehavior | undefined>;
     /**
      * Specifies an API method integration type. The valid value is one of the following:
      *
@@ -238,5 +238,5 @@ export interface TargetArgs {
      * arn:aws:apigateway:us-west-2:s3:action/GetObject&Bucket={bucket}&Key={key} or
      * arn:aws:apigateway:us-west-2:s3:path/{bucket}/{key}.
      */
-    uri?: pulumi.Input<string>;
+    uri?: pulumi.Input<string | undefined>;
 }

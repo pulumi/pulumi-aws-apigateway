@@ -54,7 +54,7 @@ class AuthorizerArgsDict(TypedDict):
     authorizer across more than one route you will want to disable the cache or else it will
     cause problems for you.
     """
-    handler: NotRequired[pulumi.Input['pulumi_aws.lambda_.Function']]
+    handler: NotRequired[pulumi.Input[Optional['pulumi_aws.lambda_.Function']]]
     """
     The authorizerHandler specifies information about the authorizing Lambda.
     """
@@ -102,7 +102,7 @@ class AuthorizerArgs:
                  auth_type: Optional[_builtins.str] = None,
                  authorizer_name: Optional[_builtins.str] = None,
                  authorizer_result_ttl_in_seconds: Optional[_builtins.float] = None,
-                 handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
+                 handler: pulumi.Input[Optional['pulumi_aws.lambda_.Function']] = None,
                  identity_source: Optional[Sequence[_builtins.str]] = None,
                  identity_validation_expression: Optional[_builtins.str] = None,
                  methods_to_authorize: Optional[Sequence[_builtins.str]] = None,
@@ -219,14 +219,14 @@ class AuthorizerArgs:
 
     @_builtins.property
     @pulumi.getter
-    def handler(self) -> Optional[pulumi.Input['pulumi_aws.lambda_.Function']]:
+    def handler(self) -> pulumi.Input[Optional['pulumi_aws.lambda_.Function']]:
         """
         The authorizerHandler specifies information about the authorizing Lambda.
         """
         return pulumi.get(self, "handler")
 
     @handler.setter
-    def handler(self, value: Optional[pulumi.Input['pulumi_aws.lambda_.Function']]):
+    def handler(self, value: pulumi.Input[Optional['pulumi_aws.lambda_.Function']]):
         pulumi.set(self, "handler", value)
 
     @_builtins.property
@@ -315,14 +315,14 @@ class AuthorizerArgs:
 
 
 class RequiredParameterArgsDict(TypedDict):
-    in_: NotRequired[pulumi.Input[_builtins.str]]
-    name: NotRequired[pulumi.Input[_builtins.str]]
+    in_: NotRequired[pulumi.Input[Optional[_builtins.str]]]
+    name: NotRequired[pulumi.Input[Optional[_builtins.str]]]
 
 @pulumi.input_type
 class RequiredParameterArgs:
     def __init__(__self__, *,
-                 in_: Optional[pulumi.Input[_builtins.str]] = None,
-                 name: Optional[pulumi.Input[_builtins.str]] = None):
+                 in_: pulumi.Input[Optional[_builtins.str]] = None,
+                 name: pulumi.Input[Optional[_builtins.str]] = None):
         if in_ is not None:
             pulumi.set(__self__, "in_", in_)
         if name is not None:
@@ -330,20 +330,20 @@ class RequiredParameterArgs:
 
     @_builtins.property
     @pulumi.getter(name="in")
-    def in_(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def in_(self) -> pulumi.Input[Optional[_builtins.str]]:
         return pulumi.get(self, "in_")
 
     @in_.setter
-    def in_(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def in_(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "in_", value)
 
     @_builtins.property
     @pulumi.getter
-    def name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def name(self) -> pulumi.Input[Optional[_builtins.str]]:
         return pulumi.get(self, "name")
 
     @name.setter
-    def name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "name", value)
 
 
@@ -377,7 +377,7 @@ class RouteArgsDict(TypedDict):
     """
     A raw Swagger object to include verbatim in the integration for this path.
     """
-    event_handler: NotRequired[pulumi.Input['pulumi_aws.lambda_.Function']]
+    event_handler: NotRequired[pulumi.Input[Optional['pulumi_aws.lambda_.Function']]]
     """
     A Lambda function which will handle the route for the given path and method.
     """
@@ -410,7 +410,7 @@ class RouteArgsDict(TypedDict):
     Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
     gateway will validate these before sending traffic to the event handler.
     """
-    target: NotRequired[pulumi.Input['TargetArgsDict']]
+    target: NotRequired[pulumi.Input[Optional['TargetArgs']]]
     """
     The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
     """
@@ -423,14 +423,14 @@ class RouteArgs:
                  authorizers: Optional[Sequence['AuthorizerArgs']] = None,
                  content_type: Optional[_builtins.str] = None,
                  data: Optional[Any] = None,
-                 event_handler: Optional[pulumi.Input['pulumi_aws.lambda_.Function']] = None,
+                 event_handler: pulumi.Input[Optional['pulumi_aws.lambda_.Function']] = None,
                  iam_auth_enabled: Optional[_builtins.bool] = None,
                  index: Optional[Union[_builtins.str, _builtins.bool]] = None,
                  local_path: Optional[_builtins.str] = None,
                  method: Optional['Method'] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  required_parameters: Optional[Sequence['RequiredParameterArgs']] = None,
-                 target: Optional[pulumi.Input['TargetArgs']] = None):
+                 target: pulumi.Input[Optional['TargetArgs']] = None):
         """
         A route that that APIGateway should accept and forward to some type of destination. All routes
         have an incoming path that they match against.  However, destinations are determined by the kind
@@ -552,14 +552,14 @@ class RouteArgs:
 
     @_builtins.property
     @pulumi.getter(name="eventHandler")
-    def event_handler(self) -> Optional[pulumi.Input['pulumi_aws.lambda_.Function']]:
+    def event_handler(self) -> pulumi.Input[Optional['pulumi_aws.lambda_.Function']]:
         """
         A Lambda function which will handle the route for the given path and method.
         """
         return pulumi.get(self, "event_handler")
 
     @event_handler.setter
-    def event_handler(self, value: Optional[pulumi.Input['pulumi_aws.lambda_.Function']]):
+    def event_handler(self, value: pulumi.Input[Optional['pulumi_aws.lambda_.Function']]):
         pulumi.set(self, "event_handler", value)
 
     @_builtins.property
@@ -641,28 +641,28 @@ class RouteArgs:
 
     @_builtins.property
     @pulumi.getter
-    def target(self) -> Optional[pulumi.Input['TargetArgs']]:
+    def target(self) -> pulumi.Input[Optional['TargetArgs']]:
         """
         The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
         """
         return pulumi.get(self, "target")
 
     @target.setter
-    def target(self, value: Optional[pulumi.Input['TargetArgs']]):
+    def target(self, value: pulumi.Input[Optional['TargetArgs']]):
         pulumi.set(self, "target", value)
 
 
 class SwaggerGatewayResponseArgsDict(TypedDict):
-    response_parameters: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]
-    response_templates: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]
-    status_code: NotRequired[pulumi.Input[_builtins.float]]
+    response_parameters: NotRequired[pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]]
+    response_templates: NotRequired[pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]]
+    status_code: NotRequired[pulumi.Input[Optional[_builtins.float]]]
 
 @pulumi.input_type
 class SwaggerGatewayResponseArgs:
     def __init__(__self__, *,
-                 response_parameters: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 response_templates: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
-                 status_code: Optional[pulumi.Input[_builtins.float]] = None):
+                 response_parameters: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 response_templates: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 status_code: pulumi.Input[Optional[_builtins.float]] = None):
         if response_parameters is not None:
             pulumi.set(__self__, "response_parameters", response_parameters)
         if response_templates is not None:
@@ -672,29 +672,29 @@ class SwaggerGatewayResponseArgs:
 
     @_builtins.property
     @pulumi.getter(name="responseParameters")
-    def response_parameters(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def response_parameters(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         return pulumi.get(self, "response_parameters")
 
     @response_parameters.setter
-    def response_parameters(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def response_parameters(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "response_parameters", value)
 
     @_builtins.property
     @pulumi.getter(name="responseTemplates")
-    def response_templates(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def response_templates(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         return pulumi.get(self, "response_templates")
 
     @response_templates.setter
-    def response_templates(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def response_templates(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "response_templates", value)
 
     @_builtins.property
     @pulumi.getter(name="statusCode")
-    def status_code(self) -> Optional[pulumi.Input[_builtins.float]]:
+    def status_code(self) -> pulumi.Input[Optional[_builtins.float]]:
         return pulumi.get(self, "status_code")
 
     @status_code.setter
-    def status_code(self, value: Optional[pulumi.Input[_builtins.float]]):
+    def status_code(self, value: pulumi.Input[Optional[_builtins.float]]):
         pulumi.set(self, "status_code", value)
 
 
@@ -722,22 +722,22 @@ class TargetArgsDict(TypedDict):
     * `mock`: for integrating the API method request with API Gateway as a "loop-back" endpoint
     without invoking any backend.
     """
-    connection_id: NotRequired[pulumi.Input[_builtins.str]]
+    connection_id: NotRequired[pulumi.Input[Optional[_builtins.str]]]
     """
     The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
     otherwise.
     """
-    connection_type: NotRequired[pulumi.Input['IntegrationConnectionType']]
+    connection_type: NotRequired[pulumi.Input[Optional['IntegrationConnectionType']]]
     """
     The type of the network connection to the integration endpoint. The valid value is `INTERNET`
     for connections through the public routable internet or `VPC_LINK` for private connections
     between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
     """
-    http_method: NotRequired[pulumi.Input[_builtins.str]]
+    http_method: NotRequired[pulumi.Input[Optional[_builtins.str]]]
     """
     Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
     """
-    passthrough_behaviour: NotRequired[pulumi.Input['IntegrationPassthroughBehavior']]
+    passthrough_behaviour: NotRequired[pulumi.Input[Optional['IntegrationPassthroughBehavior']]]
     """
     Specifies how the method request body of an unmapped content type will be passed through the
     integration request to the back end without transformation.
@@ -760,7 +760,7 @@ class TargetArgsDict(TypedDict):
 
     Defaults to `WHEN_NO_MATCH` if unspecified.
     """
-    uri: NotRequired[pulumi.Input[_builtins.str]]
+    uri: NotRequired[pulumi.Input[Optional[_builtins.str]]]
     """
     Specifies Uniform Resource Identifier (URI) of the integration endpoint.
 
@@ -787,11 +787,11 @@ class TargetArgsDict(TypedDict):
 class TargetArgs:
     def __init__(__self__, *,
                  type: pulumi.Input['IntegrationType'],
-                 connection_id: Optional[pulumi.Input[_builtins.str]] = None,
-                 connection_type: Optional[pulumi.Input['IntegrationConnectionType']] = None,
-                 http_method: Optional[pulumi.Input[_builtins.str]] = None,
-                 passthrough_behaviour: Optional[pulumi.Input['IntegrationPassthroughBehavior']] = None,
-                 uri: Optional[pulumi.Input[_builtins.str]] = None):
+                 connection_id: pulumi.Input[Optional[_builtins.str]] = None,
+                 connection_type: pulumi.Input[Optional['IntegrationConnectionType']] = None,
+                 http_method: pulumi.Input[Optional[_builtins.str]] = None,
+                 passthrough_behaviour: pulumi.Input[Optional['IntegrationPassthroughBehavior']] = None,
+                 uri: pulumi.Input[Optional[_builtins.str]] = None):
         """
         :param pulumi.Input['IntegrationType'] type: Specifies an API method integration type. The valid value is one of the following:
                
@@ -904,7 +904,7 @@ class TargetArgs:
 
     @_builtins.property
     @pulumi.getter(name="connectionId")
-    def connection_id(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def connection_id(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The (id) of the VpcLink used for the integration when connectionType=VPC_LINK and undefined,
         otherwise.
@@ -912,12 +912,12 @@ class TargetArgs:
         return pulumi.get(self, "connection_id")
 
     @connection_id.setter
-    def connection_id(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def connection_id(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "connection_id", value)
 
     @_builtins.property
     @pulumi.getter(name="connectionType")
-    def connection_type(self) -> Optional[pulumi.Input['IntegrationConnectionType']]:
+    def connection_type(self) -> pulumi.Input[Optional['IntegrationConnectionType']]:
         """
         The type of the network connection to the integration endpoint. The valid value is `INTERNET`
         for connections through the public routable internet or `VPC_LINK` for private connections
@@ -926,24 +926,24 @@ class TargetArgs:
         return pulumi.get(self, "connection_type")
 
     @connection_type.setter
-    def connection_type(self, value: Optional[pulumi.Input['IntegrationConnectionType']]):
+    def connection_type(self, value: pulumi.Input[Optional['IntegrationConnectionType']]):
         pulumi.set(self, "connection_type", value)
 
     @_builtins.property
     @pulumi.getter(name="httpMethod")
-    def http_method(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def http_method(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
         """
         return pulumi.get(self, "http_method")
 
     @http_method.setter
-    def http_method(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def http_method(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "http_method", value)
 
     @_builtins.property
     @pulumi.getter(name="passthroughBehaviour")
-    def passthrough_behaviour(self) -> Optional[pulumi.Input['IntegrationPassthroughBehavior']]:
+    def passthrough_behaviour(self) -> pulumi.Input[Optional['IntegrationPassthroughBehavior']]:
         """
         Specifies how the method request body of an unmapped content type will be passed through the
         integration request to the back end without transformation.
@@ -969,12 +969,12 @@ class TargetArgs:
         return pulumi.get(self, "passthrough_behaviour")
 
     @passthrough_behaviour.setter
-    def passthrough_behaviour(self, value: Optional[pulumi.Input['IntegrationPassthroughBehavior']]):
+    def passthrough_behaviour(self, value: pulumi.Input[Optional['IntegrationPassthroughBehavior']]):
         pulumi.set(self, "passthrough_behaviour", value)
 
     @_builtins.property
     @pulumi.getter
-    def uri(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def uri(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Specifies Uniform Resource Identifier (URI) of the integration endpoint.
 
@@ -999,7 +999,7 @@ class TargetArgs:
         return pulumi.get(self, "uri")
 
     @uri.setter
-    def uri(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def uri(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "uri", value)
 
 
