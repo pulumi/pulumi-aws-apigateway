@@ -24,15 +24,15 @@ class RestAPIArgs:
     def __init__(__self__, *,
                  api_key_source: Optional['APIKeySource'] = None,
                  binary_media_types: Optional[Sequence[pulumi.Input[_builtins.str]]] = None,
-                 description: Optional[pulumi.Input[_builtins.str]] = None,
-                 disable_execute_api_endpoint: Optional[pulumi.Input[_builtins.bool]] = None,
+                 description: pulumi.Input[Optional[_builtins.str]] = None,
+                 disable_execute_api_endpoint: pulumi.Input[Optional[_builtins.bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input['SwaggerGatewayResponseArgs']]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence['RouteArgs']] = None,
-                 stage_name: Optional[pulumi.Input[_builtins.str]] = None,
-                 static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
-                 swagger_string: Optional[pulumi.Input[_builtins.str]] = None,
-                 tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
+                 stage_name: pulumi.Input[Optional[_builtins.str]] = None,
+                 static_routes_bucket: pulumi.Input[Optional['pulumi_aws.s3.Bucket']] = None,
+                 swagger_string: pulumi.Input[Optional[_builtins.str]] = None,
+                 tags: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a RestAPI resource.
 
@@ -116,19 +116,19 @@ class RestAPIArgs:
 
     @_builtins.property
     @pulumi.getter
-    def description(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def description(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Description of the REST API.
         """
         return pulumi.get(self, "description")
 
     @description.setter
-    def description(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def description(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "description", value)
 
     @_builtins.property
     @pulumi.getter(name="disableExecuteApiEndpoint")
-    def disable_execute_api_endpoint(self) -> Optional[pulumi.Input[_builtins.bool]]:
+    def disable_execute_api_endpoint(self) -> pulumi.Input[Optional[_builtins.bool]]:
         """
         Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
         your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
@@ -137,7 +137,7 @@ class RestAPIArgs:
         return pulumi.get(self, "disable_execute_api_endpoint")
 
     @disable_execute_api_endpoint.setter
-    def disable_execute_api_endpoint(self, value: Optional[pulumi.Input[_builtins.bool]]):
+    def disable_execute_api_endpoint(self, value: pulumi.Input[Optional[_builtins.bool]]):
         pulumi.set(self, "disable_execute_api_endpoint", value)
 
     @_builtins.property
@@ -183,19 +183,19 @@ class RestAPIArgs:
 
     @_builtins.property
     @pulumi.getter(name="stageName")
-    def stage_name(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def stage_name(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The stage name for your API. This will get added as a base path to your API url.
         """
         return pulumi.get(self, "stage_name")
 
     @stage_name.setter
-    def stage_name(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def stage_name(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "stage_name", value)
 
     @_builtins.property
     @pulumi.getter(name="staticRoutesBucket")
-    def static_routes_bucket(self) -> Optional[pulumi.Input['pulumi_aws.s3.Bucket']]:
+    def static_routes_bucket(self) -> pulumi.Input[Optional['pulumi_aws.s3.Bucket']]:
         """
         Bucket to use for placing resources for static resources.  If not provided a default one will
         be created on your behalf if any `StaticRoute`s are provided.
@@ -203,12 +203,12 @@ class RestAPIArgs:
         return pulumi.get(self, "static_routes_bucket")
 
     @static_routes_bucket.setter
-    def static_routes_bucket(self, value: Optional[pulumi.Input['pulumi_aws.s3.Bucket']]):
+    def static_routes_bucket(self, value: pulumi.Input[Optional['pulumi_aws.s3.Bucket']]):
         pulumi.set(self, "static_routes_bucket", value)
 
     @_builtins.property
     @pulumi.getter(name="swaggerString")
-    def swagger_string(self) -> Optional[pulumi.Input[_builtins.str]]:
+    def swagger_string(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         A Swagger specification already in string form to use to initialize the APIGateway.  Note
         that you must manually provide permission for any route targets to be invoked by API Gateway
@@ -219,12 +219,12 @@ class RestAPIArgs:
         return pulumi.get(self, "swagger_string")
 
     @swagger_string.setter
-    def swagger_string(self, value: Optional[pulumi.Input[_builtins.str]]):
+    def swagger_string(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "swagger_string", value)
 
     @_builtins.property
     @pulumi.getter
-    def tags(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]:
+    def tags(self) -> pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]:
         """
         'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
         tags with matching keys will overwrite those defined at the provider-level.
@@ -232,7 +232,7 @@ class RestAPIArgs:
         return pulumi.get(self, "tags")
 
     @tags.setter
-    def tags(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]]):
+    def tags(self, value: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "tags", value)
 
 
@@ -244,15 +244,15 @@ class RestAPI(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  api_key_source: Optional['APIKeySource'] = None,
                  binary_media_types: Optional[Sequence[pulumi.Input[_builtins.str]]] = None,
-                 description: Optional[pulumi.Input[_builtins.str]] = None,
-                 disable_execute_api_endpoint: Optional[pulumi.Input[_builtins.bool]] = None,
+                 description: pulumi.Input[Optional[_builtins.str]] = None,
+                 disable_execute_api_endpoint: pulumi.Input[Optional[_builtins.bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input[Union['SwaggerGatewayResponseArgs', 'SwaggerGatewayResponseArgsDict']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence[Union['RouteArgs', 'RouteArgsDict']]] = None,
-                 stage_name: Optional[pulumi.Input[_builtins.str]] = None,
-                 static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
-                 swagger_string: Optional[pulumi.Input[_builtins.str]] = None,
-                 tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 stage_name: pulumi.Input[Optional[_builtins.str]] = None,
+                 static_routes_bucket: pulumi.Input[Optional['pulumi_aws.s3.Bucket']] = None,
+                 swagger_string: pulumi.Input[Optional[_builtins.str]] = None,
+                 tags: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         """
         The RestAPI component offers a simple interface for creating a fully functional API Gateway REST API. The
@@ -321,15 +321,15 @@ class RestAPI(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  api_key_source: Optional['APIKeySource'] = None,
                  binary_media_types: Optional[Sequence[pulumi.Input[_builtins.str]]] = None,
-                 description: Optional[pulumi.Input[_builtins.str]] = None,
-                 disable_execute_api_endpoint: Optional[pulumi.Input[_builtins.bool]] = None,
+                 description: pulumi.Input[Optional[_builtins.str]] = None,
+                 disable_execute_api_endpoint: pulumi.Input[Optional[_builtins.bool]] = None,
                  gateway_responses: Optional[Mapping[str, pulumi.Input[Union['SwaggerGatewayResponseArgs', 'SwaggerGatewayResponseArgsDict']]]] = None,
                  request_validator: Optional['RequestValidator'] = None,
                  routes: Optional[Sequence[Union['RouteArgs', 'RouteArgsDict']]] = None,
-                 stage_name: Optional[pulumi.Input[_builtins.str]] = None,
-                 static_routes_bucket: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
-                 swagger_string: Optional[pulumi.Input[_builtins.str]] = None,
-                 tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
+                 stage_name: pulumi.Input[Optional[_builtins.str]] = None,
+                 static_routes_bucket: pulumi.Input[Optional['pulumi_aws.s3.Bucket']] = None,
+                 swagger_string: pulumi.Input[Optional[_builtins.str]] = None,
+                 tags: pulumi.Input[Optional[Mapping[str, pulumi.Input[_builtins.str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
