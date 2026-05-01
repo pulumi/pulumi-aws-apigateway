@@ -108,13 +108,13 @@ export interface RestAPIArgs {
     /**
      * Description of the REST API.
      */
-    description?: pulumi.Input<string>;
+    description?: pulumi.Input<string | undefined>;
     /**
      * Whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke
      * your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that
      * clients use a custom domain name to invoke your API, disable the default endpoint. Defaults to false.
      */
-    disableExecuteApiEndpoint?: pulumi.Input<boolean>;
+    disableExecuteApiEndpoint?: pulumi.Input<boolean | undefined>;
     /**
      * Define custom gateway responses for the API. This can be used to properly enable
      * CORS for Lambda Authorizers.
@@ -135,12 +135,12 @@ export interface RestAPIArgs {
     /**
      * The stage name for your API. This will get added as a base path to your API url.
      */
-    stageName?: pulumi.Input<string>;
+    stageName?: pulumi.Input<string | undefined>;
     /**
      * Bucket to use for placing resources for static resources.  If not provided a default one will
      * be created on your behalf if any `StaticRoute`s are provided.
      */
-    staticRoutesBucket?: pulumi.Input<pulumiAws.s3.Bucket>;
+    staticRoutesBucket?: pulumi.Input<pulumiAws.s3.Bucket | undefined>;
     /**
      * A Swagger specification already in string form to use to initialize the APIGateway.  Note
      * that you must manually provide permission for any route targets to be invoked by API Gateway
@@ -148,10 +148,10 @@ export interface RestAPIArgs {
      *
      * Either `swaggerString` or `routes` must be specified.
      */
-    swaggerString?: pulumi.Input<string>;
+    swaggerString?: pulumi.Input<string | undefined>;
     /**
      * 'Map of tags to assign to the resource. If configured with a provider `defaultTags` configuration block present,
      * tags with matching keys will overwrite those defined at the provider-level.
      */
-    tags?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    tags?: pulumi.Input<{[key: string]: pulumi.Input<string>} | undefined>;
 }
