@@ -121,3 +121,9 @@ export function getRegion(res: pulumi.Resource): pulumi.Output<aws.Region> {
     // uses the provider from the parent resource to fetch the region
     return aws.getRegionOutput({}, { parent: res }).apply(region => region.name as aws.Region);
 }
+
+/** @internal */
+export function getPartition(res: pulumi.Resource): pulumi.Output<string> {
+    // uses the provider from the parent resource to fetch the partition
+    return aws.getPartitionOutput({}, { parent: res }).apply(partition => partition.partition);
+}
