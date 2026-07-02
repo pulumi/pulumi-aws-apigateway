@@ -410,7 +410,7 @@ class RouteArgsDict(TypedDict):
     Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
     gateway will validate these before sending traffic to the event handler.
     """
-    target: NotRequired[pulumi.Input[Optional['TargetArgs']]]
+    target: NotRequired[pulumi.Input[Optional['TargetArgsDict']]]
     """
     The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
     """
