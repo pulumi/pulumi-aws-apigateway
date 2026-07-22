@@ -23,7 +23,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 import type * as awslambda from "aws-lambda";
 
-import { getRegion, ifUndefined, sha1hash } from "./utils";
+import { getPartition, getRegion, ifUndefined, sha1hash } from "./utils";
 
 import { apiKeySecurityDefinition } from "./apikey";
 import * as cognitoAuthorizer from "./cognitoAuthorizer";
@@ -1028,8 +1028,9 @@ function addEventHandlerRouteToSwaggerSpec(
   return;
 
   function createSwaggerOperationForLambda(): SwaggerOperation {
+    const partition = getPartition(parent);
     const region = getRegion(parent);
-    const uri = pulumi.interpolate`arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${lambda.arn}/invocations`;
+    const uri = pulumi.interpolate`arn:${partition}:apigateway:${region}:lambda:path/2015-03-31/functions/${lambda.arn}/invocations`;
 
     return {
       "x-amazon-apigateway-integration": {
@@ -1432,9 +1433,10 @@ function addStaticRouteToSwaggerSpec(
     role: aws.iam.Role,
     pathParameter?: string
   ): SwaggerOperation {
+    const partition = getPartition(bucket);
     const region = getRegion(bucket);
 
-    const uri = pulumi.interpolate`arn:aws:apigateway:${region}:s3:path/${
+    const uri = pulumi.interpolate`arn:${partition}:apigateway:${region}:s3:path/${
       bucket.bucket
     }/${objectKey}${pathParameter ? `/{${pathParameter}}` : ``}`;
 
