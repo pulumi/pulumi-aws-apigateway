@@ -100,8 +100,8 @@ export interface RestAPIArgs {
      */
     apiKeySource?: enums.APIKeySource;
     /**
-     * List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads. 
-     * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension. 
+     * List of binary media types supported by the REST API. By default, the REST API supports only UTF-8-encoded text payloads.
+     * If importing an OpenAPI specification via the body argument, this corresponds to the x-amazon-apigateway-binary-media-types extension.
      * If the argument value is provided and is different than the OpenAPI value, the argument value will override the OpenAPI value.
      */
     binaryMediaTypes?: pulumi.Input<string>[];
