@@ -7,7 +7,7 @@ import warnings
 import sys
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload, Literal
 if sys.version_info >= (3, 11):
     from typing import NotRequired, TypedDict, TypeAlias
 else:
@@ -410,7 +410,7 @@ class RouteArgsDict(TypedDict):
     Required Parameters to validate. If the request validator is set to ALL or PARAMS_ONLY, api
     gateway will validate these before sending traffic to the event handler.
     """
-    target: NotRequired[pulumi.Input[Optional['TargetArgs']]]
+    target: NotRequired[pulumi.Input[Optional['TargetArgsDict']]]
     """
     The target for an integration route (see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html).
     """
@@ -733,7 +733,7 @@ class TargetArgsDict(TypedDict):
     for connections through the public routable internet or `VPC_LINK` for private connections
     between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
     """
-    http_method: NotRequired[pulumi.Input[Optional[_builtins.str]]]
+    http_method: NotRequired[pulumi.Input[Optional[Literal['ANY']]]]
     """
     Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
     """
@@ -789,7 +789,7 @@ class TargetArgs:
                  type: pulumi.Input['IntegrationType'],
                  connection_id: pulumi.Input[Optional[_builtins.str]] = None,
                  connection_type: pulumi.Input[Optional['IntegrationConnectionType']] = None,
-                 http_method: pulumi.Input[Optional[_builtins.str]] = None,
+                 http_method: pulumi.Input[Optional[Literal['ANY']]] = None,
                  passthrough_behaviour: pulumi.Input[Optional['IntegrationPassthroughBehavior']] = None,
                  uri: pulumi.Input[Optional[_builtins.str]] = None):
         """
@@ -818,7 +818,7 @@ class TargetArgs:
         :param pulumi.Input['IntegrationConnectionType'] connection_type: The type of the network connection to the integration endpoint. The valid value is `INTERNET`
                for connections through the public routable internet or `VPC_LINK` for private connections
                between API Gateway and a network load balancer in a VPC. The default value is `INTERNET`.
-        :param pulumi.Input[_builtins.str] http_method: Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
+        :param pulumi.Input[Literal['ANY']] http_method: Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
         :param pulumi.Input['IntegrationPassthroughBehavior'] passthrough_behaviour: Specifies how the method request body of an unmapped content type will be passed through the
                integration request to the back end without transformation.
                
@@ -931,14 +931,14 @@ class TargetArgs:
 
     @_builtins.property
     @pulumi.getter(name="httpMethod")
-    def http_method(self) -> pulumi.Input[Optional[_builtins.str]]:
+    def http_method(self) -> pulumi.Input[Optional[Literal['ANY']]]:
         """
         Specifies the integration's HTTP method type.  Currently, the only supported type is 'ANY'.
         """
         return pulumi.get(self, "http_method")
 
     @http_method.setter
-    def http_method(self, value: pulumi.Input[Optional[_builtins.str]]):
+    def http_method(self, value: pulumi.Input[Optional[Literal['ANY']]]):
         pulumi.set(self, "http_method", value)
 
     @_builtins.property
